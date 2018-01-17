@@ -1,0 +1,47 @@
+.login-form {
+    md-card {
+      padding: 0!important;
+  
+      md-card-title {
+        background-color: blue;
+      }
+    }
+  }
+
+  .register-form {
+    md-card {
+      padding: 0!important;
+  
+      md-card-title {
+        background-color: blue;
+      }
+    }
+  }
+  
+  .form-error-msg {
+    color: red;
+  }
+
+  [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+  }
+
+ .vrepeatContainer #vertical-container {
+    height: 202px;
+    width: 400px; 
+ }
+
+ .vrepeatContainer .repeated-item-vertical {
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    height: 40px;
+    padding-top: 10px;
+ }
+
+ .vrepeatContainer md-content {
+    margin: 16px; 
+ }
+ 
+ .vrepeatContainer md-virtual-repeat-container {
+    border: solid 1px grey; 
+ }	  

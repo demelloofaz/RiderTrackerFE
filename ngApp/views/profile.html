@@ -1,0 +1,53 @@
+
+<md-content ng-app="RiderTracker" layout="row" layout-align="space-around" layout-padding="layout-padding" ng-cloak="ng-cloak" class="register-form">
+    <md-card flex="flex" flex-gt-sm="50" flex-gt-md="33">
+        <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><span>Profile for {{controller.username}}</span></h2>
+        </div>
+        </md-toolbar>
+          <md-card-content>
+            <form name="Form">
+              <md-input-container class="md-block">
+                <label>First Name</label>
+                <input type="text" name="firstname" ng-model="controller.firstname"  required="" md-maxlength="30"/>
+                <div ng-messages="Form.firstname.$error" role="alert" multiple="">
+                    <div ng-message="required" class="my-message">Please enter your first name.</div>
+                    <div ng-message="md-maxlength" class="my-message">First name is too long.</div>
+                </div>
+              </md-input-container>
+
+              <md-input-container class="md-block">
+                <label>Last Name</label>
+                <input type="text" name="lastname" ng-model="controller.lastname"  required="" md-maxlength="30"/>
+                <div ng-messages="Form.lastname.$error" role="alert" multiple="">
+                    <div ng-message="required" class="my-message">Please enter your last name.</div>
+                    <div ng-message="md-maxlength" class="my-message">Last name is too long.</div>
+                </div>
+              </md-input-container>
+
+              <md-input-container class="md-block">
+                <label>Email Address</label>
+                <input type="email" name="emailaddress" ng-model="controller.emailaddress" required="" />
+                <div ng-messages="Form.emailaddress.$error" role="alert" multiple="">
+                    <div ng-message="required" class="my-message">Please enter your email address.</div>
+                </div>
+              </md-input-container>
+
+              <md-input-container class="md-block">
+                <label>Phone Number</label>
+                <input type="phone" name="phonenumber" ng-model="controller.phonenumber"  required="" />
+                <div ng-messages="Form.phonenumber.$error" role="alert" multiple="">
+                    <div ng-message="required" class="my-message">Please enter your phone number.</div>
+                </div>
+                <div>
+                </md-input-container>
+                    <md-button ng-disabled="Form.$invalid && Form.$pristine" ng-click="controller.updateProfile()" class="md-raised md-primary">&nbsp Update &nbsp</md-button>
+                    <a ui-sref="ChangePassword" class="btn btn-link">Change Password</a>
+                    <a ui-sref="Home" class="btn btn-link">Cancel</a>
+                </div>
+            </form>
+            <p class="form-error-msg">{{controller.message}}</p>
+          </md-card-content>
+        </md-card>
+      </md-content>

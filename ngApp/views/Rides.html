@@ -1,0 +1,13 @@
+<h2>Rides</h2>
+<p>
+    {{controller.message}}
+</p>
+<md-button  ng-click="controller.createRide()" class="ride-button md-raised md-primary">&nbsp Create &nbsp</md-button>
+<div class = "Rides-List" ng-repeat="ride in controller.rides" ng-cloak>
+    {{ride.startDate}} : {{ ride.rideName}}
+   <md-button ng-click="controller.detailRide(ride.id)" class="ride-button md-raised md-primary">&nbsp Detail &nbsp</md-button>
+   <md-button ng-if="canModifyRide(ride.creator)" ng-click="controller.editRide(ride.id)" class="ride-button md-raised md-primary">&nbsp Edit &nbsp</md-button>
+   <md-button ng-if="canModifyRide(ride.creator)" ng-click="controller.deleteRide(ride.id)" class="ride-button md-raised md-primary">&nbsp Delete &nbsp</md-button>
+</div>
+
+<a ui-sref="HomeLoggedIn" class="btn btn-link">Back</a>
