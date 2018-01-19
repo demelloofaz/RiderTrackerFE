@@ -1,17 +1,17 @@
-<h2>All Rides</h2>
+<h4>Ride Administration Page</h4>
 <div>
 <md-button  ng-click="controller.createRide()" class="ride-button md-raised md-primary">&nbsp Add a Ride &nbsp</md-button>
 </div>
 <div>
     <table>
         <tr ng-repeat="ride in controller.rides">
-        <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate }}</td>
-        <td ng-if="$even">{{ ride.startDate }}</td>
+        <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
+        <td ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
         <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
         <td ng-if="$even">{{ ride.rideName }}</td>
-        <td><md-button  ng-click="controller.editRide(ride.id)" class="rider-button md-raised md-primary">&nbsp Edit &nbsp</md-button></td>
-        <td><md-button ng-click="controller.deleteRide(ride.id)" class="rider-button md-raised md-primary">&nbsp Delete &nbsp</md-button></td>
-        <td><md-button  ng-click="controller.detailRide(ride.id)" class="rider-button md-raised md-primary">&nbsp Details &nbsp</md-button></td>
+        <td><md-button ng-click="controller.editRide(ride.id)" class="rider-button  md-primary">&nbsp Edit &nbsp</md-button></td>
+        <td><md-button ng-click="controller.deleteRide(ride.id)" class="rider-button  md-primary">&nbsp Delete &nbsp</md-button></td>
+        <td><md-button ng-click="controller.detailRide(ride.id)" class="rider-button  md-primary">&nbsp Details &nbsp</md-button></td>
         </tr>
     </table>
 </div>

@@ -1,4 +1,4 @@
-<h2>List of Rider</h2>
+<h2>Rider Administration Page</h2>
 <div>
 <md-button ng-click="controller.createRider()" class="rider-button md-raised md-primary">&nbsp Add a Rider &nbsp</md-button>
 </div>
@@ -11,9 +11,9 @@
     <td ng-if="$even">{{ rider.lastName }}</td>
     <td ng-if="$odd" style="background-color:#f1f1f1">{{ rider.firstName }}</td>
     <td ng-if="$even">{{ rider.firstName }}</td>
-    <td><md-button  ng-click="controller.editRider(rider.id)" class="rider-button md-raised md-primary">&nbsp Edit &nbsp</md-button></td>
-    <td><md-button ng-click="controller.deleteRider(rider.id)" class="rider-button md-raised md-primary">&nbsp Delete &nbsp</md-button></td>
-    <td><md-button  ng-click="controller.detailRider(rider.id)" class="rider-button md-raised md-primary">&nbsp Details &nbsp</md-button></td>
+    <td><md-button  ng-click="controller.editRider(rider.id)" class="rider-button md-primary">&nbsp Edit &nbsp</md-button></td>
+    <td><md-button ng-click="controller.deleteRider(rider.id)" class="rider-button md-primary">&nbsp Delete &nbsp</md-button></td>
+    <td><md-button  ng-click="controller.detailRider(rider.id)" class="rider-button md-primary">&nbsp Details &nbsp</md-button></td>
     </tr>
 </table>
 </div>

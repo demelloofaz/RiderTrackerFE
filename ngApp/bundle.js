@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 38);
+/******/ 	return __webpack_require__(__webpack_require__.s = 39);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -105,51 +105,53 @@ var _angularBootstrapNpm = __webpack_require__(6);
 
 var _angularBootstrapNpm2 = _interopRequireDefault(_angularBootstrapNpm);
 
-var _HomeController = __webpack_require__(24);
+var _HomeController = __webpack_require__(25);
 
-var _HomeLoggedInController = __webpack_require__(25);
+var _HomeLoggedInController = __webpack_require__(26);
 
-var _LoginController = __webpack_require__(26);
+var _LoginController = __webpack_require__(27);
 
-var _RegisterController = __webpack_require__(30);
+var _RegisterController = __webpack_require__(31);
 
-var _ProfileController = __webpack_require__(29);
+var _ProfileController = __webpack_require__(30);
 
-var _ChangePassword = __webpack_require__(17);
+var _ChangePassword = __webpack_require__(18);
 
-var _AdminController = __webpack_require__(15);
+var _AdminChangePassword = __webpack_require__(15);
 
-var _AdminRidesController = __webpack_require__(16);
+var _AdminController = __webpack_require__(16);
 
-var _RidesController = __webpack_require__(34);
+var _AdminRidesController = __webpack_require__(17);
 
-var _MyRidesController = __webpack_require__(27);
+var _RidesController = __webpack_require__(35);
 
-var _CreateRideController = __webpack_require__(18);
+var _MyRidesController = __webpack_require__(28);
 
-var _EditRideController = __webpack_require__(22);
+var _CreateRideController = __webpack_require__(19);
 
-var _DeleteRideController = __webpack_require__(20);
+var _EditRideController = __webpack_require__(23);
 
-var _RideDetailsController = __webpack_require__(31);
+var _DeleteRideController = __webpack_require__(21);
 
-var _CreateRiderController = __webpack_require__(19);
+var _RideDetailsController = __webpack_require__(32);
 
-var _EditRiderController = __webpack_require__(23);
+var _CreateRiderController = __webpack_require__(20);
 
-var _DeleteRiderController = __webpack_require__(21);
+var _EditRiderController = __webpack_require__(24);
 
-var _RiderDetailsController = __webpack_require__(33);
+var _DeleteRiderController = __webpack_require__(22);
 
-var _RideSignupController = __webpack_require__(32);
+var _RiderDetailsController = __webpack_require__(34);
 
-var _NavController = __webpack_require__(28);
+var _RideSignupController = __webpack_require__(33);
 
-var _AuthService = __webpack_require__(35);
+var _NavController = __webpack_require__(29);
 
-var _RiderService = __webpack_require__(37);
+var _AuthService = __webpack_require__(36);
 
-var _RideService = __webpack_require__(36);
+var _RiderService = __webpack_require__(38);
+
+var _RideService = __webpack_require__(37);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -251,6 +253,11 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     url: '/ChangePassword',
     templateUrl: '/ngApp/views/ChangePassword.html',
     controller: _ChangePassword.ChangePasswordController,
+    controllerAs: 'controller'
+  }).state('AdminChangePassword', {
+    url: '/AdminChangePassword',
+    templateUrl: '/ngApp/views/AdminChangePassword.html',
+    controller: _AdminChangePassword.AdminChangePasswordController,
     controllerAs: 'controller'
   }).state('notFound', {
     url: '/notFound',
@@ -89919,6 +89926,54 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var AdminChangePasswordController = exports.AdminChangePasswordController = function () {
+    function AdminChangePasswordController(AuthService, $http, $location, RiderService) {
+        _classCallCheck(this, AdminChangePasswordController);
+
+        this.auth = AuthService;
+        this.$http = $http;
+        this.$location = $location;
+        this.service = RiderService;
+        this.password = '';
+        this.confirmingpassword = '';
+        this.message = '';
+        this.currentRiderId = this.service.getCurrentRiderId();
+    }
+
+    _createClass(AdminChangePasswordController, [{
+        key: 'changePassword',
+        value: function changePassword() {
+            var _this = this;
+
+            if (this.password == this.confirmingpassword) {
+                var request = this.auth.createPasswordChangeRequest(this.currentRiderId, this.password);
+                this.$http.post(this.auth.getBaseRiderURL() + '/ChangePassword', request).then(function (res) {
+                    _this.$location.path(['/EditRider']);
+                }).catch(function (res) {
+                    _this.message = "Unable to updated password at this time, try again later.";
+                });
+            } else this.message = 'Passwords do not match!';
+        }
+    }]);
+
+    return AdminChangePasswordController;
+}();
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var AdminController = exports.AdminController = function () {
     function AdminController(AuthService, $http, RiderService) {
         var _this = this;
@@ -89936,9 +89991,8 @@ var AdminController = exports.AdminController = function () {
 
         // get all of the riders...
         var requestString = this.auth.getBaseRiderURL() + '/GetRiders?RequestingId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
-        debugger;
+
         this.$http.get(requestString).then(function (res) {
-            debugger;
             _this.riders = res.data;
             _this.message = "Success - Got the riders";
         }).catch(function (res) {
@@ -89949,7 +90003,7 @@ var AdminController = exports.AdminController = function () {
     _createClass(AdminController, [{
         key: 'detailRider',
         value: function detailRider(currentRiderId) {
-            debugger;
+
             this.service.saveRiderId(currentRiderId);
             this.service.routeToView("/RiderDetails", this.myView);
         }
@@ -89976,7 +90030,7 @@ var AdminController = exports.AdminController = function () {
 }();
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90008,7 +90062,7 @@ var AdminRidesController = exports.AdminRidesController = function () {
         // get all of the rides...
         var requestString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
         this.$http.get(requestString).then(function (res) {
-            debugger;
+
             _this.rides = res.data;
             _this.message = "Success - Got the rides";
         }).catch(function (res) {
@@ -90045,7 +90099,7 @@ var AdminRidesController = exports.AdminRidesController = function () {
 }();
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90075,7 +90129,6 @@ var ChangePasswordController = exports.ChangePasswordController = function () {
         value: function changePassword() {
             var _this = this;
 
-            debugger;
             if (this.password == this.confirmingpassword) {
                 var request = this.auth.createPasswordChangeRequest(0, this.password);
                 this.$http.post(this.auth.getBaseRiderURL() + '/ChangePassword', request).then(function (res) {
@@ -90088,41 +90141,6 @@ var ChangePasswordController = exports.ChangePasswordController = function () {
     }]);
 
     return ChangePasswordController;
-}();
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var CreateRideController = exports.CreateRideController = function () {
-  function CreateRideController(RideService, $http) {
-    _classCallCheck(this, CreateRideController);
-
-    this.service = RideService;
-    this.$http = $http;
-    this.message = 'hello world - Create Ride Controller';
-    this.service.clearCurrentRideId();
-  }
-
-  _createClass(CreateRideController, [{
-    key: 'goBackToParentView',
-    value: function goBackToParentView() {
-      this.service.goBackToParentView();
-    }
-  }]);
-
-  return CreateRideController;
 }();
 
 /***/ }),
@@ -90140,24 +90158,42 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var CreateRiderController = exports.CreateRiderController = function () {
-  function CreateRiderController(RiderService, $http) {
-    _classCallCheck(this, CreateRiderController);
+var CreateRideController = exports.CreateRideController = function () {
+  function CreateRideController(RideService, $http, AuthService) {
+    _classCallCheck(this, CreateRideController);
 
-    this.message = 'hello world - Create Rider Controller';
-    this.service = RiderService;
+    this.service = RideService;
     this.$http = $http;
-    this.service.clearCurrentRiderId();
+    this.auth = AuthService;
+    this.message = '';
+    this.service.clearCurrentRideId();
+    this.rideName = "";
+    this.description = "";
+    this.startDate;
+    this.distance = 0;
   }
 
-  _createClass(CreateRiderController, [{
-    key: 'goBackToParentView',
+  _createClass(CreateRideController, [{
+    key: "addRide",
+    value: function addRide() {
+      var _this = this;
+
+      // verify the date is OK if so the call the add ride endpoint
+      var request = this.service.getCreateRideRequest(this.rideName, this.description, this.startDate, this.distance);
+      this.$http.post(this.auth.getBaseRideURL() + '/CreateRide', request).then(function (res) {
+        _this.goBackToParentView();
+      }).catch(function (res) {
+        _this.message = "Unable to create a ride at this time, try again later";
+      });
+    }
+  }, {
+    key: "goBackToParentView",
     value: function goBackToParentView() {
       this.service.goBackToParentView();
     }
   }]);
 
-  return CreateRiderController;
+  return CreateRideController;
 }();
 
 /***/ }),
@@ -90175,37 +90211,51 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var DeleteRideController = exports.DeleteRideController = function () {
-    function DeleteRideController(RideService, $http) {
-        var _this = this;
+var CreateRiderController = exports.CreateRiderController = function () {
+    function CreateRiderController(RiderService, $http, AuthService) {
+        _classCallCheck(this, CreateRiderController);
 
-        _classCallCheck(this, DeleteRideController);
-
-        this.message = 'hello world - Delete Ride Controller';
-        this.service = RideService;
+        this.message = '';
+        this.service = RiderService;
+        this.auth = AuthService;
         this.$http = $http;
-        this.rideId = this.service.getCurrentRideId();
-        this.ride = [];
-
-        // create the url string
-        var requestString = this.service.getRideRequest(this.rideId);
-
-        // make the http get request
-        this.$http.get(requestString).then(function (res) {
-            _this.ride = res.data;
-        }).catch(function (res) {
-            _this.message = "Unable to Get Ride Data at this time.";
-        });
+        this.service.clearCurrentRiderId();
+        this.message = '';
+        this.username = '';
+        this.firstname = '';
+        this.lastname = '';
+        this.emailaddress = '';
+        this.phonenumber = '';
+        this.password = '';
+        this.confirmingpassword = '';
     }
 
-    _createClass(DeleteRideController, [{
-        key: "goBackToParentView",
+    _createClass(CreateRiderController, [{
+        key: 'addRider',
+        value: function addRider() {
+            var _this = this;
+
+            if (this.password == this.confirmingpassword) {
+                //this.auth.register(this.username, this.firstname, this.lastname, this.emailaddress, this.phonenumber, this.password, this.message);
+                var regRequest = this.auth.createRegistrationRequest(this.username, this.firstname, this.lastname, this.emailaddress, this.phonenumber, this.password);
+
+                this.$http.post(this.auth.getBaseRiderURL() + '/register', regRequest).then(function (res) {
+                    _this.goBackToParentView();
+                }).catch(function (res) {
+                    if (res.status == 401) _this.message = "Username already in use, try a different username.";else _this.message = "Unable to register at this time, try again later";
+                });
+            } else {
+                this.message = " Passwords do not match!";
+            }
+        }
+    }, {
+        key: 'goBackToParentView',
         value: function goBackToParentView() {
             this.service.goBackToParentView();
         }
     }]);
 
-    return DeleteRideController;
+    return CreateRiderController;
 }();
 
 /***/ }),
@@ -90223,37 +90273,61 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var DeleteRiderController = exports.DeleteRiderController = function () {
-    function DeleteRiderController(RiderService, $http) {
+var DeleteRideController = exports.DeleteRideController = function () {
+    function DeleteRideController(RideService, $http, AuthService) {
         var _this = this;
 
-        _classCallCheck(this, DeleteRiderController);
+        _classCallCheck(this, DeleteRideController);
 
-        this.message = 'hello world - Delete Rider Controller';
+        this.message = 'hello world - Delete Ride Controller';
+        this.service = RideService;
+        this.auth = AuthService;
         this.$http = $http;
-        this.service = RiderService;
-        this.riderId = this.service.getCurrentRiderId();
-        this.rider = [];
+        this.rideId = this.service.getCurrentRideId();
+        this.ride = [];
 
         // create the url string
-        var requestString = this.service.getRiderRequest(this.riderId);
+        var requestString = this.service.getRideRequest(this.rideId);
 
         // make the http get request
         this.$http.get(requestString).then(function (res) {
-            _this.rider = res.data;
+            _this.ride = res.data;
         }).catch(function (res) {
             _this.message = "Unable to Get Ride Data at this time.";
         });
     }
 
-    _createClass(DeleteRiderController, [{
-        key: "goBackToParentView",
+    _createClass(DeleteRideController, [{
+        key: 'deleteRide',
+        value: function deleteRide() {
+            var _this2 = this;
+
+            // create the url string
+            var urlString = this.auth.getBaseRideURL() + '/DeleteRide';
+            this.$http({
+                method: 'DELETE',
+                url: urlString,
+                data: {
+                    riderId: this.auth.getCurrentId(),
+                    authorization: this.auth.getToken(),
+                    rideId: this.rideId
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                } }).then(function (res) {
+                _this2.goBackToParentView();
+            }).catch(function (res) {
+                _this2.message = "Unable to Delete Ride Data at this time.";
+            });
+        }
+    }, {
+        key: 'goBackToParentView',
         value: function goBackToParentView() {
             this.service.goBackToParentView();
         }
     }]);
 
-    return DeleteRiderController;
+    return DeleteRideController;
 }();
 
 /***/ }),
@@ -90271,37 +90345,61 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var EditRideController = exports.EditRideController = function () {
-    function EditRideController(RideService, $http) {
+var DeleteRiderController = exports.DeleteRiderController = function () {
+    function DeleteRiderController(RiderService, $http, AuthService) {
         var _this = this;
 
-        _classCallCheck(this, EditRideController);
+        _classCallCheck(this, DeleteRiderController);
 
-        this.message = 'hello world - Edit Ride Controller';
-        this.service = RideService;
+        this.message = 'hello world - Delete Rider Controller';
         this.$http = $http;
-        this.rideId = this.service.getCurrentRideId();
-        this.ride = [];
+        this.service = RiderService;
+        this.auth = AuthService;
+        this.riderId = this.service.getCurrentRiderId();
+        this.rider = [];
 
         // create the url string
-        var requestString = this.service.getRideRequest(this.rideId);
+        var requestString = this.service.getRiderRequest(this.riderId);
 
         // make the http get request
         this.$http.get(requestString).then(function (res) {
-            _this.ride = res.data;
+            _this.rider = res.data;
         }).catch(function (res) {
             _this.message = "Unable to Get Ride Data at this time.";
         });
     }
 
-    _createClass(EditRideController, [{
-        key: "goBackToParentView",
+    _createClass(DeleteRiderController, [{
+        key: 'deleteRider',
+        value: function deleteRider() {
+            var _this2 = this;
+
+            // create the url string
+            var urlString = this.auth.getBaseRiderURL() + '/DeleteRider';
+            this.$http({
+                method: 'DELETE',
+                url: urlString,
+                data: {
+                    requestingId: this.auth.getCurrentId(),
+                    authorization: this.auth.getToken(),
+                    targetId: this.riderId
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                } }).then(function (res) {
+                _this2.goBackToParentView();
+            }).catch(function (res) {
+                _this2.message = "Unable to Delete Rider Data at this time.";
+            });
+        }
+    }, {
+        key: 'goBackToParentView',
         value: function goBackToParentView() {
             this.service.goBackToParentView();
         }
     }]);
 
-    return EditRideController;
+    return DeleteRiderController;
 }();
 
 /***/ }),
@@ -90319,15 +90417,84 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var EditRideController = exports.EditRideController = function () {
+    function EditRideController(RideService, $http, AuthService) {
+        var _this = this;
+
+        _classCallCheck(this, EditRideController);
+
+        this.message = '';
+        this.service = RideService;
+        this.auth = AuthService;
+        this.$http = $http;
+        this.rideId = this.service.getCurrentRideId();
+        this.ride = [];
+
+        // create the url string
+        var requestString = this.service.getRideRequest(this.rideId);
+
+        // make the http get request
+        this.$http.get(requestString).then(function (res) {
+            _this.ride = res.data;
+        }).catch(function (res) {
+            _this.message = "Unable to Get Ride Data at this time.";
+        });
+    }
+
+    _createClass(EditRideController, [{
+        key: 'editRide',
+        value: function editRide() {
+            var _this2 = this;
+
+            // create the url string
+
+            var request = this.service.getEditRideRequest(this.rideId, this.ride.rideName, this.ride.description, this.ride.startDate, this.ride.distance);
+
+            var urlString = this.auth.getBaseRideURL() + '/EditRide';
+
+            // make the http get request
+            this.$http.post(urlString, request).then(function (res) {
+                _this2.goBackToParentView();
+            }).catch(function (res) {
+                _this2.message = "Unable to Update Ride Data at this time.";
+            });
+        }
+    }, {
+        key: 'goBackToParentView',
+        value: function goBackToParentView() {
+            this.service.goBackToParentView();
+        }
+    }]);
+
+    return EditRideController;
+}();
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var EditRiderController = exports.EditRiderController = function () {
-    function EditRiderController(RiderService, $http) {
+    function EditRiderController(RiderService, $http, AuthService, $location) {
         var _this = this;
 
         _classCallCheck(this, EditRiderController);
 
-        this.message = 'hello world - Edit Rider Controller';
+        this.message = '';
         this.service = RiderService;
         this.$http = $http;
+        this.$location = $location;
+        this.auth = AuthService;
         this.riderId = this.service.getCurrentRiderId();
         this.rider = [];
 
@@ -90343,6 +90510,22 @@ var EditRiderController = exports.EditRiderController = function () {
     }
 
     _createClass(EditRiderController, [{
+        key: "editRider",
+        value: function editRider() {
+            var _this2 = this;
+
+            if (this.service.isValidRole(this.rider.role)) {
+                var requestData = this.auth.createRiderUpdateRequest(this.rider);
+                this.message = "";
+                this.$http.post(this.auth.getBaseRiderURL() + '/EditRider', requestData).then(function (res) {
+                    //redirect
+                    _this2.service.goBackToParentView();
+                }).catch(function (res) {
+                    _this2.message = "Unable to update profile at this time, try again later";
+                });
+            } else this.message = "Invalid Role detected.";
+        }
+    }, {
         key: "goBackToParentView",
         value: function goBackToParentView() {
             this.service.goBackToParentView();
@@ -90353,7 +90536,7 @@ var EditRiderController = exports.EditRiderController = function () {
 }();
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90376,7 +90559,7 @@ var HomeController = exports.HomeController = function HomeController(AuthServic
 };
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90395,7 +90578,7 @@ var HomeLoggedInController = exports.HomeLoggedInController = function HomeLogge
 };
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90430,7 +90613,6 @@ var LoginController = exports.LoginController = function () {
             this.$http.post(this.auth.getBaseRiderURL() + '/login', loginData).then(function (res) {
                 _this.auth.authenticate(res);
             }).catch(function (res) {
-                debugger;
                 if (res.status == 404) _this.message = "Invalid Username or Password provided";else _this.message = "Unable to login at this time try again later";
             });
         }
@@ -90440,7 +90622,7 @@ var LoginController = exports.LoginController = function () {
 }();
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90459,7 +90641,7 @@ var MyRidesController = exports.MyRidesController = function MyRidesController()
 };
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90518,7 +90700,7 @@ var NavController = exports.NavController = function () {
 }();
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90547,13 +90729,12 @@ var ProfileController = exports.ProfileController = function () {
         this.emailaddress = '';
         this.phonenumber = '';
 
-        debugger;
         // create the url string
         var requestString = this.auth.getBaseRiderURL() + '/GetRider?RequestingId=' + this.auth.getCurrentId() + '&TargetId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
 
         // make the http get request
         this.$http.get(requestString).then(function (res) {
-            debugger;
+            debuger;
             _this.username = res.data.userName;
             _this.lastname = res.data.lastName;
             _this.firstname = res.data.firstName;
@@ -90586,7 +90767,7 @@ var ProfileController = exports.ProfileController = function () {
 }();
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90624,7 +90805,6 @@ var RegisterController = exports.RegisterController = function () {
         value: function register() {
             var _this = this;
 
-            debugger;
             if (this.password == this.confirmingpassword) {
                 //this.auth.register(this.username, this.firstname, this.lastname, this.emailaddress, this.phonenumber, this.password, this.message);
                 var regRequest = this.auth.createRegistrationRequest(this.username, this.firstname, this.lastname, this.emailaddress, this.phonenumber, this.password);
@@ -90644,7 +90824,7 @@ var RegisterController = exports.RegisterController = function () {
 }();
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90659,13 +90839,14 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RideDetailsController = exports.RideDetailsController = function () {
-    function RideDetailsController(RideService, $http) {
+    function RideDetailsController(RideService, $http, AuthService) {
         var _this = this;
 
         _classCallCheck(this, RideDetailsController);
 
         this.message = 'hello world from Ride Details Controller';
         this.service = RideService;
+        this.auth = AuthService;
         this.$http = $http;
 
         this.rideId = this.service.getCurrentRideId();
@@ -90693,7 +90874,7 @@ var RideDetailsController = exports.RideDetailsController = function () {
 }();
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90712,7 +90893,7 @@ var RideSignupController = exports.RideSignupController = function RideSignupCon
 };
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90727,13 +90908,14 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RiderDetailsController = exports.RiderDetailsController = function () {
-    function RiderDetailsController(RiderService, $http) {
+    function RiderDetailsController(RiderService, $http, AuthService) {
         var _this = this;
 
         _classCallCheck(this, RiderDetailsController);
 
         this.message = 'hello world from Rider Details Controller';
         this.service = RiderService;
+        this.auth = AuthService;
         this.$http = $http;
         this.riderId = this.service.getCurrentRiderId();
         this.rider = [];
@@ -90760,7 +90942,7 @@ var RiderDetailsController = exports.RiderDetailsController = function () {
 }();
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90792,7 +90974,6 @@ var RidesController = exports.RidesController = function () {
         // get all of the rides...
         var requestString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
         this.$http.get(requestString).then(function (res) {
-            debugger;
             _this.rides = res.data;
             _this.message = "Success - Got the rides";
         }).catch(function (res) {
@@ -90840,7 +91021,7 @@ var RidesController = exports.RidesController = function () {
 }();
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90961,6 +91142,21 @@ var AuthService = exports.AuthService = function () {
             };
             return requestData;
         }
+    }, {
+        key: 'createRiderUpdateRequest',
+        value: function createRiderUpdateRequest(rider) {
+            var requestData = {
+                targetId: rider.id,
+                requestingId: this.getCurrentId(),
+                authorization: this.getToken(),
+                firstName: rider.firstName,
+                lastName: rider.lastName,
+                emailAddress: rider.emailAddress,
+                phoneNumber: rider.phoneNumber,
+                role: rider.role
+            };
+            return requestData;
+        }
 
         // to be moved when we do admin pages...
 
@@ -90982,7 +91178,6 @@ var AuthService = exports.AuthService = function () {
             this.$http.post(this.auth.getBaseRiderURL() + '/EditRider', user).then(function (res) {
                 _this.authenticate(res);
             }).catch(function (res) {
-                debugger;
                 message = "Error on admin update profile detected";
             });
         }
@@ -91008,7 +91203,7 @@ var AuthService = exports.AuthService = function () {
                 authorization: this.getToken(),
                 password: password };
 
-            if (targetid != 0) this.request.targetId = targetid;
+            if (targetid != 0) request.targetId = targetid;
 
             return request;
         }
@@ -91037,7 +91232,7 @@ var AuthService = exports.AuthService = function () {
 AuthService.$inject = ['$http', '$location'];
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91052,10 +91247,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RideService = exports.RideService = function () {
-    function RideService($http, AuthService, $location) {
+    function RideService(AuthService, $location) {
         _classCallCheck(this, RideService);
 
-        this.$http = $http;
         this.auth = AuthService;
         this.$location = $location;
         this.CURRENT_RIDE_KEY = 'CurrentRide';
@@ -91118,6 +91312,35 @@ var RideService = exports.RideService = function () {
             return requestString;
         }
     }, {
+        key: 'getCreateRideRequest',
+        value: function getCreateRideRequest(_rideName, _description, _startDate, _distance) {
+
+            var requestData = {
+                riderId: this.auth.getCurrentId(),
+                authorization: this.auth.getToken(),
+                rideName: _rideName,
+                description: _description,
+                startDate: _startDate,
+                distance: _distance
+            };
+            return requestData;
+        }
+    }, {
+        key: 'getEditRideRequest',
+        value: function getEditRideRequest(_rideId, _rideName, _description, _startDate, _distance) {
+
+            var requestData = {
+                riderId: this.auth.getCurrentId(),
+                authorization: this.auth.getToken(),
+                rideId: _rideId,
+                rideName: _rideName,
+                description: _description,
+                startDate: _startDate,
+                distance: _distance
+            };
+            return requestData;
+        }
+    }, {
         key: 'canModifyRide',
         value: function canModifyRide(riderId) {
             var currentRiderId = this.auth.getCurrentId();
@@ -91129,10 +91352,10 @@ var RideService = exports.RideService = function () {
     return RideService;
 }();
 
-RideService.$inject = ['$http', 'AuthService', '$location'];
+RideService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91147,10 +91370,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RiderService = exports.RiderService = function () {
-    function RiderService($http, AuthService, $location) {
+    function RiderService(AuthService, $location) {
         _classCallCheck(this, RiderService);
 
-        this.$http = $http;
         this.auth = AuthService;
         this.$location = $location;
         this.CURRENT_RIDER_KEY = 'CurrentRider';
@@ -91212,15 +91434,22 @@ var RiderService = exports.RiderService = function () {
 
             return requestString;
         }
+    }, {
+        key: 'isValidRole',
+        value: function isValidRole(role) {
+            var result = false;
+            if (role == "Admin") result = true;else if (role == "User") result = true;
+            return result;
+        }
     }]);
 
     return RiderService;
 }();
 
-RiderService.$inject = ['$http', 'AuthService', '$location'];
+RiderService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(1);

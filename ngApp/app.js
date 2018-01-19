@@ -10,6 +10,7 @@ import {LoginController} from './controllers/LoginController';
 import {RegisterController} from './controllers/RegisterController';
 import {ProfileController} from './controllers/ProfileController';
 import {ChangePasswordController} from './controllers/ChangePassword';
+import {AdminChangePasswordController} from './controllers/AdminChangePassword';
 import {AdminController} from './controllers/AdminController';
 import {AdminRidesController} from './controllers/AdminRidesController';
 import {RidesController} from './controllers/RidesController';
@@ -155,6 +156,12 @@ import {RideService} from './services/RideService';
             url: '/ChangePassword',
             templateUrl: '/ngApp/views/ChangePassword.html',
             controller: ChangePasswordController,
+            controllerAs: 'controller'
+          })
+          .state('AdminChangePassword', {
+            url: '/AdminChangePassword',
+            templateUrl: '/ngApp/views/AdminChangePassword.html',
+            controller: AdminChangePasswordController,
             controllerAs: 'controller'
           })
           .state('notFound', {

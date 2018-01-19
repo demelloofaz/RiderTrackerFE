@@ -1,6 +1,20 @@
 <h2>Delete Rider</h2>
-<p>
-    {{controller.message}}
-</p>
-<div>{{controller.rider}}</div>
-<md-button ng-click="controller.goBackToParentView()" class="rider-button md-raised md-primary">&nbsp Back &nbsp</md-button>
+<md-content>
+        <md-card>
+            <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Username: {{controller.rider.userName}} </span>
+                <span class="md-subhead">Full Name:  {{ controller.rider.fullName}}</span>
+             </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                <h5>Phone Number: {{controller.rider.phoneNumber}}</h5>
+                <h5>Email Address: {{controller.rider.emailAddress}}</h5>
+                <h5>Role: {{controller.rider.role}}</h5>
+                <h5>Last Position: {{ controller.rider.lastPosition}}</h5>
+                <br>
+                <md-button ng-click="controller.deleteRider()" class="rider-button md-raised md-primary">&nbsp Delete  &nbsp</md-button>
+                <md-button ng-click="controller.goBackToParentView()" class="rider-button md-raised md-primary">&nbsp Back &nbsp</md-button>
+            </md-card-content>
+        </md-card>
+    </md-content>

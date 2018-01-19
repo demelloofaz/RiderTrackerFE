@@ -1,7 +1,6 @@
 export class RideService{
-    constructor($http, AuthService, $location)
+    constructor(AuthService, $location)
     {
-        this.$http = $http;
         this.auth = AuthService;
         this.$location = $location;
         this.CURRENT_RIDE_KEY = 'CurrentRide';
@@ -49,12 +48,36 @@ export class RideService{
         
         return requestString;
     }
+    getCreateRideRequest(_rideName, _description, _startDate, _distance) {
+
+        var requestData = {
+            riderId : this.auth.getCurrentId(),
+            authorization: this.auth.getToken(),
+            rideName :_rideName,
+            description : _description,
+            startDate : _startDate,
+            distance : _distance
+        }
+        return requestData;
+    }
+    getEditRideRequest (_rideId, _rideName, _description, _startDate, _distance) {
+
+        var requestData = {
+            riderId : this.auth.getCurrentId(),
+            authorization: this.auth.getToken(),
+            rideId : _rideId,
+            rideName :_rideName,
+            description : _description,
+            startDate : _startDate,
+            distance : _distance
+        }
+        return requestData;
+    }
     canModifyRide(riderId) {
         var currentRiderId = this.auth.getCurrentId();
         if (currentRiderId == riderId)
             return true;
         return false;
     }
-
 }
-RideService.$inject = ['$http', 'AuthService', '$location'];
+RideService.$inject = ['AuthService', '$location'];

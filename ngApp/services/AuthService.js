@@ -90,6 +90,21 @@ export class AuthService{
         }
         return requestData;
     }
+
+    createRiderUpdateRequest(rider)
+    {
+        var requestData = {
+            targetId : rider.id,
+            requestingId : this.getCurrentId(),
+            authorization : this.getToken(),
+            firstName : rider.firstName,
+            lastName: rider.lastName,
+            emailAddress: rider.emailAddress,
+            phoneNumber : rider.phoneNumber,
+            role : rider.role
+        }
+        return requestData;
+    }
     
     // to be moved when we do admin pages...
     adminUpdateProfile(_userid, _firstname, _lastname, _emailaddress, _phonenumber, message) {
@@ -109,8 +124,7 @@ export class AuthService{
             this.authenticate(res);
         })
         .catch(res => {
-            debugger;
-            message = "Error on admin update profile detected";
+           message = "Error on admin update profile detected";
         });
     }
 
@@ -136,7 +150,7 @@ export class AuthService{
             password: password };
 
         if (targetid != 0)
-            this.request.targetId = targetid;
+            request.targetId = targetid;
 
         return request;
     }

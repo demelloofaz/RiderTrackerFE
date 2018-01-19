@@ -1,8 +1,10 @@
 export class EditRiderController {
-    constructor(RiderService, $http) {
-      this.message = 'hello world - Edit Rider Controller';
+    constructor(RiderService, $http, AuthService, $location) {
+      this.message = '';
       this.service = RiderService;
       this.$http = $http;
+      this.$location= $location;
+      this.auth = AuthService;
       this.riderId = this.service.getCurrentRiderId();
       this.rider = [];
 
@@ -17,6 +19,22 @@ export class EditRiderController {
         catch( (res) => {
             this.message = "Unable to Get Ride Data at this time.";
         });
+    }
+    editRider() {
+          
+      if (this.service.isValidRole(this.rider.role)) {
+        var requestData  = this.auth.createRiderUpdateRequest(this.rider);
+        this.message = "";
+        this.$http.post(this.auth.getBaseRiderURL()  + '/EditRider', requestData)
+        .then(res => {
+            //redirect
+            this.service.goBackToParentView();
+        }).catch(res => {
+            this.message = "Unable to update profile at this time, try again later";
+        });
+      }
+      else
+        this.message = "Invalid Role detected."
     }
     goBackToParentView()
     {

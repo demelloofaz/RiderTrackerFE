@@ -1,7 +1,8 @@
 export class RideDetailsController {
-    constructor(RideService, $http) {
+    constructor(RideService, $http, AuthService) {
       this.message = 'hello world from Ride Details Controller';
       this.service = RideService;
+      this.auth = AuthService;
       this.$http = $http;
 
       this.rideId = this.service.getCurrentRideId();

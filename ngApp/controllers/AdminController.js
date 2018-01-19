@@ -11,10 +11,9 @@ export class AdminController {
 
       // get all of the riders...
       var requestString = this.auth.getBaseRiderURL() + '/GetRiders?RequestingId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
-      debugger;
+      
       this.$http.get(requestString)
         .then(res => {  
-            debugger;
             this.riders = res.data;
             this.message = "Success - Got the riders"
         })
@@ -23,7 +22,7 @@ export class AdminController {
         });
     }
     detailRider(currentRiderId) {
-        debugger;
+
         this.service.saveRiderId(currentRiderId);
         this.service.routeToView("/RiderDetails", this.myView);
     }
