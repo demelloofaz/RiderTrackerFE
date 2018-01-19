@@ -13,14 +13,12 @@ export class RidesController {
       var requestString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
       this.$http.get(requestString)
         .then(res => {  
-            debugger;
             this.rides = res.data;
             this.message = "Success - Got the rides"
         })
         .catch(res => {
             this.message = "Error in getting rides.";
         });
-        
     }
     detailRide(rideId) {
         this.service.saveRideId(rideId);

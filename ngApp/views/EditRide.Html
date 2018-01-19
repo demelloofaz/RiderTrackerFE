@@ -1,6 +1,52 @@
-<h2>Edit Ride</h2>
-<p>
-    {{controller.message}}
-</p>
-<div>{{controller.ride}}</div>
-<md-button  ng-click="controller.goBackToParentView()" class="ride-button md-raised md-primary">&nbsp Back &nbsp</md-button>
+<md-content ng-app="RiderTracker" layout="row" layout-align="space-around" layout-padding="layout-padding" ng-cloak="ng-cloak" class="register-form">
+    <md-card flex="flex" flex-gt-sm="50" flex-gt-md="33">
+        <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><span>Modify the ride information below:</span></h2>
+        </div>
+        </md-toolbar>
+          <md-card-content>
+            <form name="Form">
+              <md-input-container class="md-block">
+                <label>Ride Name</label>
+                <input type="text" name="ridename" ng-model="controller.ride.rideName"  placeholder="Ride Name" required="" md-maxlength="30"/>
+                <div ng-messages="Form.ridename.$error" role="alert" multiple="">
+                    <div ng-message="required" class="my-message">Please enter a ride name.</div>
+                    <div ng-message="md-maxlength" class="my-message">Ride name is too long.</div>
+                </div>
+              </md-input-container>
+
+              <md-input-container class="md-block">
+                <label>Description</label>
+                <input type="text" name="description" ng-model="controller.ride.description" placeholder="Ride Description - include location, terrain, ride type" required="" md-maxlength="80"/>
+                <div ng-messages="Form.description.$error" role="alert" multiple="">
+                    <div ng-message="required" class="my-message">Please enter a short description.</div>
+                    <div ng-message="md-maxlength" class="my-message">Description is too long.</div>
+                </div>
+              </md-input-container>
+
+              <md-input-container class="md-block">
+                <label>Distance in Miles</label>
+                <input type="number" name="distance" ng-model="controller.ride.distance"  required="" />
+                <div ng-messages="Form.emailaddress.$error" role="alert" multiple="">
+                    <div ng-message="required" class="my-message">Please enter the ride distance in miles</div>
+                </div>
+              </md-input-container>
+
+              <md-input-container class="md-block">
+                <label>Date/Time</label>
+                <input type="datetime" name="startdate" ng-model="controller.ride.startDate | date : 'MM/dd/yyyy @ h:mma'"  required="" />
+                <div ng-messages="Form.startdate.$error" role="alert" multiple="">
+                    <div ng-message="required" class="my-message">Please enter a date and time for this ride.</div>
+                </div>
+                <div>
+                </md-input-container>
+                
+                <md-button ng-disabled="Form.$invalid && Form.$pristine" ng-click="controller.editRide()" class="md-raised md-primary">&nbsp Update Ride &nbsp</md-button>
+                <md-button  ng-click="controller.goBackToParentView()" class="ride-button md-raised md-primary">&nbsp Back &nbsp</md-button>
+                </div>
+            </form>
+            <p class="form-error-msg">{{controller.message}}</p>
+          </md-card-content>
+        </md-card>
+      </md-content>

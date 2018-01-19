@@ -10,7 +10,6 @@ export class ProfileController {
         this.emailaddress = '';
         this.phonenumber = '';
 
-        debugger;
         // create the url string
         var requestString = this.auth.getBaseRiderURL()  + 
             '/GetRider?RequestingId=' + 
@@ -23,7 +22,7 @@ export class ProfileController {
         // make the http get request
         this.$http.get(requestString)
         .then( (res) => {
-            debugger;
+            debuger;
             this.username = res.data.userName;
             this.lastname = res.data.lastName;
             this.firstname = res.data.firstName;

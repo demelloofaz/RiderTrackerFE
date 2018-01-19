@@ -14,7 +14,6 @@ export class RegisterController {
   
       // Register a new user
       register() {
-          debugger;
           if (this.password == this.confirmingpassword){
              //this.auth.register(this.username, this.firstname, this.lastname, this.emailaddress, this.phonenumber, this.password, this.message);
              var regRequest = this.auth.createRegistrationRequest(this.username, this.firstname, this.lastname, this.emailaddress, 

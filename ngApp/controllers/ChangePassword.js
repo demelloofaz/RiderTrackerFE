@@ -8,7 +8,7 @@ export class ChangePasswordController {
       }
   
       changePassword() {
-        debugger;
+        
         if (this.password == this.confirmingpassword) {
             var request = this.auth.createPasswordChangeRequest( 0, this.password);
             this.$http.post(this.auth.getBaseRiderURL() + '/ChangePassword', request)

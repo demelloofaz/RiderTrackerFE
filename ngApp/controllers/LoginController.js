@@ -17,7 +17,6 @@ export class LoginController {
             this.auth.authenticate(res);
         })
         .catch(res => {
-            debugger;
             if (res.status == 404)
                 this.message = "Invalid Username or Password provided";
             else

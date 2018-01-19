@@ -1,7 +1,6 @@
 export class RiderService{
-    constructor($http, AuthService, $location)
+    constructor(AuthService, $location)
     {
-        this.$http = $http;
         this.auth = AuthService;
         this.$location = $location;
         this.CURRENT_RIDER_KEY = 'CurrentRider';
@@ -49,6 +48,15 @@ export class RiderService{
         
         return requestString;
     }
-
+    
+    isValidRole (role)
+    {
+        var result = false;
+        if (role == "Admin")
+            result = true;
+        else if (role == "User")
+            result = true;
+        return result;
+    }
 }
-RiderService.$inject = ['$http', 'AuthService', '$location'];
+RiderService.$inject = ['AuthService', '$location'];

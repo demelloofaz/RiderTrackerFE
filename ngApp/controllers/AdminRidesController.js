@@ -14,7 +14,7 @@ export class AdminRidesController {
       var requestString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
       this.$http.get(requestString)
         .then(res => {  
-            debugger;
+         
             this.rides = res.data;
             this.message = "Success - Got the rides"
         })
