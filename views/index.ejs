@@ -19,7 +19,9 @@
         <a ng-if="!nav.isAuthenticated()" ui-sref="Home" class="md-button">RiderTracker</a>
         <a ng-if="nav.isAuthenticated()" ui-sref="HomeLoggedIn" class="md-button">RiderTracker</a>
         <a ng-if="nav.isAuthenticated()" ui-sref="Rides" class="md-button">Rides</a>
+        <!--
         <a ng-if="nav.isAdmin()" ui-sref="Admin" class="md-button">Admin</a>
+        -->
         <span style="1 1 auto"></span>
         <a ng-if="!nav.isAuthenticated()" ui-sref="Login" class="md-button">Login</a>
         <a ng-if="nav.isAuthenticated()" ui-sref="Profile" class="md-button">Welcome {{nav.getName()}}</a>

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 40);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -153,9 +153,11 @@ var _RiderService = __webpack_require__(38);
 
 var _RideService = __webpack_require__(37);
 
+var _SignupService = __webpack_require__(39);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_angular2.default.module('RiderTracker', [_angularUiRouter2.default, _angularResource2.default, _angularBootstrapNpm2.default, _angularMaterial2.default, _angularMessages2.default]).service('AuthService', _AuthService.AuthService).service('RiderService', _RiderService.RiderService).service('RideService', _RideService.RideService).config(routing);
+_angular2.default.module('RiderTracker', [_angularUiRouter2.default, _angularResource2.default, _angularBootstrapNpm2.default, _angularMaterial2.default, _angularMessages2.default]).service('AuthService', _AuthService.AuthService).service('RiderService', _RiderService.RiderService).service('RideService', _RideService.RideService).service('SignupService', _SignupService.SignupService).config(routing);
 
 routing.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
 function routing($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -201,7 +203,7 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     controllerAs: 'controller'
   }).state('MyRides', {
     url: '/MyRides',
-    templateUrl: '/ngApp/views/Myrides.html',
+    templateUrl: '/ngApp/views/MyRides.html',
     controller: _MyRidesController.MyRidesController,
     controllerAs: 'controller'
   }).state('CreateRide', {
@@ -90169,8 +90171,23 @@ var CreateRideController = exports.CreateRideController = function () {
     this.service.clearCurrentRideId();
     this.rideName = "";
     this.description = "";
-    this.startDate;
-    this.distance = 0;
+    this.startDate = new Date();
+    this.distance;
+    this.dateInput;
+    this.timeInput;
+
+    // create the minimum date for the date picker
+    this.today = new Date();
+    var dd = this.today.getDate();
+    var mm = this.today.getMonth() + 1; //January is 0!
+    var yyyy = this.today.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    this.today = mm + '/' + dd + '/' + yyyy;
   }
 
   _createClass(CreateRideController, [{
@@ -90178,7 +90195,16 @@ var CreateRideController = exports.CreateRideController = function () {
     value: function addRide() {
       var _this = this;
 
-      // verify the date is OK if so the call the add ride endpoint
+      // verify the date is OK if so the call the add ride endpoint   
+      this.startDate.setMinutes(this.timeInput.getMinutes());
+      this.startDate.setHours(this.timeInput.getHours());
+      this.startDate.setSeconds(0);
+      this.startDate.getTimezoneOffset();
+
+      this.startDate.setDate(this.dateInput.getDate());
+      this.startDate.setMonth(this.dateInput.getMonth());
+      this.startDate.setFullYear(this.dateInput.getFullYear());
+
       var request = this.service.getCreateRideRequest(this.rideName, this.description, this.startDate, this.distance);
       this.$http.post(this.auth.getBaseRideURL() + '/CreateRide', request).then(function (res) {
         _this.goBackToParentView();
@@ -90429,6 +90455,8 @@ var EditRideController = exports.EditRideController = function () {
         this.$http = $http;
         this.rideId = this.service.getCurrentRideId();
         this.ride = [];
+        this.dateInput = "";
+        this.timeInput = null;
 
         // create the url string
         var requestString = this.service.getRideRequest(this.rideId);
@@ -90436,13 +90464,30 @@ var EditRideController = exports.EditRideController = function () {
         // make the http get request
         this.$http.get(requestString).then(function (res) {
             _this.ride = res.data;
+            _this.getTimeData();
         }).catch(function (res) {
             _this.message = "Unable to Get Ride Data at this time.";
+            return;
         });
     }
 
     _createClass(EditRideController, [{
-        key: 'editRide',
+        key: "getTimeData",
+        value: function getTimeData() {
+
+            this.timeInput = new Date(this.ride.startDate);
+            this.timeInput.setMilliseconds(0);
+            this.timeInput.setSeconds(0);
+
+            //parse out the date string as the date picker needs a string
+            var day = this.timeInput.getDate();
+            var month = this.timeInput.getMonth() + 1;
+            var year = this.timeInput.getFullYear();
+            if (day < 10) day = "0" + day;
+            this.dateInput = month + "/" + day + "/" + year;
+        }
+    }, {
+        key: "editRide",
         value: function editRide() {
             var _this2 = this;
 
@@ -90460,7 +90505,7 @@ var EditRideController = exports.EditRideController = function () {
             });
         }
     }, {
-        key: 'goBackToParentView',
+        key: "goBackToParentView",
         value: function goBackToParentView() {
             this.service.goBackToParentView();
         }
@@ -90629,16 +90674,180 @@ var LoginController = exports.LoginController = function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var MyRidesController = exports.MyRidesController = function MyRidesController() {
-  _classCallCheck(this, MyRidesController);
+var MyRidesController = exports.MyRidesController = function () {
+    function MyRidesController(AuthService, $http, RideService, SignupService) {
+        var _this = this;
 
-  this.message = 'hello world - My Rides Controller';
-};
+        _classCallCheck(this, MyRidesController);
+
+        this.auth = AuthService;
+        this.$http = $http;
+        this.service = RideService;
+        this.SignupService = SignupService;
+        this.rides = [];
+        this.signups = [];
+        this.myRides = [];
+        this.message = 'hello world from MyRides Controller';
+        this.myView = "/MyRides";
+        this.service.clearCurrentRideId();
+        this.service.clearBackLink();
+
+        debugger;
+
+        // get all of the rides...
+        var requestRidesString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+
+        this.$http.get(requestRidesString).then(function (res) {
+            _this.rides = res.data;
+            _this.message = "Success - Got the rides";
+            var requestString = _this.SignupService.getRidersSignupString();
+
+            _this.$http.get(requestString).then(function (res) {
+                _this.signups = res.data;
+                _this.message = "Success - Got the rider signups";
+                _this.createMyRidesList();
+            }).catch(function (res) {
+                _this.message = "Error in getting rider signups.";
+            });
+        }).catch(function (res) {
+            _this.message = "Error in getting rides.";
+        });
+    }
+
+    _createClass(MyRidesController, [{
+        key: 'getAllRiderSignups',
+        value: function getAllRiderSignups() {
+            var _this2 = this;
+
+            var requestString = this.SignupService.getRidersSignupString();
+
+            this.$http.get(requestString).then(function (res) {
+                _this2.signups = res.data;
+                _this2.message = "Success - Got the rider signups";
+                _this2.createMyRidesList();
+            }).catch(function (res) {
+                _this2.message = "Error in getting rider signups.";
+            });
+        }
+    }, {
+        key: 'createMyRidesList',
+        value: function createMyRidesList() {
+            for (var i = 0; i < this.rides.length; i++) {
+                var currentId = this.rides[i].id;
+                if (this.isSignedUp(currentId)) this.myRides.push(this.rides[i]);
+            }
+        }
+    }, {
+        key: 'isSignedUp',
+        value: function isSignedUp(rideID) {
+            for (var i = 0; i < this.signups.length; i++) {
+                if (this.signups[i].rideID == rideID) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }, {
+        key: 'detailRide',
+        value: function detailRide(rideId) {
+            this.service.saveRideId(rideId);
+            this.service.routeToView("/RideDetails", this.myView);
+        }
+    }, {
+        key: 'editRide',
+        value: function editRide(rideId) {
+            this.service.saveRideId(rideId);
+            this.service.routeToView("/EditRide", this.myView);
+        }
+    }, {
+        key: 'deleteRide',
+        value: function deleteRide(rideId) {
+            this.service.saveRideId(rideId);
+            this.service.routeToView("/DeleteRide", this.myView);
+        }
+    }, {
+        key: 'createRide',
+        value: function createRide() {
+            this.service.routeToView("/CreateRide", this.myView);
+        }
+    }, {
+        key: 'canModifyRide',
+        value: function canModifyRide(rideId) {
+            return this.service.canModifyRide(rideId);
+        }
+    }, {
+        key: 'isInAdminMode',
+        value: function isInAdminMode() {
+            if (this.RideService.isAdminBackLink()) return true;
+        }
+    }, {
+        key: 'isInRideMode',
+        value: function isInRideMode() {
+            if (this.RideService.isRideBackLink()) return true;
+        }
+    }, {
+        key: 'isInMyRideMode',
+        value: function isInMyRideMode() {
+            if (this.RideService.isMyRideBackLink()) return true;
+        }
+    }, {
+        key: 'signOutRide',
+        value: function signOutRide(_rideId) {
+            var _this3 = this;
+
+            debugger;
+            var urlString = this.auth.getBaseSignupURL() + '/DeleteSignup';
+            this.$http({
+                method: 'DELETE',
+                url: urlString,
+                data: {
+                    requestingId: this.auth.getCurrentId(),
+                    authorization: this.auth.getToken(),
+                    riderId: this.auth.getCurrentId(),
+                    rideId: _rideId
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                } }).then(function (res) {
+                debugger;
+                _this3.message = "Deleted signup";
+                _this3.updateMyRidesList(_rideId);
+            }).catch(function (res) {
+                _this3.message = "Unable to Delete Signup Data at this time.";
+            });
+        }
+    }, {
+        key: 'updateMyRidesList',
+        value: function updateMyRidesList(rideId) {
+            // remove signup from the list
+
+            // update the signup list.
+            for (var i = 0; i < this.signups.length; i++) {
+                if (this.signups[i].rideID == rideId) {
+                    this.signups.splice(i, 1);
+                    break;
+                }
+            }
+
+            // update the myrides list
+            for (var j = 0; j < this.myRides.length; j++) {
+                if (this.myRides[j].id == rideId) {
+                    this.myRides.splice(j, 1);
+                    break;
+                }
+            }
+        }
+    }]);
+
+    return MyRidesController;
+}();
 
 /***/ }),
 /* 29 */
@@ -90734,7 +90943,6 @@ var ProfileController = exports.ProfileController = function () {
 
         // make the http get request
         this.$http.get(requestString).then(function (res) {
-            debuger;
             _this.username = res.data.userName;
             _this.lastname = res.data.lastName;
             _this.firstname = res.data.firstName;
@@ -90760,6 +90968,15 @@ var ProfileController = exports.ProfileController = function () {
             }).catch(function (res) {
                 _this2.message = "Unable to update profile at this time, try again later";
             });
+        }
+    }, {
+        key: 'isAdmin',
+        value: function isAdmin() {
+            debugger;
+            if (this.auth.isAdmin()) {
+                return true;
+            }
+            return false;
         }
     }]);
 
@@ -90839,34 +91056,122 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RideDetailsController = exports.RideDetailsController = function () {
-    function RideDetailsController(RideService, $http, AuthService) {
+    function RideDetailsController(RideService, SignupService, $http, AuthService) {
         var _this = this;
 
         _classCallCheck(this, RideDetailsController);
 
         this.message = 'hello world from Ride Details Controller';
-        this.service = RideService;
+        this.RideService = RideService;
         this.auth = AuthService;
         this.$http = $http;
+        this.SignupService = SignupService;
 
-        this.rideId = this.service.getCurrentRideId();
+        this.rideId = this.RideService.getCurrentRideId();
         this.ride = [];
+        this.signupId = -1;
+        this.signup = [];
+        this.buttonText = "Join the Ride";
+        this.attendees = [];
 
         // create the url string
-        var requestString = this.service.getRideRequest(this.rideId);
+        var requestString = this.RideService.getRideRequest(this.rideId);
 
         // make the http get request
         this.$http.get(requestString).then(function (res) {
             _this.ride = res.data;
+
+            // if we are running under the Ride mode we see if there is a signup for this ride.
+            if (_this.isInRideMode() || _this.isInMyRideMode()) {
+                var requestSignupString = _this.SignupService.getSignupString(_this.rideId);
+                _this.$http.get(requestSignupString).then(function (res) {
+                    _this.signup = res.data;
+                    _this.signupId = _this.signup.signupID;
+                    _this.buttonText = "Leave the Ride";
+                    _this.getAttendeeList(_this.rideId);
+                }).catch(function (res) {
+                    if (res.status != 404) _this.message = "Unable to Get Ride Data at this time.";
+                });
+            }
         }).catch(function (res) {
             _this.message = "Unable to Get Ride Data at this time.";
         });
     }
 
     _createClass(RideDetailsController, [{
+        key: "isInRideMode",
+        value: function isInRideMode() {
+            if (this.RideService.isRideBackLink()) return true;
+        }
+    }, {
+        key: "isInMyRideMode",
+        value: function isInMyRideMode() {
+            if (this.RideService.isMyRideBackLink()) return true;
+        }
+    }, {
+        key: "toggleSignUp",
+        value: function toggleSignUp() {
+            var _this2 = this;
+
+            if (!this.isInRideMode()) return;
+
+            if (this.buttonText == "Join the Ride") {
+                var request = this.SignupService.getCreateSignupRequest(this.rideId);
+                var urlString = this.auth.getBaseSignupURL() + '/CreateSignup';
+                this.$http.post(urlString, request).then(function (res) {
+                    _this2.signup = res.data;
+                    _this2.signupId = _this2.signup.signupID;
+                    _this2.buttonText = "Leave the Ride";
+                    _this2.getAttendeeList(_this2.rideId);
+                }).catch(function (res) {
+                    _this2.message = "Unable to create a ride at this time, try again later";
+                });
+            } else {
+                // create the delete request to leave the ride...
+
+                // create the url string
+                debugger;
+                var urlString = this.auth.getBaseSignupURL() + '/DeleteSignupById';
+                this.$http({
+                    method: 'DELETE',
+                    url: urlString,
+                    data: {
+                        requestingId: this.auth.getCurrentId(),
+                        authorization: this.auth.getToken(),
+                        signupId: this.signupId
+                    },
+                    headers: {
+                        'Content-type': 'application/json;charset=utf-8'
+                    } }).then(function (res) {
+                    _this2.buttonText = "Join the Ride";
+                    _this2.signupId = -1;
+                    _this2.getAttendeeList(_this2.rideId);
+                }).catch(function (res) {
+                    _this2.message = "Unable to Delete Signup Data at this time.";
+                });
+            }
+        }
+    }, {
         key: "goBackToParentView",
         value: function goBackToParentView() {
-            this.service.goBackToParentView();
+            this.RideService.goBackToParentView();
+        }
+    }, {
+        key: "getAttendeeList",
+        value: function getAttendeeList(rideId) {
+            var _this3 = this;
+
+            // tbd figure out how to do a query that will return a list of all the rider 
+            // full names that are signed up for the ride.
+            var requestString = this.SignupService.getRideAttendeeString(this.rideId);
+
+            // make the http get request
+            this.$http.get(requestString).then(function (res) {
+                debugger;
+                _this3.attendees = res.data;
+            }).catch(function (res) {
+                _this3.message = "Unable to Get Ride Attendee Data at this time.";
+            });
         }
     }]);
 
@@ -90972,8 +91277,9 @@ var RidesController = exports.RidesController = function () {
         this.service.clearBackLink();
 
         // get all of the rides...
-        var requestString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
-        this.$http.get(requestString).then(function (res) {
+        var requestRidesString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+
+        this.$http.get(requestRidesString).then(function (res) {
             _this.rides = res.data;
             _this.message = "Success - Got the rides";
         }).catch(function (res) {
@@ -91010,10 +91316,9 @@ var RidesController = exports.RidesController = function () {
             return this.service.canModifyRide(rideId);
         }
     }, {
-        key: 'signedUpForRide',
-        value: function signedUpForRide(rideId, mySignups) {
-            // loop thru signups and see if the ride id
-            // is in the list
+        key: 'isInAdminMode',
+        value: function isInAdminMode() {
+            if (this.RideService.isAdminBackLink()) return true;
         }
     }]);
 
@@ -91044,6 +91349,7 @@ var AuthService = exports.AuthService = function () {
         this.BASE_URL = "http://localhost:60944";
         this.BASE_RIDER_URL = this.BASE_URL + '/Riders';
         this.BASE_RIDES_URL = this.BASE_URL + '/Rides';
+        this.BASE_SIGNUPS_URL = this.BASE_URL + '/Signups';
         this.NAME_KEY = 'name';
         this.TOKEN_KEY = 'token';
         this.CURRENT_ID_KEY = 'currentId';
@@ -91060,6 +91366,11 @@ var AuthService = exports.AuthService = function () {
         key: 'getBaseRideURL',
         value: function getBaseRideURL() {
             return this.BASE_RIDES_URL;
+        }
+    }, {
+        key: 'getBaseSignupURL',
+        value: function getBaseSignupURL() {
+            return this.BASE_SIGNUPS_URL;
         }
     }, {
         key: 'getName',
@@ -91292,6 +91603,21 @@ var RideService = exports.RideService = function () {
             this.setCurrentRideId(ride);
         }
     }, {
+        key: 'isAdminBackLink',
+        value: function isAdminBackLink() {
+            if (this.getBackLink() == "/AdminRides") return true;else return false;
+        }
+    }, {
+        key: 'isRideBackLink',
+        value: function isRideBackLink() {
+            if (this.getBackLink() == "/Rides") return true;else return false;
+        }
+    }, {
+        key: 'isMyRideBackLink',
+        value: function isMyRideBackLink() {
+            if (this.getBackLink() == "/MyRides") return true;else return false;
+        }
+    }, {
         key: 'routeToView',
         value: function routeToView(newDest, backLink) {
             this.setBackLink(backLink);
@@ -91314,13 +91640,12 @@ var RideService = exports.RideService = function () {
     }, {
         key: 'getCreateRideRequest',
         value: function getCreateRideRequest(_rideName, _description, _startDate, _distance) {
-
             var requestData = {
                 riderId: this.auth.getCurrentId(),
                 authorization: this.auth.getToken(),
                 rideName: _rideName,
                 description: _description,
-                startDate: _startDate,
+                rideStart: _startDate,
                 distance: _distance
             };
             return requestData;
@@ -91335,7 +91660,7 @@ var RideService = exports.RideService = function () {
                 rideId: _rideId,
                 rideName: _rideName,
                 description: _description,
-                startDate: _startDate,
+                rideStart: _startDate,
                 distance: _distance
             };
             return requestData;
@@ -91450,6 +91775,74 @@ RiderService.$inject = ['AuthService', '$location'];
 
 /***/ }),
 /* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var SignupService = exports.SignupService = function () {
+    function SignupService(AuthService, $location) {
+        _classCallCheck(this, SignupService);
+
+        this.auth = AuthService;
+        this.$location = $location;
+    }
+
+    _createClass(SignupService, [{
+        key: 'getSignupString',
+        value: function getSignupString(rideId) {
+            var requestString = this.auth.getBaseSignupURL() + '/GetSignup?RequestingId=' + this.auth.getCurrentId() + '&RiderId=' + this.auth.getCurrentId() + '&RideId=' + rideId + '&Authorization=' + this.auth.getToken();
+
+            return requestString;
+        }
+    }, {
+        key: 'getRidersSignupString',
+        value: function getRidersSignupString() {
+            var requestString = this.auth.getBaseSignupURL() + '/GetRiderSignups?RequestingId=' + this.auth.getCurrentId() + '&RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+
+            return requestString;
+        }
+    }, {
+        key: 'getRideAttendeeString',
+        value: function getRideAttendeeString(rideId) {
+            var requestString = this.auth.getBaseSignupURL() + '/GetRideAttendees?RequestingId=' + this.auth.getCurrentId() + '&RideId=' + rideId + '&Authorization=' + this.auth.getToken();
+
+            return requestString;
+        }
+    }, {
+        key: 'getCreateSignupRequest',
+        value: function getCreateSignupRequest(_rideId) {
+            debugger;
+            var requestData = {
+                requestingId: this.auth.getCurrentId(),
+                riderId: this.auth.getCurrentId(),
+                authorization: this.auth.getToken(),
+                rideId: _rideId
+            };
+            return requestData;
+        }
+    }, {
+        key: 'goToView',
+        value: function goToView(newDest) {
+            this.$location.path([newDest]);
+        }
+    }]);
+
+    return SignupService;
+}();
+
+SignupService.$inject = ['AuthService', '$location'];
+
+/***/ }),
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(1);

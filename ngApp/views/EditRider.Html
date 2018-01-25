@@ -9,6 +9,7 @@
                 <form name="Form">    
                 <md-input-container class="md-block">
                 <label>First Name</label>
+                <md-tooltip>Enter your first name up to 30 characters</md-tooltip>
                 <input type="text" name="firstname" ng-model="controller.rider.firstName"  required="" md-maxlength="30"/>
                 <div ng-messages="Form.firstname.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your first name.</div>
@@ -18,6 +19,7 @@
     
                 <md-input-container class="md-block">
                 <label>Last Name</label>
+                <md-tooltip>Enter your last name up to 30 characters</md-tooltip>
                 <input type="text" name="lastname" ng-model="controller.rider.lastName"  required="" md-maxlength="30"/>
                 <div ng-messages="Form.lastname.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your last name.</div>
@@ -27,7 +29,11 @@
     
                 <md-input-container class="md-block">
                 <label>Email Address</label>
+                <!--
+                <md-icon md-svg-src="../img/icons/ic_email_24px.svg"></md-icon>
+                -->
                 <input type="email" name="emailaddress" ng-model="controller.rider.emailAddress" required="" />
+                <md-tooltip>Enter your email address- must be valid email address</md-tooltip>
                 <div ng-messages="Form.emailaddress.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your email address.</div>
                 </div>
@@ -35,24 +41,29 @@
     
                 <md-input-container class="md-block">
                 <label>Phone Number</label>
-                <input type="phone" name="phonenumber" ng-model="controller.rider.phoneNumber"  required="" />
+                <!--
+                <md-icon md-svg-src="../img/icons/ic_phone_24px.svg"></md-icon>
+                -->
+                <md-tooltip>Phone Number</md-tooltip>
+                <input type="phone" name="phonenumber" ng-model="controller.rider.phoneNumber" ng-pattern="/^[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/" required="" />
                 <div ng-messages="Form.phonenumber.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your phone number.</div>
+                    <div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
                 </div>
                 </md-input-container>
 
                 <md-input-container class="md-block">
                     <label>Role</label>
+                    <md-tooltip>Enter a role: Admin or User</md-tooltip>
                     <input type="text" name="role" ng-model="controller.rider.role"  required=""/>
                     <div ng-messages="Form.role.$error" role="alert" multiple="">
                         <div ng-message="required" class="my-message">Please enter a role.</div>
                     </div>
                 </md-input-container>
-                
                 <div>
-                <md-button ng-disabled="!Form.$valid" ng-click="controller.editRider()" class="md-raised md-primary">&nbsp Update &nbsp</md-button>
-                <md-button  ng-click="controller.goBackToParentView()" class="rider-button md-raised md-primary">&nbsp Back &nbsp</md-button>
-                <a ui-sref="AdminChangePassword" class="btn btn-link">Change Password</a>
+                    <md-button ng-disabled="!Form.$valid" ng-click="controller.editRider()" class="md-raised md-primary">&nbsp Update &nbsp</md-button>
+                    <md-button  ng-click="controller.goBackToParentView()" class="rider-button md-raised md-primary">&nbsp Back &nbsp</md-button>
+                    <a ui-sref="AdminChangePassword" class="btn btn-link">Change Password</a>
                 </div>
             </form>
             <p class="form-error-msg">{{controller.message}}</p>

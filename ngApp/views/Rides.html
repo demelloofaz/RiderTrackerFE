@@ -7,22 +7,14 @@
         <td ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
         <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
         <td ng-if="$even">{{ ride.rideName }}</td>
-
-        <td><md-button ng-if="true" ng-click="controller.joinRide(ride.id)" class="rider-button md-primary">&nbsp Join &nbsp</md-button></td>
-        <td><md-button ng-if="false" ng-click="controller.leaveRide(ride.id)" class="rider-button md-primary">&nbsp Leave &nbsp</md-button></td>
         <td><md-button ng-click="controller.detailRide(ride.id)" class="rider-button md-primary">&nbsp Details &nbsp</md-button></td>
         <td><md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.editRide(ride.id)" class="ride-button  md-primary">&nbsp Edit &nbsp</md-button></td>
         <td><md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.deleteRide(ride.id)" class="ride-button  md-primary">&nbsp Delete &nbsp</md-button></td>
         </tr>
     </table>
 </div>
-
 <!--
-<div class = "Rides-List" ng-repeat="ride in controller.rides" ng-cloak>
-    {{ride.startDate | date : 'MM/dd/yyyy @ h:mma'}} : {{ ride.rideName}}
-   <md-button ng-click="controller.detailRide(ride.id)" class="ride-button md-raised md-primary">&nbsp Detail &nbsp</md-button>
-   <md-button ng-if="canModifyRide(ride.creator)" ng-click="controller.editRide(ride.id)" class="ride-button md-raised md-primary">&nbsp Edit &nbsp</md-button>
-   <md-button ng-if="canModifyRide(ride.creator)" ng-click="controller.deleteRide(ride.id)" class="ride-button md-raised md-primary">&nbsp Delete &nbsp</md-button>
-</div>
+<a ng-if="!contoller.isInAdminMode()" ui-sref="MySignups" class="btn btn-link">My Signups</a>
 -->
+<a ui-sref="MyRides" class="btn btn-link">My Rides</a>
 <a ui-sref="HomeLoggedIn" class="btn btn-link">Back</a>

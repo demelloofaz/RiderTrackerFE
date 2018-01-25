@@ -27,6 +27,24 @@ export class RideService{
     saveRideId( ride){
         this.setCurrentRideId(ride);
     }
+    isAdminBackLink() {
+        if (this.getBackLink() == "/AdminRides")
+           return true;
+        else
+           return false;
+    }
+    isRideBackLink() {
+        if (this.getBackLink() == "/Rides")
+           return true;
+        else
+           return false;
+    }
+    isMyRideBackLink() {
+        if (this.getBackLink() == "/MyRides")
+           return true;
+        else
+           return false;
+    }
     routeToView( newDest, backLink){
         this.setBackLink(backLink);
         this.$location.path([newDest]);
@@ -49,13 +67,12 @@ export class RideService{
         return requestString;
     }
     getCreateRideRequest(_rideName, _description, _startDate, _distance) {
-
         var requestData = {
             riderId : this.auth.getCurrentId(),
             authorization: this.auth.getToken(),
             rideName :_rideName,
             description : _description,
-            startDate : _startDate,
+            rideStart : _startDate,
             distance : _distance
         }
         return requestData;
@@ -68,7 +85,7 @@ export class RideService{
             rideId : _rideId,
             rideName :_rideName,
             description : _description,
-            startDate : _startDate,
+            rideStart : _startDate,
             distance : _distance
         }
         return requestData;

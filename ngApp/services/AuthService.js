@@ -8,6 +8,7 @@ export class AuthService{
         this.BASE_URL = "http://localhost:60944";
         this.BASE_RIDER_URL = this.BASE_URL + '/Riders';
         this.BASE_RIDES_URL = this.BASE_URL + '/Rides';
+        this.BASE_SIGNUPS_URL = this.BASE_URL + '/Signups';
         this.NAME_KEY = 'name';
         this.TOKEN_KEY = 'token';
         this.CURRENT_ID_KEY = 'currentId';
@@ -20,6 +21,9 @@ export class AuthService{
     }
     getBaseRideURL() {
         return this.BASE_RIDES_URL;
+    }
+    getBaseSignupURL() {
+        return this.BASE_SIGNUPS_URL;
     }
     getName() {
         return localStorage.getItem(this.NAME_KEY);
