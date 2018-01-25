@@ -9,6 +9,7 @@
             <form name="Form">
               <md-input-container class="md-block">
                 <label>Ride Name</label>
+                <md-tooltip>Enter a ride name up to 30 characters</md-tooltip>
                 <input type="text" name="ridename" ng-model="controller.ride.rideName"  placeholder="Ride Name" required="" md-maxlength="30"/>
                 <div ng-messages="Form.ridename.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter a ride name.</div>
@@ -18,6 +19,7 @@
 
               <md-input-container class="md-block">
                 <label>Description</label>
+                <md-tooltip>Enter a ride description up to 80 characters</md-tooltip>
                 <input type="text" name="description" ng-model="controller.ride.description" placeholder="Ride Description - include location, terrain, ride type" required="" md-maxlength="80"/>
                 <div ng-messages="Form.description.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter a short description.</div>
@@ -26,25 +28,43 @@
               </md-input-container>
 
               <md-input-container class="md-block">
-                <label>Distance in Miles</label>
+                <label>Distance</label>
+                <md-tooltip>Enter ride distance in miles</md-tooltip>
                 <input type="number" name="distance" ng-model="controller.ride.distance"  required="" />
                 <div ng-messages="Form.emailaddress.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter the ride distance in miles</div>
                 </div>
               </md-input-container>
-
+              <!--
               <md-input-container class="md-block">
                 <label>Date/Time</label>
-                <input type="datetime" name="startdate" ng-model="controller.ride.startDate | date : 'MM/dd/yyyy @ h:mma'"  required="" />
+                <input type="datetime" name="startdate" ng-model="controller.ride.startDate | date : 'mm/dd/yyyy @ h:mma'"  required="" />
                 <div ng-messages="Form.startdate.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter a date and time for this ride.</div>
                 </div>
-                <div>
-                </md-input-container>
-                
+              </md-input-container>
+            -->
+              <md-input-container class="md-block">
+                  <label>Ride Date</label>
+                  <md-datepicker name="startdate" ng-model="controller.dateInput" md-placeholder="HH:mm" required=""
+                    md-min-date="controller.today" ></md-datepicker>
+                  <div ng-messages="Form.startdate.$error" role="alert" multiple="">
+                      <div ng-message="required" class="my-message">Please select a date this ride.</div>
+                  </div>
+              </md-input-container>
+              <md-input-container class="md-block">
+                  <label>Start Time</label>
+                  <input type="time" name="starttime" ng-model="controller.timeInput" placeholder="HH:mm:ss" required="" />
+                  <div ng-messages="Form.starttime.$error" role="alert" multiple="">
+                      <div ng-message="required" class="my-message">Please select a start time this ride.</div>
+                      <div ng-message="time" class="my-message">Enter a valid time</div>
+                  </div>
+              </md-input-container>
+            
+              <div>
                 <md-button ng-disabled="Form.$invalid && Form.$pristine" ng-click="controller.editRide()" class="md-raised md-primary">&nbsp Update Ride &nbsp</md-button>
                 <md-button  ng-click="controller.goBackToParentView()" class="ride-button md-raised md-primary">&nbsp Back &nbsp</md-button>
-                </div>
+              </div>
             </form>
             <p class="form-error-msg">{{controller.message}}</p>
           </md-card-content>

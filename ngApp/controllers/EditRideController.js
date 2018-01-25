@@ -6,6 +6,8 @@ export class EditRideController {
       this.$http = $http;
       this.rideId = this.service.getCurrentRideId();
       this.ride = [];
+      this.dateInput = "";
+      this.timeInput=null;
 
       // create the url string
       var requestString = this.service.getRideRequest(this.rideId);
@@ -14,12 +16,28 @@ export class EditRideController {
       this.$http.get(requestString)
       .then( (res) => {
           this.ride = res.data;
+          this.getTimeData();
       })
       .catch( (res) => {
           this.message = "Unable to Get Ride Data at this time.";
+          return;
       });
     }
 
+    getTimeData(){
+
+      this.timeInput = new Date(this.ride.startDate);
+      this.timeInput.setMilliseconds(0);
+      this.timeInput.setSeconds(0);
+      
+      //parse out the date string as the date picker needs a string
+      var day = this.timeInput.getDate();
+      var month = this.timeInput.getMonth() + 1;
+      var year = this.timeInput.getFullYear();
+      if (day < 10)
+        day = "0" + day;
+      this.dateInput = month +"/" + day + "/" + year;
+    }
     editRide() {
       // create the url string
       

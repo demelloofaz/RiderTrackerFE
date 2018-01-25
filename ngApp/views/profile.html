@@ -10,6 +10,7 @@
             <form name="Form">
               <md-input-container class="md-block">
                 <label>First Name</label>
+                <md-tooltip>Enter first name up to 30 characters</md-tooltip>
                 <input type="text" name="firstname" ng-model="controller.firstname"  required="" md-maxlength="30"/>
                 <div ng-messages="Form.firstname.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your first name.</div>
@@ -19,6 +20,7 @@
 
               <md-input-container class="md-block">
                 <label>Last Name</label>
+                <md-tooltip>Enter last name up to 30 characters</md-tooltip>
                 <input type="text" name="lastname" ng-model="controller.lastname"  required="" md-maxlength="30"/>
                 <div ng-messages="Form.lastname.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your last name.</div>
@@ -28,6 +30,7 @@
 
               <md-input-container class="md-block">
                 <label>Email Address</label>
+                <md-tooltip>Email address - must be a valid email address</md-tooltip>
                 <input type="email" name="emailaddress" ng-model="controller.emailaddress" required="" />
                 <div ng-messages="Form.emailaddress.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your email address.</div>
@@ -36,18 +39,21 @@
 
               <md-input-container class="md-block">
                 <label>Phone Number</label>
-                <input type="phone" name="phonenumber" ng-model="controller.phonenumber"  required="" />
+                <md-tooltip>Enter phone number (xxx) xxx-xxxx</md-tooltip>
+                <input type="phone" name="phonenumber" ng-model="controller.phonenumber" ng-pattern="/^[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/" required="" />
                 <div ng-messages="Form.phonenumber.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your phone number.</div>
+                    <div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
                 </div>
-                <div>
                 </md-input-container>
+                <div>
                     <md-button ng-disabled="Form.$invalid && Form.$pristine" ng-click="controller.updateProfile()" class="md-raised md-primary">&nbsp Update &nbsp</md-button>
-                    <a ui-sref="ChangePassword" class="btn btn-link">Change Password</a>
+                    <a ng-if="controller.isAdmin()" ui-sref="Admin" class="btn btn-link">Admin</a>
+                    <a ui-sref="ChangePassword" class="btn btn-link">Password</a>
                     <a ui-sref="Home" class="btn btn-link">Cancel</a>
                 </div>
             </form>
             <p class="form-error-msg">{{controller.message}}</p>
-          </md-card-content>
+          </md-card-content>      </md-content>
+
         </md-card>
-      </md-content>

@@ -9,7 +9,7 @@ export class ProfileController {
         this.userid = 0;
         this.emailaddress = '';
         this.phonenumber = '';
-
+        
         // create the url string
         var requestString = this.auth.getBaseRiderURL()  + 
             '/GetRider?RequestingId=' + 
@@ -22,7 +22,6 @@ export class ProfileController {
         // make the http get request
         this.$http.get(requestString)
         .then( (res) => {
-            debuger;
             this.username = res.data.userName;
             this.lastname = res.data.lastName;
             this.firstname = res.data.firstName;
@@ -49,4 +48,13 @@ export class ProfileController {
             this.message = "Unable to update profile at this time, try again later";
         });
       }
+
+      isAdmin(){
+        debugger;
+        if (this.auth.isAdmin()){
+          return true;
+        }
+        return false;
+
+   }
   }

@@ -28,6 +28,7 @@ import {NavController} from './controllers/NavController';
 import {AuthService} from './services/AuthService';
 import {RiderService} from './services/RiderService';
 import {RideService} from './services/RideService';
+import {SignupService} from './services/SignupService';
 
 
     angular.module('RiderTracker', 
@@ -39,6 +40,7 @@ import {RideService} from './services/RideService';
     .service('AuthService', AuthService)
     .service('RiderService',RiderService)
     .service('RideService',RideService)
+    .service('SignupService', SignupService)
     .config(routing);
 
     routing.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
@@ -94,7 +96,7 @@ import {RideService} from './services/RideService';
           })
           .state('MyRides', {
             url: '/MyRides',
-            templateUrl: '/ngApp/views/Myrides.html',
+            templateUrl: '/ngApp/views/MyRides.html',
             controller: MyRidesController,
             controllerAs: 'controller'
           })

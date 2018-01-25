@@ -10,6 +10,7 @@
             <form name="Form">
               <md-input-container class="md-block">
                 <label>Username</label>
+                <md-tooltip>Choose a user name up to 50 characters</md-tooltip>
                 <input type="text" name="username" ng-model="controller.username" required="" md-maxlength="50"/>
                 <div ng-messages="Form.username.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your username.</div>
@@ -19,6 +20,7 @@
 
             <md-input-container class="md-block">
             <label>First Name</label>
+            <md-tooltip>Enter your first name up to 30 characters</md-tooltip>
             <input type="text" name="firstname" ng-model="controller.firstname"  required="" md-maxlength="30"/>
             <div ng-messages="Form.firstname.$error" role="alert" multiple="">
                 <div ng-message="required" class="my-message">Please enter your first name.</div>
@@ -28,6 +30,7 @@
 
             <md-input-container class="md-block">
             <label>Last Name</label>
+            <md-tooltip>Enter your last name up to 30 characters</md-tooltip>
             <input type="text" name="lastname" ng-model="controller.lastname"  required="" md-maxlength="30"/>
             <div ng-messages="Form.lastname.$error" role="alert" multiple="">
                 <div ng-message="required" class="my-message">Please enter your last name.</div>
@@ -37,6 +40,7 @@
 
             <md-input-container class="md-block">
             <label>Email Address</label>
+            <md-tooltip>Enter a valid email address</md-tooltip>
             <input type="email" name="emailaddress" ng-model="controller.emailaddress" required="" />
             <div ng-messages="Form.emailaddress.$error" role="alert" multiple="">
                 <div ng-message="required" class="my-message">Please enter your email address.</div>
@@ -45,14 +49,17 @@
 
             <md-input-container class="md-block">
             <label>Phone Number</label>
-            <input type="phone" name="phonenumber" ng-model="controller.phonenumber"  required="" />
+            <md-tooltip>Enter Phone Number (xxx) xxx-xxxx</md-tooltip>
+            <input type="phone" name="phonenumber" ng-model="controller.phonenumber" ng-pattern="/^[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/" required="" />
             <div ng-messages="Form.phonenumber.$error" role="alert" multiple="">
                 <div ng-message="required" class="my-message">Please enter your phone number.</div>
+                <div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
             </div>
             </md-input-container>
 
             <md-input-container class="md-block">
             <label>Password</label>
+            <md-tooltip>Choose a password up to 50 characters</md-tooltip>
             <input type="password" name="password" ng-model="controller.password"  required="" md-maxlength="50"/>
             <div ng-messages="Form.password.$error" role="alert" multiple="">
                 <div ng-message="required" class="my-message">Please enter your password.</div>
@@ -62,13 +69,13 @@
 
             <md-input-container class="md-block">
                 <label>Confirming Password</label>
+                <md-tooltip>Reenter password from above</md-tooltip>
                 <input type="password" name="confirmingpassword" ng-model="controller.confirmingpassword"  required="" md-maxlength="50"/>
                 <div ng-messages="Form.confirmingpassword.$error" role="alert" multiple="">
                     <div ng-message="required" class="my-message">Please enter your password.</div>
                     <div ng-message="md-maxlength" class="my-message">Password is too long.</div>
                 </div>
             </md-input-container>
-
             <div>
             <md-button ng-disabled="!Form.$valid" ng-click="controller.addRider()" class="md-raised md-primary">&nbsp Add Rider &nbsp</md-button>
             <md-button  ng-click="controller.goBackToParentView()" class="rider-button md-raised md-primary">&nbsp Back &nbsp</md-button>

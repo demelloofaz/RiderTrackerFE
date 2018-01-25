@@ -10,8 +10,9 @@ export class RidesController {
       this.service.clearBackLink();
 
       // get all of the rides...
-      var requestString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
-      this.$http.get(requestString)
+      var requestRidesString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+      
+      this.$http.get(requestRidesString)
         .then(res => {  
             this.rides = res.data;
             this.message = "Success - Got the rides"
@@ -38,9 +39,8 @@ export class RidesController {
     canModifyRide(rideId) {
         return this.service.canModifyRide(rideId);
     }
-    signedUpForRide(rideId, mySignups){
-        // loop thru signups and see if the ride id
-        // is in the list
-    }
-
+    isInAdminMode(){
+        if (this.RideService.isAdminBackLink())
+        return true;
+      }
   }
