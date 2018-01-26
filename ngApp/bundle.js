@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 40);
+/******/ 	return __webpack_require__(__webpack_require__.s = 44);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -105,15 +105,15 @@ var _angularBootstrapNpm = __webpack_require__(6);
 
 var _angularBootstrapNpm2 = _interopRequireDefault(_angularBootstrapNpm);
 
-var _HomeController = __webpack_require__(25);
+var _HomeController = __webpack_require__(28);
 
-var _HomeLoggedInController = __webpack_require__(26);
+var _HomeLoggedInController = __webpack_require__(29);
 
-var _LoginController = __webpack_require__(27);
+var _LoginController = __webpack_require__(30);
 
-var _RegisterController = __webpack_require__(31);
+var _RegisterController = __webpack_require__(34);
 
-var _ProfileController = __webpack_require__(30);
+var _ProfileController = __webpack_require__(33);
 
 var _ChangePassword = __webpack_require__(18);
 
@@ -123,9 +123,9 @@ var _AdminController = __webpack_require__(16);
 
 var _AdminRidesController = __webpack_require__(17);
 
-var _RidesController = __webpack_require__(35);
+var _RidesController = __webpack_require__(38);
 
-var _MyRidesController = __webpack_require__(28);
+var _MyRidesController = __webpack_require__(31);
 
 var _CreateRideController = __webpack_require__(19);
 
@@ -133,7 +133,7 @@ var _EditRideController = __webpack_require__(23);
 
 var _DeleteRideController = __webpack_require__(21);
 
-var _RideDetailsController = __webpack_require__(32);
+var _RideDetailsController = __webpack_require__(35);
 
 var _CreateRiderController = __webpack_require__(20);
 
@@ -141,23 +141,31 @@ var _EditRiderController = __webpack_require__(24);
 
 var _DeleteRiderController = __webpack_require__(22);
 
-var _RiderDetailsController = __webpack_require__(34);
+var _RiderDetailsController = __webpack_require__(37);
 
-var _RideSignupController = __webpack_require__(33);
+var _RideSignupController = __webpack_require__(36);
 
-var _NavController = __webpack_require__(29);
+var _FollowingController = __webpack_require__(27);
 
-var _AuthService = __webpack_require__(36);
+var _FollowerController = __webpack_require__(26);
 
-var _RiderService = __webpack_require__(38);
+var _FollowRequestController = __webpack_require__(25);
 
-var _RideService = __webpack_require__(37);
+var _NavController = __webpack_require__(32);
 
-var _SignupService = __webpack_require__(39);
+var _AuthService = __webpack_require__(39);
+
+var _RiderService = __webpack_require__(42);
+
+var _RideService = __webpack_require__(41);
+
+var _SignupService = __webpack_require__(43);
+
+var _FollowService = __webpack_require__(40);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_angular2.default.module('RiderTracker', [_angularUiRouter2.default, _angularResource2.default, _angularBootstrapNpm2.default, _angularMaterial2.default, _angularMessages2.default]).service('AuthService', _AuthService.AuthService).service('RiderService', _RiderService.RiderService).service('RideService', _RideService.RideService).service('SignupService', _SignupService.SignupService).config(routing);
+_angular2.default.module('RiderTracker', [_angularUiRouter2.default, _angularResource2.default, _angularBootstrapNpm2.default, _angularMaterial2.default, _angularMessages2.default]).service('AuthService', _AuthService.AuthService).service('RiderService', _RiderService.RiderService).service('RideService', _RideService.RideService).service('SignupService', _SignupService.SignupService).service('FollowService', _FollowService.FollowService).config(routing);
 
 routing.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
 function routing($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -260,6 +268,21 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     url: '/AdminChangePassword',
     templateUrl: '/ngApp/views/AdminChangePassword.html',
     controller: _AdminChangePassword.AdminChangePasswordController,
+    controllerAs: 'controller'
+  }).state('Following', {
+    url: '/Following',
+    templateUrl: '/ngApp/views/Following.html',
+    controller: _FollowingController.FollowingController,
+    controllerAs: 'controller'
+  }).state('Follower', {
+    url: '/Follower',
+    templateUrl: '/ngApp/views/Follower.html',
+    controller: _FollowerController.FollowerController,
+    controllerAs: 'controller'
+  }).state('FollowRequest', {
+    url: '/FollowRequest',
+    templateUrl: '/ngApp/views/FollowRequest.html',
+    controller: _FollowRequestController.FollowRequestController,
     controllerAs: 'controller'
   }).state('notFound', {
     url: '/notFound',
@@ -90593,6 +90616,81 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var FollowRequestController = exports.FollowRequestController = function FollowRequestController(FollowService, RiderService, $http, AuthService, $location) {
+  _classCallCheck(this, FollowRequestController);
+
+  this.message = 'Hello from Follow Request';
+  this.RiderService;
+  this.service = FollowService;
+  this.$http = $http;
+  this.$location = $location;
+  this.auth = AuthService;
+  this.Following = [];
+  this.Unfollowed = [];
+  this.Riders = [];
+};
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FollowerController = exports.FollowerController = function FollowerController(FollowService, $http, AuthService, $location) {
+  _classCallCheck(this, FollowerController);
+
+  this.message = 'Hello from Follower';
+  this.service = FollowService;
+  this.$http = $http;
+  this.$location = $location;
+  this.auth = AuthService;
+  this.followers = [];
+};
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FollowingController = exports.FollowingController = function FollowingController(FollowService, $http, AuthService, $location) {
+  _classCallCheck(this, FollowingController);
+
+  this.message = 'Hello from Following';
+  this.service = FollowService;
+  this.$http = $http;
+  this.$location = $location;
+  this.auth = AuthService;
+  this.following = [];
+};
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var HomeController = exports.HomeController = function HomeController(AuthService, $location) {
   _classCallCheck(this, HomeController);
 
@@ -90604,7 +90702,7 @@ var HomeController = exports.HomeController = function HomeController(AuthServic
 };
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90623,7 +90721,7 @@ var HomeLoggedInController = exports.HomeLoggedInController = function HomeLogge
 };
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90667,7 +90765,7 @@ var LoginController = exports.LoginController = function () {
 }();
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90850,7 +90948,7 @@ var MyRidesController = exports.MyRidesController = function () {
 }();
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90909,7 +91007,7 @@ var NavController = exports.NavController = function () {
 }();
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90984,7 +91082,7 @@ var ProfileController = exports.ProfileController = function () {
 }();
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91041,7 +91139,7 @@ var RegisterController = exports.RegisterController = function () {
 }();
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91179,7 +91277,7 @@ var RideDetailsController = exports.RideDetailsController = function () {
 }();
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91198,7 +91296,7 @@ var RideSignupController = exports.RideSignupController = function RideSignupCon
 };
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91247,7 +91345,7 @@ var RiderDetailsController = exports.RiderDetailsController = function () {
 }();
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91326,7 +91424,7 @@ var RidesController = exports.RidesController = function () {
 }();
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91543,7 +91641,29 @@ var AuthService = exports.AuthService = function () {
 AuthService.$inject = ['$http', '$location'];
 
 /***/ }),
-/* 37 */
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FollowService = exports.FollowService = function FollowService(AuthService, $location) {
+    _classCallCheck(this, FollowService);
+
+    this.auth = AuthService;
+    this.$location = $location;
+};
+
+FollowService.$inject = ['AuthService', '$location'];
+
+/***/ }),
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91680,7 +91800,7 @@ var RideService = exports.RideService = function () {
 RideService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91774,7 +91894,7 @@ var RiderService = exports.RiderService = function () {
 RiderService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91842,7 +91962,7 @@ var SignupService = exports.SignupService = function () {
 SignupService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(1);

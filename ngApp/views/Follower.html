@@ -1,0 +1,17 @@
+<h2>Who is/was following me?</h2>
+<table class="following-table">
+    <tr>
+        <th class="follower-th">Full Name</th>
+        <th class="follower-th">User Name</th>
+    </tr>
+    <tr ng-repeat="f in controller.following">
+    <td class="follower-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.fullName}}</td>
+    <td class="follower-td" ng-if="$even">{{ f.fullName}}</td>
+    <td class="follower-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.userName }}</td>
+    <td class="follower-td" ng-if="$even">{{ f.username }}</td>
+    <td class="follower-td"><md-button ng-click="controller.changeFollowState(f.followId)" class="rider-button md-primary md-raised">&nbsp Change Status &nbsp</md-button></td>
+    </tr>
+</table>
+<br>
+<a ui-sref="Following" class="btn btn-link"><md-button class="md-primary md-raised">Who am I following</md-button></a>
+<a ui-sref="HomeLoggedIn" class="btn btn-link"><md-button>Back</md-button></a>

@@ -12,12 +12,24 @@
             <p>{{controller.ride.description}}</p>
             <br>
             <h5>Attendees</h5>
-            <ul>
-                <li ng-repeat="a in controller.attendees">Rider: {{a.riderID}}</li>
-            </ul>
+            <div ng-cloak>
+            <table class="Attendee-table">
+                <tr>
+                    <th class="Attendee-th">Rider</th>
+                    <th class="Attendee-th">Username</th>
+                </tr>
+
+                <tr ng-repeat="a in controller.attendees">
+                    <td ng-if="$odd"  class="Attendee-td" style="background-color:#f1f1f1">{{ a.fullName }}</td>
+                    <td ng-if="$even" class="Attendee-td">{{ a.fullName }}</td>
+                    <td ng-if="$odd"  class="Attendee-td" style="background-color:#f1f1f1">{{ a.userName }}</td>
+                    <td ng-if="$even" class="Attendee-td">{{ a.userName }}</td>
+                </tr>
+            </table>
+            </div>
             <br>
             <md-button ng-show="controller.isInRideMode()" ng-click="controller.toggleSignUp()" class="ride-button md-raised md-primary">&nbsp {{controller.buttonText}} &nbsp</md-button> 
-            <md-button ng-click="controller.goBackToParentView()" class="ride-button  md-primary">&nbsp Back &nbsp</md-button>
+            <md-button ng-click="controller.goBackToParentView()">&nbsp Back &nbsp</md-button>
         </md-card-content>
     </md-card>
 </md-content>
