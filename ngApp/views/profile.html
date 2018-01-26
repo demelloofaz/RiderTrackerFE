@@ -48,9 +48,9 @@
                 </md-input-container>
                 <div>
                     <md-button ng-disabled="Form.$invalid && Form.$pristine" ng-click="controller.updateProfile()" class="md-raised md-primary">&nbsp Update &nbsp</md-button>
-                    <a ng-if="controller.isAdmin()" ui-sref="Admin" class="btn btn-link">Admin</a>
-                    <a ui-sref="ChangePassword" class="btn btn-link">Password</a>
-                    <a ui-sref="Home" class="btn btn-link">Cancel</a>
+                    <a ng-if="controller.isAdmin()" ui-sref="Admin" class="btn btn-link"><md-button class="md-primary md-raised">Admin</md-button></a>
+                    <a ui-sref="ChangePassword" class="btn btn-link"><md-button class="md-primary md-raised">Password</md-button></a>
+                    <a ui-sref="Home" class="btn btn-link"><md-button>Back</md-button></a>
                 </div>
             </form>
             <p class="form-error-msg">{{controller.message}}</p>

@@ -24,11 +24,15 @@ import {EditRiderController} from './controllers/EditRiderController';
 import {DeleteRiderController} from './controllers/DeleteRiderController';
 import {RiderDetailsController} from './controllers/RiderDetailsController';
 import {RideSignupController} from './controllers/RideSignupController';
+import {FollowingController} from './controllers/FollowingController';
+import {FollowerController} from './controllers/FollowerController';
+import {FollowRequestController} from './controllers/FollowRequestController';
 import {NavController} from './controllers/NavController';
 import {AuthService} from './services/AuthService';
 import {RiderService} from './services/RiderService';
 import {RideService} from './services/RideService';
 import {SignupService} from './services/SignupService';
+import {FollowService} from './services/FollowService';
 
 
     angular.module('RiderTracker', 
@@ -41,6 +45,7 @@ import {SignupService} from './services/SignupService';
     .service('RiderService',RiderService)
     .service('RideService',RideService)
     .service('SignupService', SignupService)
+    .service('FollowService', FollowService)
     .config(routing);
 
     routing.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
@@ -164,6 +169,24 @@ import {SignupService} from './services/SignupService';
             url: '/AdminChangePassword',
             templateUrl: '/ngApp/views/AdminChangePassword.html',
             controller: AdminChangePasswordController,
+            controllerAs: 'controller'
+          })
+          .state('Following', {
+            url: '/Following',
+            templateUrl: '/ngApp/views/Following.html',
+            controller: FollowingController,
+            controllerAs: 'controller'
+          })
+          .state('Follower', {
+            url: '/Follower',
+            templateUrl: '/ngApp/views/Follower.html',
+            controller: FollowerController,
+            controllerAs: 'controller'
+          })
+          .state('FollowRequest', {
+            url: '/FollowRequest',
+            templateUrl: '/ngApp/views/FollowRequest.html',
+            controller: FollowRequestController,
             controllerAs: 'controller'
           })
           .state('notFound', {

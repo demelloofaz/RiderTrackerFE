@@ -45,3 +45,53 @@
  .vrepeatContainer md-virtual-repeat-container {
     border: solid 1px grey; 
  }	  
+
+ .Attendee-th, .Attendee-td {
+  border: 1px solid black;
+  text-align:center; 
+  vertical-align:middle;
+}
+
+.Attendee-table {
+  width: 80%;
+  align-content : center;
+  border: 1px solid black;
+  text-align:center; 
+  vertical-align:middle;
+}
+
+.ride-td {
+  text-align:left; 
+  vertical-align:middle;
+}
+
+.ride-table {
+  width: 100%;
+  align-content : left;
+  text-align:left; 
+  vertical-align:middle;
+}
+
+.following-td {
+  text-align:left; 
+  vertical-align:middle;
+}
+
+.following-table {
+  width: 80%;
+  align-content : left;
+  text-align:left; 
+  vertical-align:middle;
+}
+
+.follower-td {
+  text-align:left; 
+  vertical-align:middle;
+}
+
+.follower-table {
+  width: 80%;
+  align-content : left;
+  text-align:left; 
+  vertical-align:middle;
+}

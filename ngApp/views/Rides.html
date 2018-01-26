@@ -1,20 +1,24 @@
 <h2>List of Available Rides</h2>
 <md-button  ng-click="controller.createRide()" class="ride-button md-raised md-primary">&nbsp Add Ride &nbsp</md-button>
 <div>
-    <table>
+    <table class="ride-table">
+        <tr>
+            <th class="ride-th">Date/Time</th>
+            <th class="ride-th">Ride Name</th>
+        </tr>
         <tr ng-repeat="ride in controller.rides">
-        <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
-        <td ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
-        <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
-        <td ng-if="$even">{{ ride.rideName }}</td>
-        <td><md-button ng-click="controller.detailRide(ride.id)" class="rider-button md-primary">&nbsp Details &nbsp</md-button></td>
-        <td><md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.editRide(ride.id)" class="ride-button  md-primary">&nbsp Edit &nbsp</md-button></td>
-        <td><md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.deleteRide(ride.id)" class="ride-button  md-primary">&nbsp Delete &nbsp</md-button></td>
+        <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
+        <td class="ride-td" ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
+        <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
+        <td class="ride-td" ng-if="$even">{{ ride.rideName }}</td>
+        <td class="ride-td"><md-button ng-click="controller.detailRide(ride.id)" class="rider-button md-primary md-raised">&nbsp Details &nbsp</md-button></td>
+        <td class="ride-td"><md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.editRide(ride.id)" class="ride-button  md-primary md-raised">&nbsp Edit &nbsp</md-button></td>
+        <td class="ride-td"><md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.deleteRide(ride.id)" class="ride-button  md-primary md-raised">&nbsp Delete &nbsp</md-button></td>
         </tr>
     </table>
 </div>
 <!--
 <a ng-if="!contoller.isInAdminMode()" ui-sref="MySignups" class="btn btn-link">My Signups</a>
 -->
-<a ui-sref="MyRides" class="btn btn-link">My Rides</a>
-<a ui-sref="HomeLoggedIn" class="btn btn-link">Back</a>
+<a ui-sref="MyRides" class="btn btn-link"><md-button class="md-primary md-raised">My Rides</md-button></a>
+<a ui-sref="HomeLoggedIn" class="btn btn-link"><md-button>Back</md-button></a>
