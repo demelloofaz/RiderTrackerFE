@@ -1,18 +1,17 @@
-<h2>Create Follow Requests</h2>
 <p>
-    Select a rider from the table to follow:
+    Select riders from the table to follow:
 </p>
-<table class="following-table">
+<table ng-if="controller.unfollowed.length > 0" class="following-table">
         <tr>
             <th class="following-th">Full Name</th>
             <th class="following-th">User Name</th>
         </tr>
-        <tr ng-repeat="f in controller.following">
-        <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.fullName}}</td>
-        <td class="following-td" ng-if="$even">{{ f.fullName}}</td>
+        <tr ng-repeat="f in controller.unfollowed">
+        <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.fullName }}</td>
+        <td class="following-td" ng-if="$even">{{ f.fullName }}</td>
         <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.userName }}</td>
-        <td class="following-td" ng-if="$even">{{ f.username }}</td>
-        <td class="following-td"><md-button ng-click="controller.deleteFollow(f.followId)" class="rider-button md-primary md-raised">&nbsp Follow &nbsp</md-button></td>
+        <td class="following-td" ng-if="$even">{{ f.userName }}</td>
+        <td class="following-td"><md-button ng-click="controller.requestToFollow(f.riderId)" class="rider-button md-primary md-raised">&nbsp Request To Follow &nbsp</md-button></td>
         </tr>
     </table>
 <br>

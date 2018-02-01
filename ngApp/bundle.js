@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 44);
+/******/ 	return __webpack_require__(__webpack_require__.s = 45);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -109,11 +109,11 @@ var _HomeController = __webpack_require__(28);
 
 var _HomeLoggedInController = __webpack_require__(29);
 
-var _LoginController = __webpack_require__(30);
+var _LoginController = __webpack_require__(31);
 
-var _RegisterController = __webpack_require__(34);
+var _RegisterController = __webpack_require__(35);
 
-var _ProfileController = __webpack_require__(33);
+var _ProfileController = __webpack_require__(34);
 
 var _ChangePassword = __webpack_require__(18);
 
@@ -123,9 +123,9 @@ var _AdminController = __webpack_require__(16);
 
 var _AdminRidesController = __webpack_require__(17);
 
-var _RidesController = __webpack_require__(38);
+var _RidesController = __webpack_require__(39);
 
-var _MyRidesController = __webpack_require__(31);
+var _MyRidesController = __webpack_require__(32);
 
 var _CreateRideController = __webpack_require__(19);
 
@@ -133,7 +133,7 @@ var _EditRideController = __webpack_require__(23);
 
 var _DeleteRideController = __webpack_require__(21);
 
-var _RideDetailsController = __webpack_require__(35);
+var _RideDetailsController = __webpack_require__(36);
 
 var _CreateRiderController = __webpack_require__(20);
 
@@ -141,9 +141,9 @@ var _EditRiderController = __webpack_require__(24);
 
 var _DeleteRiderController = __webpack_require__(22);
 
-var _RiderDetailsController = __webpack_require__(37);
+var _RiderDetailsController = __webpack_require__(38);
 
-var _RideSignupController = __webpack_require__(36);
+var _RideSignupController = __webpack_require__(37);
 
 var _FollowingController = __webpack_require__(27);
 
@@ -151,17 +151,19 @@ var _FollowerController = __webpack_require__(26);
 
 var _FollowRequestController = __webpack_require__(25);
 
-var _NavController = __webpack_require__(32);
+var _LocateRiderController = __webpack_require__(30);
 
-var _AuthService = __webpack_require__(39);
+var _NavController = __webpack_require__(33);
 
-var _RiderService = __webpack_require__(42);
+var _AuthService = __webpack_require__(40);
 
-var _RideService = __webpack_require__(41);
+var _RiderService = __webpack_require__(43);
 
-var _SignupService = __webpack_require__(43);
+var _RideService = __webpack_require__(42);
 
-var _FollowService = __webpack_require__(40);
+var _SignupService = __webpack_require__(44);
+
+var _FollowService = __webpack_require__(41);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -283,6 +285,11 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     url: '/FollowRequest',
     templateUrl: '/ngApp/views/FollowRequest.html',
     controller: _FollowRequestController.FollowRequestController,
+    controllerAs: 'controller'
+  }).state('LocateRider', {
+    url: '/LocateRider',
+    templateUrl: '/ngApp/views/LocateRider.html',
+    controller: _LocateRiderController.LocateRiderController,
     controllerAs: 'controller'
   }).state('notFound', {
     url: '/notFound',
@@ -90614,21 +90621,94 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FollowRequestController = exports.FollowRequestController = function FollowRequestController(FollowService, RiderService, $http, AuthService, $location) {
-  _classCallCheck(this, FollowRequestController);
+var FollowRequestController = exports.FollowRequestController = function () {
+  function FollowRequestController(FollowService, RiderService, $http, AuthService, $location) {
+    var _this = this;
 
-  this.message = 'Hello from Follow Request';
-  this.RiderService;
-  this.service = FollowService;
-  this.$http = $http;
-  this.$location = $location;
-  this.auth = AuthService;
-  this.Following = [];
-  this.Unfollowed = [];
-  this.Riders = [];
-};
+    _classCallCheck(this, FollowRequestController);
+
+    this.message = 'Hello from Follow Request';
+    this.RiderService = RiderService;
+    this.FollowService = FollowService;
+    this.$http = $http;
+    this.$location = $location;
+    this.auth = AuthService;
+    this.followingIds = [];
+    this.unfollowed = [];
+    this.riderInfo = [];
+    this.FollowService.clearCurrentFollowerId();
+    this.FollowService.clearCurrentFollowingId();
+
+    var ridersRequestString = this.RiderService.getAllRidersInfoRequestString();
+    // Needto get all the riders.
+    this.$http.get(ridersRequestString).then(function (res) {
+      _this.riderInfo = res.data;
+      _this.message = "Success - Got the rider info";
+      var followRequestString = _this.FollowService.getMyFollowingsRequestString();
+
+      _this.$http.get(followRequestString).then(function (res) {
+        _this.followingIds = res.data;
+        _this.message = "Success - Got my followings";
+        _this.createUnfollowedList();
+      }).catch(function (res) {
+        _this.message = "Error in getting my followings";
+      });
+    }).catch(function (res) {
+      _this.message = "Error in getting rider info.";
+    });
+  }
+
+  _createClass(FollowRequestController, [{
+    key: "createUnfollowedList",
+    value: function createUnfollowedList() {
+      for (var i = 0; i < this.riderInfo.length; i++) {
+        var currentId = this.riderInfo[i].riderId;
+        if (currentId != this.auth.getCurrentId() && currentId != 1) {
+          if (!this.alreadyFollowing(currentId)) this.unfollowed.push(this.riderInfo[i]);
+        }
+      }
+    }
+  }, {
+    key: "alreadyFollowing",
+    value: function alreadyFollowing(riderID) {
+      for (var i = 0; i < this.followingIds.length; i++) {
+        if (this.followingIds[i].followingID == riderID) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }, {
+    key: "requestToFollow",
+    value: function requestToFollow(riderId) {
+      var _this2 = this;
+
+      debugger;
+      var request = this.FollowService.createFollowRequest(riderId);
+      this.$http.post(this.auth.getBaseFollowURL() + '/CreateFollow', request).then(function (res) {
+        debugger;
+        var newFollow = res.data;
+        _this2.updateFollowingData(newFollow);
+      }).catch(function (res) {
+        _this2.message = "Unable to follow at this time, try again later";
+      });
+    }
+  }, {
+    key: "updateFollowingData",
+    value: function updateFollowingData(newFollow) {
+      // need to add the rider id to the following list
+      this.followingIds.push(newFollow);
+      this.unfollowed = [];
+      this.createUnfollowedList();
+    }
+  }]);
+
+  return FollowRequestController;
+}();
 
 /***/ }),
 /* 26 */
@@ -90641,18 +90721,109 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FollowerController = exports.FollowerController = function FollowerController(FollowService, $http, AuthService, $location) {
-  _classCallCheck(this, FollowerController);
+var FollowerController = exports.FollowerController = function () {
+  function FollowerController(FollowService, RiderService, $http, AuthService, $location) {
+    var _this = this;
 
-  this.message = 'Hello from Follower';
-  this.service = FollowService;
-  this.$http = $http;
-  this.$location = $location;
-  this.auth = AuthService;
-  this.followers = [];
-};
+    _classCallCheck(this, FollowerController);
+
+    this.message = 'Hello from Follower';
+    this.FollowService = FollowService;
+    this.RiderService = RiderService;
+    this.$http = $http;
+    this.$location = $location;
+    this.auth = AuthService;
+    this.riderInfo = [];
+    this.followerIds = [];
+    this.followers = [];
+    this.FollowService.clearCurrentFollowerId();
+    this.FollowService.clearCurrentFollowingId();
+
+    var ridersRequestString = this.RiderService.getAllRidersInfoRequestString();
+
+    debugger;
+
+    // Needto get all the riders.
+    this.$http.get(ridersRequestString).then(function (res) {
+      _this.riderInfo = res.data;
+      _this.message = "Success - Got the rider info";
+      var followRequestString = _this.FollowService.getMyFollowersRequestString();
+
+      _this.$http.get(followRequestString).then(function (res) {
+        _this.followerIds = res.data;
+        _this.message = "Success - Got my followers";
+        _this.createMyFollowerList();
+      }).catch(function (res) {
+        _this.message = "Error in getting my followers";
+      });
+    }).catch(function (res) {
+      _this.message = "Error in getting rider info.";
+    });
+  }
+
+  _createClass(FollowerController, [{
+    key: "createMyFollowerList",
+    value: function createMyFollowerList() {
+      this.followers = [];
+      for (var i = 0; i < this.riderInfo.length; i++) {
+        var currentId = this.riderInfo[i].riderId;
+        if (this.isAFollower(currentId)) this.followers.push(this.riderInfo[i]);
+      }
+    }
+  }, {
+    key: "isAFollower",
+    value: function isAFollower(riderID) {
+      for (var i = 0; i < this.followerIds.length; i++) {
+        if (this.followerIds[i].followerID == riderID) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }, {
+    key: "removeFollower",
+    value: function removeFollower(riderId) {
+      var _this2 = this;
+
+      var targetId = 0;
+      var targetLoc = -1;
+      // find the target follow and remove it from the followerIds list
+      for (var i = 0; i < this.followerIds.length; i++) {
+        if (this.followerIds[i].followerID == riderId) {
+          targetId = this.followerIds[i].followID;
+          targetLoc = i;
+          break;
+        }
+      }
+      // then send a request to remove it from the database
+      if (targetId == 0) return;
+      var requestString = this.FollowService.getDeleteFollowUrlString();
+      // do the delete request...
+      this.$http({
+        method: 'DELETE',
+        url: requestString,
+        data: {
+          requestingId: this.auth.getCurrentId(),
+          authorization: this.auth.getToken(),
+          followId: targetId
+        },
+        headers: {
+          'Content-type': 'application/json;charset=utf-8'
+        } }).then(function (res) {
+        _this2.followerIds.splice(targetLoc, 1);
+        _this2.createMyFollowerList();
+      }).catch(function (res) {
+        _this2.message = "Unable to Delete Ride Data at this time.";
+      });
+    }
+  }]);
+
+  return FollowerController;
+}();
 
 /***/ }),
 /* 27 */
@@ -90665,18 +90836,118 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FollowingController = exports.FollowingController = function FollowingController(FollowService, $http, AuthService, $location) {
-  _classCallCheck(this, FollowingController);
+var FollowingController = exports.FollowingController = function () {
+  function FollowingController(FollowService, RiderService, $http, AuthService, $location) {
+    var _this = this;
 
-  this.message = 'Hello from Following';
-  this.service = FollowService;
-  this.$http = $http;
-  this.$location = $location;
-  this.auth = AuthService;
-  this.following = [];
-};
+    _classCallCheck(this, FollowingController);
+
+    this.message = 'Hello from Following';
+    this.FollowService = FollowService;
+    this.RiderService = RiderService;
+    this.$http = $http;
+    this.$location = $location;
+    this.auth = AuthService;
+    this.riderInfo = [];
+    this.followingIds = [];
+    this.followings = [];
+    this.FollowService.clearCurrentFollowerId();
+    this.FollowService.clearCurrentFollowingId();
+    debugger;
+    var ridersRequestString = this.RiderService.getAllRidersInfoRequestString();
+    // Needto get all the riders.
+    this.$http.get(ridersRequestString).then(function (res) {
+      _this.riderInfo = res.data;
+      _this.message = "Success - Got the rider info";
+      var followRequestString = _this.FollowService.getMyFollowingsRequestString();
+
+      _this.$http.get(followRequestString).then(function (res) {
+        _this.followingIds = res.data;
+        _this.message = "Success - Got my followings";
+        _this.createMyFollowingList();
+      }).catch(function (res) {
+        _this.message = "Error in getting my followings";
+      });
+    }).catch(function (res) {
+      _this.message = "Error in getting rider info.";
+    });
+  }
+
+  _createClass(FollowingController, [{
+    key: "createMyFollowingList",
+    value: function createMyFollowingList() {
+      this.followings = [];
+      for (var i = 0; i < this.riderInfo.length; i++) {
+        var currentId = this.riderInfo[i].riderId;
+        if (this.alreadyFollowing(currentId)) this.followings.push(this.riderInfo[i]);
+      }
+    }
+  }, {
+    key: "alreadyFollowing",
+    value: function alreadyFollowing(riderID) {
+      for (var i = 0; i < this.followingIds.length; i++) {
+        if (this.followingIds[i].followingID == riderID) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }, {
+    key: "followingAllowed",
+    value: function followingAllowed(riderid) {
+      return true;
+    }
+  }, {
+    key: "removeFollowing",
+    value: function removeFollowing(riderId) {
+      var _this2 = this;
+
+      var targetId = 0;
+      var targetLoc = -1;
+      // find the target follow and remove it from the followerIds list
+      for (var i = 0; i < this.followingIds.length; i++) {
+        if (this.followingIds[i].followingID == riderId) {
+          targetId = this.followingIds[i].followID;
+          targetLoc = i;
+          break;
+        }
+      }
+      // then send a request to remove it from the database
+      if (targetId == 0) return;
+      var requestString = this.FollowService.getDeleteFollowUrlString();
+      // do the delete request...
+      this.$http({
+        method: 'DELETE',
+        url: requestString,
+        data: {
+          requestingId: this.auth.getCurrentId(),
+          authorization: this.auth.getToken(),
+          followId: targetId
+        },
+        headers: {
+          'Content-type': 'application/json;charset=utf-8'
+        } }).then(function (res) {
+        _this2.followingIds.splice(targetLoc, 1);
+        _this2.createMyFollowingList();
+      }).catch(function (res) {
+        _this2.message = "Unable to Delete Ride Data at this time.";
+      });
+    }
+  }, {
+    key: "locate",
+    value: function locate(riderId) {
+      debugger;
+      this.FollowService.setCurrentFollowingId(riderId);
+      this.$location.path(['/LocateRider']);
+    }
+  }]);
+
+  return FollowingController;
+}();
 
 /***/ }),
 /* 28 */
@@ -90735,6 +91006,97 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var LocateRiderController = exports.LocateRiderController = function () {
+    function LocateRiderController(AuthService, RiderService, FollowService, $location, $http) {
+        var _this = this;
+
+        _classCallCheck(this, LocateRiderController);
+
+        this.auth = AuthService;
+        this.RiderService = RiderService;
+        this.FollowService = FollowService;
+        this.$location = $location;
+        this.$http = $http;
+        this.RiderIdToLocate = this.FollowService.getCurrentFollowingId();
+        this.RiderLocationData;
+        this.message = 'Hello From LocateRider - Id: ' + this.RiderIdToLocate;
+        this.LatLon = "";
+        this.GoogeString = "";
+        // get the rider location data...
+        var request = this.RiderService.getRiderLocationString(this.RiderIdToLocate);
+
+        // make the http get request
+        debugger;
+        this.$http.get(request).then(function (res) {
+            _this.RiderLocationData = res.data;
+            _this.LatLon = _this.RiderLocationData.latitude + "," + _this.RiderLocationData.longitude;
+            _this.mapPosition();
+        }).catch(function (res) {
+            _this.message = "Unable to Get Loction Data at this time.";
+        });
+    }
+    // google maps mapping interface...
+
+
+    _createClass(LocateRiderController, [{
+        key: "mapPosition",
+        value: function mapPosition() {
+            var myTitle = "Location of " + this.RiderLocationData.fullName;
+            var location = new google.maps.LatLng(this.RiderLocationData.latitude, this.RiderLocationData.longitude);
+            var mapOptions = {
+                zoom: 17,
+                center: location,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById('mapholder'), mapOptions);
+            var marker = new google.maps.Marker({
+                position: location,
+                title: myTitle,
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                'latLng': location
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[1]) {
+                        var options = {
+                            content: results[1].formatted_address,
+                            position: location
+                        };
+                        var popup = new google.maps.InfoWindow(options);
+                        google.maps.event.addListener(marker, 'click', function () {
+                            popup.open(map);
+                        });
+                    } else {
+                        alert('No results found');
+                    }
+                } else {
+                    alert('Geocoder failed due to: ' + status);
+                }
+            });
+        }
+    }]);
+
+    return LocateRiderController;
+}();
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var LoginController = exports.LoginController = function () {
     function LoginController(AuthService, $http) {
         _classCallCheck(this, LoginController);
@@ -90765,7 +91127,7 @@ var LoginController = exports.LoginController = function () {
 }();
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90948,7 +91310,7 @@ var MyRidesController = exports.MyRidesController = function () {
 }();
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91007,7 +91369,7 @@ var NavController = exports.NavController = function () {
 }();
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91082,7 +91444,7 @@ var ProfileController = exports.ProfileController = function () {
 }();
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91139,7 +91501,7 @@ var RegisterController = exports.RegisterController = function () {
 }();
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91277,7 +91639,7 @@ var RideDetailsController = exports.RideDetailsController = function () {
 }();
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91296,7 +91658,7 @@ var RideSignupController = exports.RideSignupController = function RideSignupCon
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91345,7 +91707,7 @@ var RiderDetailsController = exports.RiderDetailsController = function () {
 }();
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91424,7 +91786,7 @@ var RidesController = exports.RidesController = function () {
 }();
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91448,6 +91810,7 @@ var AuthService = exports.AuthService = function () {
         this.BASE_RIDER_URL = this.BASE_URL + '/Riders';
         this.BASE_RIDES_URL = this.BASE_URL + '/Rides';
         this.BASE_SIGNUPS_URL = this.BASE_URL + '/Signups';
+        this.BASE_FOLLOWS_URL = this.BASE_URL + '/Follows';
         this.NAME_KEY = 'name';
         this.TOKEN_KEY = 'token';
         this.CURRENT_ID_KEY = 'currentId';
@@ -91469,6 +91832,11 @@ var AuthService = exports.AuthService = function () {
         key: 'getBaseSignupURL',
         value: function getBaseSignupURL() {
             return this.BASE_SIGNUPS_URL;
+        }
+    }, {
+        key: 'getBaseFollowURL',
+        value: function getBaseFollowURL() {
+            return this.BASE_FOLLOWS_URL;
         }
     }, {
         key: 'getName',
@@ -91641,7 +92009,7 @@ var AuthService = exports.AuthService = function () {
 AuthService.$inject = ['$http', '$location'];
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91651,19 +92019,101 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FollowService = exports.FollowService = function FollowService(AuthService, $location) {
-    _classCallCheck(this, FollowService);
+var FollowService = exports.FollowService = function () {
+    function FollowService(AuthService, $location) {
+        _classCallCheck(this, FollowService);
 
-    this.auth = AuthService;
-    this.$location = $location;
-};
+        this.auth = AuthService;
+        this.$location = $location;
+        this.CURRENT_FOLLOWER_KEY = 'CurrentFollower';
+        this.CURRENT_FOLLOWING_KEY = 'CurrentFollower';
+    }
+
+    _createClass(FollowService, [{
+        key: 'getMyFollowersRequestString',
+        value: function getMyFollowersRequestString() {
+            var result = this.auth.getBaseFollowURL();
+            result += "/GetMyFollowers?RequestingId=";
+            result += this.auth.getCurrentId();
+            result += "&FollowingId=";
+            result += this.auth.getCurrentId();
+            result += "&Authorization=";
+            result += this.auth.getToken();
+            return result;
+        }
+    }, {
+        key: 'getMyFollowingsRequestString',
+        value: function getMyFollowingsRequestString() {
+            var result = this.auth.getBaseFollowURL();
+            result += "/GetMyFollowing?RequestingId=";
+            result += this.auth.getCurrentId();
+            result += "&FollowerId=";
+            result += this.auth.getCurrentId();
+            result += "&Authorization=";
+            result += this.auth.getToken();
+            return result;
+        }
+    }, {
+        key: 'getDeleteFollowUrlString',
+        value: function getDeleteFollowUrlString() {
+            var result = this.auth.getBaseFollowURL();
+            result += "/DeleteFollowbyId";
+            return result;
+        }
+    }, {
+        key: 'createFollowRequest',
+        value: function createFollowRequest(riderId) {
+            var requestData = {
+                requestingId: this.auth.getCurrentId(),
+                authorization: this.auth.getToken(),
+                followerId: this.auth.getCurrentId(),
+                followingId: riderId
+            };
+            return requestData;
+        }
+    }, {
+        key: 'clearCurrentFollowerId',
+        value: function clearCurrentFollowerId() {
+            localStorage.removeItem(this.CURRENT_FOLLOWER_KEY);
+        }
+    }, {
+        key: 'setCurrentFollowerId',
+        value: function setCurrentFollowerId(id) {
+            localStorage.setItem(this.CURRENT_FOLLOWER_KEY, id);
+        }
+    }, {
+        key: 'getCurrentFollowerId',
+        value: function getCurrentFollowerId() {
+            return localStorage.getItem(this.CURRENT_FOLLOWER_KEY);
+        }
+    }, {
+        key: 'clearCurrentFollowingId',
+        value: function clearCurrentFollowingId() {
+            localStorage.removeItem(this.CURRENT_FOLLOWING_KEY);
+        }
+    }, {
+        key: 'setCurrentFollowingId',
+        value: function setCurrentFollowingId(id) {
+            localStorage.setItem(this.CURRENT_FOLLOWING_KEY, id);
+        }
+    }, {
+        key: 'getCurrentFollowingId',
+        value: function getCurrentFollowingId() {
+            return localStorage.getItem(this.CURRENT_FOLLOWING_KEY);
+        }
+    }]);
+
+    return FollowService;
+}();
 
 FollowService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91800,7 +92250,7 @@ var RideService = exports.RideService = function () {
 RideService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91880,10 +92330,42 @@ var RiderService = exports.RiderService = function () {
             return requestString;
         }
     }, {
+        key: 'getRiderLocationString',
+        value: function getRiderLocationString(riderId) {
+            var requestString = this.auth.getBaseRiderURL() + '/GetRiderLocation?RequestingId=' + this.auth.getCurrentId() + '&RiderId=' + riderId + '&Authorization=' + this.auth.getToken();
+            return requestString;
+        }
+    }, {
+        key: 'createRiderLocationUpdateRequest',
+        value: function createRiderLocationUpdateRequest(_riderId, _rideId, _longitude, _latitude) {
+            var targetRide = _rideId;
+            if (_rideId == 0) targetRide = -1;
+
+            var requestData = {
+                requestingId: this.getCurrentId(),
+                authorization: this.getToken(),
+                riderId: _riderId,
+                rideId: targetRide,
+                longitude: _longitude,
+                latitude: _latitude
+            };
+            return requestData;
+        }
+    }, {
         key: 'isValidRole',
         value: function isValidRole(role) {
             var result = false;
             if (role == "Admin") result = true;else if (role == "User") result = true;
+            return result;
+        }
+    }, {
+        key: 'getAllRidersInfoRequestString',
+        value: function getAllRidersInfoRequestString() {
+            var result = this.auth.getBaseRiderURL();
+            result += "/GetRidersInfo?RequestingId=";
+            result += this.auth.getCurrentId();
+            result += "&Authorization=";
+            result += this.auth.getToken();
             return result;
         }
     }]);
@@ -91894,7 +92376,7 @@ var RiderService = exports.RiderService = function () {
 RiderService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91962,7 +92444,7 @@ var SignupService = exports.SignupService = function () {
 SignupService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(1);

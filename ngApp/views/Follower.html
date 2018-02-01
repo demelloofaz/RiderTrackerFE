@@ -1,17 +1,18 @@
-<h2>Who is/was following me?</h2>
-<table class="following-table">
+<h5>Who is following me?</h5>
+<table ng-if="controller.followers.length > 0"class="following-table">
     <tr>
         <th class="follower-th">Full Name</th>
         <th class="follower-th">User Name</th>
     </tr>
-    <tr ng-repeat="f in controller.following">
+    <tr ng-repeat="f in controller.followers">
     <td class="follower-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.fullName}}</td>
     <td class="follower-td" ng-if="$even">{{ f.fullName}}</td>
     <td class="follower-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.userName }}</td>
-    <td class="follower-td" ng-if="$even">{{ f.username }}</td>
-    <td class="follower-td"><md-button ng-click="controller.changeFollowState(f.followId)" class="rider-button md-primary md-raised">&nbsp Change Status &nbsp</md-button></td>
+    <td class="follower-td" ng-if="$even">{{ f.userName }}</td>
+    <td class="follower-td"><md-button ng-click="controller.removeFollower(f.riderId)" class="rider-button md-primary md-raised">&nbsp Disable Follower &nbsp</md-button></td>
     </tr>
 </table>
+<p ng-if="controller.followers.length == 0">None</p>
 <br>
-<a ui-sref="Following" class="btn btn-link"><md-button class="md-primary md-raised">Who am I following</md-button></a>
+<a ui-sref="Following" class="btn btn-link"><md-button class="md-primary md-raised">I am following</md-button></a>
 <a ui-sref="HomeLoggedIn" class="btn btn-link"><md-button>Back</md-button></a>
