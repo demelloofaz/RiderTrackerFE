@@ -27,6 +27,7 @@ import {RideSignupController} from './controllers/RideSignupController';
 import {FollowingController} from './controllers/FollowingController';
 import {FollowerController} from './controllers/FollowerController';
 import {FollowRequestController} from './controllers/FollowRequestController';
+import {LocateRiderController} from './controllers/LocateRiderController';
 import {NavController} from './controllers/NavController';
 import {AuthService} from './services/AuthService';
 import {RiderService} from './services/RiderService';
@@ -187,6 +188,12 @@ import {FollowService} from './services/FollowService';
             url: '/FollowRequest',
             templateUrl: '/ngApp/views/FollowRequest.html',
             controller: FollowRequestController,
+            controllerAs: 'controller'
+          })
+          .state('LocateRider', {
+            url: '/LocateRider',
+            templateUrl: '/ngApp/views/LocateRider.html',
+            controller: LocateRiderController,
             controllerAs: 'controller'
           })
           .state('notFound', {

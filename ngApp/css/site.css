@@ -95,3 +95,7 @@
   text-align:left; 
   vertical-align:middle;
 }
+#mapholder {
+  height: 400px;
+  width: 600px;
+}

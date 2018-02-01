@@ -48,7 +48,32 @@ export class RiderService{
         
         return requestString;
     }
-    
+    getRiderLocationString(riderId) {
+        var requestString = this.auth.getBaseRiderURL()  + 
+        '/GetRiderLocation?RequestingId=' + 
+        this.auth.getCurrentId() + 
+        '&RiderId=' + 
+        riderId +
+        '&Authorization=' + 
+        this.auth.getToken();
+        return requestString;
+    }
+    createRiderLocationUpdateRequest(_riderId, _rideId, _longitude, _latitude)
+    {
+        var targetRide = _rideId;
+        if (_rideId == 0)
+            targetRide = -1;
+            
+        var requestData = {
+            requestingId : this.getCurrentId(),
+            authorization : this.getToken(),
+            riderId: _riderId,
+            rideId: targetRide,
+            longitude: _longitude,
+            latitude: _latitude
+        }
+        return requestData;
+    }
     isValidRole (role)
     {
         var result = false;
@@ -58,5 +83,16 @@ export class RiderService{
             result = true;
         return result;
     }
+
+    getAllRidersInfoRequestString(){
+        var result = this.auth.getBaseRiderURL();
+        result += "/GetRidersInfo?RequestingId=";
+        result += this.auth.getCurrentId();
+        result += "&Authorization=";
+        result += this.auth.getToken();
+        return result;
+    }
+
+    
 }
 RiderService.$inject = ['AuthService', '$location'];
