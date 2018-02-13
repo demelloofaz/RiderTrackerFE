@@ -61,9 +61,9 @@
                     </div>
                 </md-input-container>
                 <div>
-                    <md-button ng-disabled="!Form.$valid" ng-click="controller.editRider()" class="md-raised md-primary">&nbsp Update &nbsp</md-button>
+                    <md-button ng-disabled="!Form.$valid" ng-click="controller.editRider()" style="background-color: green; color:black" class="md-raised">&nbsp Update &nbsp</md-button>
+                    <a ui-sref="AdminChangePassword" class="btn btn-link"><md-button style="display: unset; color:red">Change Password</md-button></a>
                     <md-button  ng-click="controller.goBackToParentView()" class="rider-button">&nbsp Cancel &nbsp</md-button>
-                    <a ui-sref="AdminChangePassword" class="btn btn-link"><md-button>Change Password</md-button></a>
                 </div>
             </form>
             <p class="form-error-msg">{{controller.message}}</p>

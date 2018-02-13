@@ -90007,7 +90007,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var AdminController = exports.AdminController = function () {
-    function AdminController(AuthService, $http, RiderService) {
+    function AdminController(AuthService, $http, RiderService, $mdDialog) {
         var _this = this;
 
         _classCallCheck(this, AdminController);
@@ -90015,6 +90015,7 @@ var AdminController = exports.AdminController = function () {
         this.auth = AuthService;
         this.$http = $http;
         this.service = RiderService;
+        this.Dialog = $mdDialog;
         this.riders = [];
         this.message = 'hello world from Admin Rider Controller';
         this.myView = "/Admin";
@@ -90029,10 +90030,19 @@ var AdminController = exports.AdminController = function () {
             _this.message = "Success - Got the riders";
         }).catch(function (res) {
             _this.message = "Error in getting riders.";
+            _this.showErrorDialog();
         });
     }
 
     _createClass(AdminController, [{
+        key: 'showErrorDialog',
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
+        }
+    }, {
         key: 'detailRider',
         value: function detailRider(currentRiderId) {
 
@@ -90077,7 +90087,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var AdminRidesController = exports.AdminRidesController = function () {
-    function AdminRidesController(AuthService, $http, RideService) {
+    function AdminRidesController(AuthService, $http, RideService, $mdDialog) {
         var _this = this;
 
         _classCallCheck(this, AdminRidesController);
@@ -90085,6 +90095,7 @@ var AdminRidesController = exports.AdminRidesController = function () {
         this.auth = AuthService;
         this.$http = $http;
         this.service = RideService;
+        this.Dialog = $mdDialog;
         this.rides = [];
         this.message = 'hello world from Admin Rides Controller';
         this.myView = "/AdminRides";
@@ -90099,10 +90110,19 @@ var AdminRidesController = exports.AdminRidesController = function () {
             _this.message = "Success - Got the rides";
         }).catch(function (res) {
             _this.message = "Error in getting rides.";
+            _this.showErrorDialog();
         });
     }
 
     _createClass(AdminRidesController, [{
+        key: 'showErrorDialog',
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
+        }
+    }, {
         key: 'detailRide',
         value: function detailRide(rideId) {
             this.service.saveRideId(rideId);
@@ -90146,11 +90166,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ChangePasswordController = exports.ChangePasswordController = function () {
-    function ChangePasswordController(AuthService, $http) {
+    function ChangePasswordController(AuthService, $http, $mdDialog) {
         _classCallCheck(this, ChangePasswordController);
 
         this.auth = AuthService;
         this.$http = $http;
+        this.Dialog = $mdDialog;
         this.password = '';
         this.confirmingpassword = '';
         this.message = '';
@@ -90167,8 +90188,17 @@ var ChangePasswordController = exports.ChangePasswordController = function () {
                     _this.auth.authenticate(res);
                 }).catch(function (res) {
                     _this.message = "Unable to updated password at this time, try again later.";
+                    _this.showErrorDialog();
                 });
             } else this.message = 'Passwords do not match!';
+        }
+    }, {
+        key: 'showErrorDialog',
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
         }
     }]);
 
@@ -90626,7 +90656,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FollowRequestController = exports.FollowRequestController = function () {
-  function FollowRequestController(FollowService, RiderService, $http, AuthService, $location) {
+  function FollowRequestController(FollowService, RiderService, $http, AuthService, $location, $mdDialog) {
     var _this = this;
 
     _classCallCheck(this, FollowRequestController);
@@ -90637,6 +90667,7 @@ var FollowRequestController = exports.FollowRequestController = function () {
     this.$http = $http;
     this.$location = $location;
     this.auth = AuthService;
+    this.Dialog = $mdDialog;
     this.followingIds = [];
     this.unfollowed = [];
     this.riderInfo = [];
@@ -90656,9 +90687,11 @@ var FollowRequestController = exports.FollowRequestController = function () {
         _this.createUnfollowedList();
       }).catch(function (res) {
         _this.message = "Error in getting my followings";
+        _this.showErrorDialog();
       });
     }).catch(function (res) {
       _this.message = "Error in getting rider info.";
+      _this.showErrorDialog();
     });
   }
 
@@ -90674,9 +90707,9 @@ var FollowRequestController = exports.FollowRequestController = function () {
     }
   }, {
     key: "alreadyFollowing",
-    value: function alreadyFollowing(riderID) {
+    value: function alreadyFollowing(riderId) {
       for (var i = 0; i < this.followingIds.length; i++) {
-        if (this.followingIds[i].followingID == riderID) {
+        if (this.followingIds[i].followingID == riderId) {
           return true;
         }
       }
@@ -90687,14 +90720,13 @@ var FollowRequestController = exports.FollowRequestController = function () {
     value: function requestToFollow(riderId) {
       var _this2 = this;
 
-      debugger;
       var request = this.FollowService.createFollowRequest(riderId);
       this.$http.post(this.auth.getBaseFollowURL() + '/CreateFollow', request).then(function (res) {
-        debugger;
         var newFollow = res.data;
         _this2.updateFollowingData(newFollow);
       }).catch(function (res) {
         _this2.message = "Unable to follow at this time, try again later";
+        _this2.showErrorDialog();
       });
     }
   }, {
@@ -90704,6 +90736,14 @@ var FollowRequestController = exports.FollowRequestController = function () {
       this.followingIds.push(newFollow);
       this.unfollowed = [];
       this.createUnfollowedList();
+    }
+  }, {
+    key: "showErrorDialog",
+    value: function showErrorDialog() {
+      // Appending dialog to document.body to cover sidenav in docs app
+      // Modal dialogs should fully cover application
+      // to prevent interaction outside of dialog
+      this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
     }
   }]);
 
@@ -90726,7 +90766,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FollowerController = exports.FollowerController = function () {
-  function FollowerController(FollowService, RiderService, $http, AuthService, $location) {
+  function FollowerController(FollowService, RiderService, $http, AuthService, $location, $mdDialog) {
     var _this = this;
 
     _classCallCheck(this, FollowerController);
@@ -90737,6 +90777,7 @@ var FollowerController = exports.FollowerController = function () {
     this.$http = $http;
     this.$location = $location;
     this.auth = AuthService;
+    this.Dialog = $mdDialog;
     this.riderInfo = [];
     this.followerIds = [];
     this.followers = [];
@@ -90744,9 +90785,6 @@ var FollowerController = exports.FollowerController = function () {
     this.FollowService.clearCurrentFollowingId();
 
     var ridersRequestString = this.RiderService.getAllRidersInfoRequestString();
-
-    debugger;
-
     // Needto get all the riders.
     this.$http.get(ridersRequestString).then(function (res) {
       _this.riderInfo = res.data;
@@ -90759,9 +90797,11 @@ var FollowerController = exports.FollowerController = function () {
         _this.createMyFollowerList();
       }).catch(function (res) {
         _this.message = "Error in getting my followers";
+        _this.showErrorDialog();
       });
     }).catch(function (res) {
       _this.message = "Error in getting rider info.";
+      _this.showErrorDialog();
     });
   }
 
@@ -90771,18 +90811,35 @@ var FollowerController = exports.FollowerController = function () {
       this.followers = [];
       for (var i = 0; i < this.riderInfo.length; i++) {
         var currentId = this.riderInfo[i].riderId;
-        if (this.isAFollower(currentId)) this.followers.push(this.riderInfo[i]);
+        if (this.isAFollower(currentId)) {
+          this.riderInfo[i].statusString = this.getFollowerStatusString(currentId);
+          this.followers.push(this.riderInfo[i]);
+        }
       }
     }
   }, {
     key: "isAFollower",
-    value: function isAFollower(riderID) {
+    value: function isAFollower(riderId) {
       for (var i = 0; i < this.followerIds.length; i++) {
-        if (this.followerIds[i].followerID == riderID) {
-          return true;
+        if (this.followerIds[i].followerID == riderId) {
+          if (this.followerIds[i].followState < 2) // hide declined or blocked...
+            {
+              return true;
+            }
         }
       }
       return false;
+    }
+  }, {
+    key: "getFollowerStatusString",
+    value: function getFollowerStatusString(riderId) {
+      var result = "        ";
+      for (var i = 0; i < this.followerIds.length; i++) {
+        if (this.followerIds[i].followerID == riderId) {
+          if (this.followerIds[i].followState == 0) result = "Requested";
+        }
+      }
+      return result;
     }
   }, {
     key: "removeFollower",
@@ -90818,7 +90875,43 @@ var FollowerController = exports.FollowerController = function () {
         _this2.createMyFollowerList();
       }).catch(function (res) {
         _this2.message = "Unable to Delete Ride Data at this time.";
+        _this2.showErrorDialog();
       });
+    }
+  }, {
+    key: "isPending",
+    value: function isPending(riderId) {
+      for (var i = 0; i < this.followerIds.length; i++) {
+        if (this.followerIds[i].followerID == riderId) {
+          if (this.followerIds[i].followState == 0) {
+            return true;
+          } else return false;
+        }
+      }
+      return false;
+    }
+  }, {
+    key: "updateFollowRequest",
+    value: function updateFollowRequest(riderId, status) {
+      var _this3 = this;
+
+      var requestString = this.FollowService.getUpdateFollowStateUrlString();
+      var requestData = this.FollowService.createUpdateFollowerRequest(status);
+      // do the delete request...
+      this.$http.post(requestString, requestData).then(function (res) {
+        _this3.message = "Follow status updated";
+      }).catch(function (res) {
+        _this3.message = "Unable to update follow status at this time.";
+        _this3.showErrorDialog();
+      });
+    }
+  }, {
+    key: "showErrorDialog",
+    value: function showErrorDialog() {
+      // Appending dialog to document.body to cover sidenav in docs app
+      // Modal dialogs should fully cover application
+      // to prevent interaction outside of dialog
+      this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
     }
   }]);
 
@@ -90841,7 +90934,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FollowingController = exports.FollowingController = function () {
-  function FollowingController(FollowService, RiderService, $http, AuthService, $location) {
+  function FollowingController(FollowService, RiderService, $http, AuthService, $location, $mdDialog) {
     var _this = this;
 
     _classCallCheck(this, FollowingController);
@@ -90852,12 +90945,14 @@ var FollowingController = exports.FollowingController = function () {
     this.$http = $http;
     this.$location = $location;
     this.auth = AuthService;
+    this.Dialog = $mdDialog;
     this.riderInfo = [];
     this.followingIds = [];
     this.followings = [];
     this.FollowService.clearCurrentFollowerId();
     this.FollowService.clearCurrentFollowingId();
-    debugger;
+    this.FollowService.clearBackLink();
+    this.myView = "/Following";
     var ridersRequestString = this.RiderService.getAllRidersInfoRequestString();
     // Needto get all the riders.
     this.$http.get(ridersRequestString).then(function (res) {
@@ -90871,9 +90966,11 @@ var FollowingController = exports.FollowingController = function () {
         _this.createMyFollowingList();
       }).catch(function (res) {
         _this.message = "Error in getting my followings";
+        _this.showErrorDialog();
       });
     }).catch(function (res) {
       _this.message = "Error in getting rider info.";
+      _this.showErrorDialog();
     });
   }
 
@@ -90883,32 +90980,68 @@ var FollowingController = exports.FollowingController = function () {
       this.followings = [];
       for (var i = 0; i < this.riderInfo.length; i++) {
         var currentId = this.riderInfo[i].riderId;
-        if (this.alreadyFollowing(currentId)) this.followings.push(this.riderInfo[i]);
+        if (this.alreadyFollowing(currentId)) {
+          this.riderInfo[i].statusString = this.getFollowingStatusString(currentId);
+          this.followings.push(this.riderInfo[i]);
+        }
       }
     }
   }, {
     key: "alreadyFollowing",
-    value: function alreadyFollowing(riderID) {
+    value: function alreadyFollowing(riderId) {
       for (var i = 0; i < this.followingIds.length; i++) {
-        if (this.followingIds[i].followingID == riderID) {
-          return true;
+        if (this.followingIds[i].followingID == riderId) {
+          if (this.followingIds[i].followState < 3) {
+            return true;
+          }
         }
       }
       return false;
     }
   }, {
-    key: "followingAllowed",
-    value: function followingAllowed(riderid) {
-      return true;
+    key: "getFollowingStatusString",
+    value: function getFollowingStatusString(riderId) {
+      var result = "        ";
+      for (var i = 0; i < this.followingIds.length; i++) {
+        if (this.followingIds[i].followingID == riderId) {
+          if (this.followingIds[i].followState == 0) result = "Pending";else if (this.followingIds[i].followState == 2) result = "Declined";
+        }
+      }
+      return result;
+    }
+  }, {
+    key: "updateFollowingRequest",
+    value: function updateFollowingRequest(riderId, status) {
+      var _this2 = this;
+
+      var requestString = this.FollowService.getUpdateFollowStateUrlString();
+      var requestData = this.FollowService.createUpdateFollowingRequest(status);
+      // do the delete request...
+      this.$http.post(requestString, requestData).then(function (res) {
+        _this2.message = "Follow status updated";
+      }).catch(function (res) {
+        _this2.message = "Unable to update follow status at this time.";
+        _this2.showErrorDialog();
+      });
+    }
+  }, {
+    key: "isAllowed",
+    value: function isAllowed(riderId) {
+      for (var i = 0; i < this.followingIds.length; i++) {
+        if (this.followingIds[i].followingID == riderId) {
+          if (this.followingIds[i].followState == 1) return true;else return false;
+        }
+      }
+      return false;
     }
   }, {
     key: "removeFollowing",
     value: function removeFollowing(riderId) {
-      var _this2 = this;
+      var _this3 = this;
 
       var targetId = 0;
       var targetLoc = -1;
-      // find the target follow and remove it from the followerIds list
+      // find the target follow and remove it from the followingIds list
       for (var i = 0; i < this.followingIds.length; i++) {
         if (this.followingIds[i].followingID == riderId) {
           targetId = this.followingIds[i].followID;
@@ -90931,18 +91064,26 @@ var FollowingController = exports.FollowingController = function () {
         headers: {
           'Content-type': 'application/json;charset=utf-8'
         } }).then(function (res) {
-        _this2.followingIds.splice(targetLoc, 1);
-        _this2.createMyFollowingList();
+        _this3.followingIds.splice(targetLoc, 1);
+        _this3.createMyFollowingList();
       }).catch(function (res) {
-        _this2.message = "Unable to Delete Ride Data at this time.";
+        _this3.message = "Unable to Delete Ride Data at this time.";
+        _this3.showErrorDialog();
       });
     }
   }, {
     key: "locate",
     value: function locate(riderId) {
-      debugger;
       this.FollowService.setCurrentFollowingId(riderId);
-      this.$location.path(['/LocateRider']);
+      this.FollowService.routeToView("/LocateRider", this.myView);
+    }
+  }, {
+    key: "showErrorDialog",
+    value: function showErrorDialog() {
+      // Appending dialog to document.body to cover sidenav in docs app
+      // Modal dialogs should fully cover application
+      // to prevent interaction outside of dialog
+      this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
     }
   }]);
 
@@ -90980,16 +91121,312 @@ var HomeController = exports.HomeController = function HomeController(AuthServic
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var HomeLoggedInController = exports.HomeLoggedInController = function HomeLoggedInController() {
-  _classCallCheck(this, HomeLoggedInController);
+var HomeLoggedInController = exports.HomeLoggedInController = function () {
+    function HomeLoggedInController(AuthService, FollowService, RideService, SignupService, RiderService, $http, $mdDialog) {
+        var _this = this;
 
-  this.message = 'Home when Logged in';
-};
+        _classCallCheck(this, HomeLoggedInController);
+
+        this.position = null;
+        this.watchid = null;
+        this.coordinates = '';
+        this.auth = AuthService;
+        this.FollowService = FollowService;
+        this.RideService = RideService;
+        this.SignupService = SignupService;
+        this.RiderService = RiderService;
+        this.$http = $http;
+        this.Dialog = $mdDialog;
+        this.myView = "HomeLoggedIn";
+        this.auth.clearTracking();
+        this.trackingEnabled = false;
+        this.ButtonText = "Start Tracking";
+        this.message = "Current time is: ";
+        this.lastTimeStamp = 0;
+        this.LastLon = "TBD";
+        this.LastLat = "TBD";
+        this.updateSkipCnt = 0;
+        //this.getLocation();
+        var that = this;
+        //setInterval( () => this.myTimerFunc(), 20000);
+
+        // alot of data to get on startup...
+        this.TodaysRides = [];
+        this.MySignups = [];
+        this.MyRides = [];
+        this.AllRiders = [];
+        this.MyRideCompanions = [];
+        this.ActiveRide = 0;
+        debugger;
+
+        this.showMyLocation();
+        // get all of the rides for Today.
+        var requestRidesString = this.auth.getBaseRideURL() + '/GetTodaysRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+
+        this.$http.get(requestRidesString).then(function (res) {
+            _this.TodaysRides = res.data;
+
+            // get signups for a rider...
+            var requestRidersSignups = _this.SignupService.getRidersSignupString();
+            _this.$http.get(requestRidersSignups).then(function (res) {
+                _this.MySignups = res.data;
+                _this.getMyRides();
+                if (_this.MyRides.length == 1) _this.ActiveRide = _this.MyRides[0].id;
+
+                var requestString = _this.SignupService.getRideAttendeeString(_this.ActiveRide);
+                // make the http get request
+                _this.$http.get(requestString).then(function (res) {
+                    _this.AllRiders = res.data;
+                    _this.getRideCompanions();
+                }).catch(function (res) {
+                    _this.message = "Unable to Get Ride Attendee Data at this time.";
+                    _this.showErrorDialog();
+                });
+            }).catch(function (res) {
+                _this.message = "Error in getting signups.";
+                _this.showErrorDialog();
+            });
+        }).catch(function (res) {
+            _this.message = "Error in getting rides.";
+            _this.showErrorDialog();
+        });
+    }
+
+    _createClass(HomeLoggedInController, [{
+        key: "showErrorDialog",
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
+        }
+    }, {
+        key: "showRideAlert",
+        value: function showRideAlert() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Too many rides found for today').textContent('You must have only joined 1 ride for today in order for tracking to be enabled. Please choose a single ride for today.').ariaLabel('Too many rides detected').ok('OK'));
+        }
+    }, {
+        key: "showMyLocation",
+        value: function showMyLocation() {
+            this.getLocation();
+            var d = new Date();
+            var pDoc = document.getElementById("demo");
+            if (pDoc == null) {
+                return;
+            }
+            pDoc.innerHTML = this.message + d.toLocaleTimeString();
+        }
+    }, {
+        key: "getMyRides",
+        value: function getMyRides() {
+            this.MyRides = [];
+            for (var i = 0; i < this.MySignups.length; i++) {
+                var currentRideId = this.MySignups[i].rideID;
+                for (var j = 0; j < this.TodaysRides.length; j++) {
+                    if (this.TodaysRides[j].id == currentRideId) {
+                        this.MyRides.push(this.TodaysRides[j]);
+                    }
+                }
+            }
+        }
+    }, {
+        key: "getRideCompanions",
+        value: function getRideCompanions() {
+            this.MyRideCompanions = [];
+            var myId = this.auth.getCurrentId();
+            for (var i = 0; i < this.AllRiders.length; i++) {
+                // remove me from the list of riders
+                var currentRider = this.AllRiders[i];
+                if (currentRider.riderId != myId) this.MyRideCompanions.push(currentRider);
+            }
+        }
+    }, {
+        key: "toggleTrackingButton",
+        value: function toggleTrackingButton() {
+            if (this.trackingEnabled) {
+                // stop tracking
+                this.trackingEnabled = false;
+                this.auth.clearTracking();
+                this.ActiveRide = -1;
+                this.ButtonText = "Start Tracking";
+                this.stopWatch();
+            } else {
+                this.determineActiveRide();
+                // determine if we can start tracking 
+                // must either be signed up for 1 ride or signed up for no rides.
+                if (this.ActiveRide == 0) {
+                    // need to pop up a dialog here to tell user to sign up for only 1 ride...
+                    this.showRideAlert();
+                } else {
+                    this.trackingEnabled = true;
+                    this.auth.setTracking();
+                    this.ButtonText = "Stop Tracking";
+                    this.watchLocation();
+                }
+            }
+        }
+    }, {
+        key: "getLocation",
+        value: function getLocation() {
+            // Check whether browser supports Geolocation API or not
+            if (navigator.geolocation) // Supported
+                {
+                    var positionOptions = {
+                        timeout: 5000,
+                        maximumAge: 0,
+                        enableHighAccuracy: true
+                    };
+                    // Obtain the initial location one-off
+                    navigator.geolocation.getCurrentPosition(this.getPosition, this.catchError, positionOptions);
+                    this.savePosition();
+                } else // Not supported
+                {
+                    alert("Oop! This browser does not support HTML5 Geolocation.");
+                }
+        }
+    }, {
+        key: "watchLocation",
+        value: function watchLocation() {
+            // Check whether browser supports Geolocation API or not
+            if (navigator.geolocation) // Supported
+                {
+                    var positionOptions = {
+                        timeout: 5000,
+                        maximumAge: 0,
+                        enableHighAccuracy: true
+                    };
+                    // Obtain the location at regularly interval
+                    this.watchid = navigator.geolocation.watchPosition(this.getPosition, this.catchError, positionOptions);
+                    this.savePosition();
+                } else // Not supported
+                {
+                    alert("Oop! This browser does not support HTML5 Geolocation.");
+                }
+        }
+    }, {
+        key: "stopWatch",
+        value: function stopWatch() {
+            // Discontinue obtaining location
+            navigator.geolocation.clearWatch(this.watchid);
+        }
+    }, {
+        key: "savePosition",
+        value: function savePosition() {
+            var _this2 = this;
+
+            var currTS = Math.round(+new Date() / 1000);
+            if (currTS - this.lastTimeStamp > 15) {
+                var pLon = document.getElementById('currLon');
+                if (pLon != null) {
+                    var pLonText = pLon.textContent;
+                    var pLat = document.getElementById('currLat');
+                    var pLatText = pLat.textContent;
+                    var riderId = this.auth.getCurrentId();
+
+                    var urlString = this.RiderService.getRiderLocationUpdateUrl();
+                    var requestData = this.RiderService.createRiderLocationUpdateRequest(riderId, this.ActiveRide, pLonText, pLatText);
+
+                    this.$http.post(urlString, requestData).then(function (res) {
+                        _this2.lastTimeStamp = currTS;
+                    });
+                }
+            }
+        }
+    }, {
+        key: "getPosition",
+        value: function getPosition(position) {
+            var location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            var pDoc = document.getElementById("currLat");
+            // be sure page is in view to update the lon/lat
+            if (pDoc != null) {
+                document.getElementById("currLat").innerHTML = latitude;
+                document.getElementById("currLon").innerHTML = longitude;
+                //console.log("Saving location to Dom as: " + latitude +"/"+ longitude);
+            }
+
+            var mapOptions = {
+                zoom: 16,
+                center: location,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById('mapholder'), mapOptions);
+            var marker = new google.maps.Marker({
+                position: location,
+                title: 'You are here!',
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                'latLng': location
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[1]) {
+                        var options = {
+                            content: results[1].formatted_address,
+                            position: location
+                        };
+                        var popup = new google.maps.InfoWindow(options);
+                        google.maps.event.addListener(marker, 'click', function () {
+                            popup.open(map);
+                        });
+                    } else {
+                        alert('No results found');
+                    }
+                } else {
+                    alert('Geocoder failed due to: ' + status);
+                }
+            });
+        }
+    }, {
+        key: "catchError",
+        value: function catchError(error) {
+            switch (error.code) {
+                case error.TIMEOUT:
+                    alert("The request to get user location has aborted as it has taken too long.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is not available.");
+                    break;
+                case error.PERMISSION_DENIED:
+                    alert("Permission to share location information has been denied!");
+                    break;
+                default:
+                    alert("An unknown error occurred.");
+            }
+        }
+    }, {
+        key: "determineActiveRide",
+        value: function determineActiveRide() {
+            debugger;
+            var numRidesFound = this.MyRides.length;
+            var activeRide;
+            if (numRidesFound == 1) activeRide = this.MyRides[0].id;else if (numRidesFound == 0) activeRide = -1;else activeRide = 0;
+            this.ActiveRide = activeRide;
+        }
+    }, {
+        key: "locateRider",
+        value: function locateRider(riderId) {
+            this.FollowService.setCurrentFollowingId(riderId);
+            this.FollowService.routeToView("/LocateRider", this.myView);
+        }
+    }]);
+
+    return HomeLoggedInController;
+}();
 
 /***/ }),
 /* 30 */
@@ -91007,7 +91444,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var LocateRiderController = exports.LocateRiderController = function () {
-    function LocateRiderController(AuthService, RiderService, FollowService, $location, $http) {
+    function LocateRiderController(AuthService, RiderService, FollowService, $location, $http, $mdDialog) {
         var _this = this;
 
         _classCallCheck(this, LocateRiderController);
@@ -91016,6 +91453,7 @@ var LocateRiderController = exports.LocateRiderController = function () {
         this.RiderService = RiderService;
         this.FollowService = FollowService;
         this.$location = $location;
+        this.Dialog = $mdDialog;
         this.$http = $http;
         this.RiderIdToLocate = this.FollowService.getCurrentFollowingId();
         this.RiderLocationData;
@@ -91026,19 +91464,31 @@ var LocateRiderController = exports.LocateRiderController = function () {
         var request = this.RiderService.getRiderLocationString(this.RiderIdToLocate);
 
         // make the http get request
-        debugger;
         this.$http.get(request).then(function (res) {
             _this.RiderLocationData = res.data;
-            _this.LatLon = _this.RiderLocationData.latitude + "," + _this.RiderLocationData.longitude;
-            _this.mapPosition();
+            if (_this.RiderLocationData.latitude != null) {
+                _this.mapPosition();
+                _this.LatLon = _this.RiderLocationData.latitude + "," + _this.RiderLocationData.longitude;
+            } else {
+                _this.showAlert();
+            }
         }).catch(function (res) {
             _this.message = "Unable to Get Loction Data at this time.";
+            _this.showErrorDialog();
         });
     }
-    // google maps mapping interface...
-
 
     _createClass(LocateRiderController, [{
+        key: "showAlert",
+        value: function showAlert() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Rider Location Not Fond').textContent('Location for rider is not known!').ariaLabel("Location Not found").ok('OK'));
+        }
+        // google maps mapping interface...
+
+    }, {
         key: "mapPosition",
         value: function mapPosition() {
             var myTitle = "Location of " + this.RiderLocationData.fullName;
@@ -91077,6 +91527,19 @@ var LocateRiderController = exports.LocateRiderController = function () {
                 }
             });
         }
+    }, {
+        key: "goBackToParentView",
+        value: function goBackToParentView() {
+            this.FollowService.goBackToParentView();
+        }
+    }, {
+        key: "showErrorDialog",
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
+        }
     }]);
 
     return LocateRiderController;
@@ -91098,11 +91561,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var LoginController = exports.LoginController = function () {
-    function LoginController(AuthService, $http) {
+    function LoginController(AuthService, $http, $mdDialog) {
         _classCallCheck(this, LoginController);
 
         this.auth = AuthService;
         this.$http = $http;
+        this.Dialog = $mdDialog;
         this.message = '';
         this.username = '';
         this.password = '';
@@ -91119,7 +91583,16 @@ var LoginController = exports.LoginController = function () {
                 _this.auth.authenticate(res);
             }).catch(function (res) {
                 if (res.status == 404) _this.message = "Invalid Username or Password provided";else _this.message = "Unable to login at this time try again later";
+                _this.showErrorDialog();
             });
+        }
+    }, {
+        key: 'showErrorDialog',
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Error on Login').textContent(this.message).ariaLabel('Login Error').ok('OK'));
         }
     }]);
 
@@ -91142,7 +91615,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var MyRidesController = exports.MyRidesController = function () {
-    function MyRidesController(AuthService, $http, RideService, SignupService) {
+    function MyRidesController(AuthService, $http, RideService, SignupService, $mdDialog) {
         var _this = this;
 
         _classCallCheck(this, MyRidesController);
@@ -91151,6 +91624,7 @@ var MyRidesController = exports.MyRidesController = function () {
         this.$http = $http;
         this.service = RideService;
         this.SignupService = SignupService;
+        this.Dialog = $mdDialog;
         this.rides = [];
         this.signups = [];
         this.myRides = [];
@@ -91159,10 +91633,8 @@ var MyRidesController = exports.MyRidesController = function () {
         this.service.clearCurrentRideId();
         this.service.clearBackLink();
 
-        debugger;
-
         // get all of the rides...
-        var requestRidesString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+        var requestRidesString = this.auth.getBaseRideURL() + '/GetUpcomingRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
 
         this.$http.get(requestRidesString).then(function (res) {
             _this.rides = res.data;
@@ -91175,9 +91647,11 @@ var MyRidesController = exports.MyRidesController = function () {
                 _this.createMyRidesList();
             }).catch(function (res) {
                 _this.message = "Error in getting rider signups.";
+                _this.showErrorDialog();
             });
         }).catch(function (res) {
             _this.message = "Error in getting rides.";
+            _this.showErrorDialog();
         });
     }
 
@@ -91194,6 +91668,7 @@ var MyRidesController = exports.MyRidesController = function () {
                 _this2.createMyRidesList();
             }).catch(function (res) {
                 _this2.message = "Error in getting rider signups.";
+                _this2.showErrorDialog();
             });
         }
     }, {
@@ -91262,7 +91737,6 @@ var MyRidesController = exports.MyRidesController = function () {
         value: function signOutRide(_rideId) {
             var _this3 = this;
 
-            debugger;
             var urlString = this.auth.getBaseSignupURL() + '/DeleteSignup';
             this.$http({
                 method: 'DELETE',
@@ -91276,7 +91750,6 @@ var MyRidesController = exports.MyRidesController = function () {
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 } }).then(function (res) {
-                debugger;
                 _this3.message = "Deleted signup";
                 _this3.updateMyRidesList(_rideId);
             }).catch(function (res) {
@@ -91304,6 +91777,14 @@ var MyRidesController = exports.MyRidesController = function () {
                 }
             }
         }
+    }, {
+        key: 'showErrorDialog',
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error Detected').textContent(this.message).ariaLabel('Server Error Detected').ok('OK'));
+        }
     }]);
 
     return MyRidesController;
@@ -91325,7 +91806,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var NavController = exports.NavController = function () {
-    function NavController(AuthService) {
+    function NavController(AuthService, $location) {
         _classCallCheck(this, NavController);
 
         this.message = 'hello world';
@@ -91363,6 +91844,19 @@ var NavController = exports.NavController = function () {
         value: function logout() {
             this.auth.logout();
         }
+    }, {
+        key: 'isTrackingMode',
+        value: function isTrackingMode() {
+            return this.auth.isTrackingMode();
+        }
+    }, {
+        key: 'showNormalMode',
+        value: function showNormalMode() {
+            if (!this.isTrackingMode()) {
+                if (this.isAuthenticated()) return true;
+            }
+            return false;
+        }
     }]);
 
     return NavController;
@@ -91384,13 +91878,14 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ProfileController = exports.ProfileController = function () {
-    function ProfileController(AuthService, $http) {
+    function ProfileController(AuthService, $http, $mdDialog) {
         var _this = this;
 
         _classCallCheck(this, ProfileController);
 
         this.auth = AuthService;
         this.$http = $http;
+        this.Dialog = $mdDialog;
         this.message = '';
         this.lastname = '';
         this.firstname = '';
@@ -91411,6 +91906,7 @@ var ProfileController = exports.ProfileController = function () {
             _this.phonenumber = res.data.phoneNumber;
         }).catch(function (res) {
             _this.message = "Unable to Get Data at this time.";
+            _this.showErrorDialog();
         });
     }
 
@@ -91427,16 +91923,24 @@ var ProfileController = exports.ProfileController = function () {
                 _this2.auth.authenticate(res);
             }).catch(function (res) {
                 _this2.message = "Unable to update profile at this time, try again later";
+                _this2.showErrorDialog();
             });
         }
     }, {
         key: 'isAdmin',
         value: function isAdmin() {
-            debugger;
             if (this.auth.isAdmin()) {
                 return true;
             }
             return false;
+        }
+    }, {
+        key: 'showErrorDialog',
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
         }
     }]);
 
@@ -91459,11 +91963,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RegisterController = exports.RegisterController = function () {
-    function RegisterController(AuthService, $http) {
+    function RegisterController(AuthService, $http, $mdDialog) {
         _classCallCheck(this, RegisterController);
 
         this.auth = AuthService;
         this.$http = $http;
+        this.Dialog = $mdDialog;
         this.message = '';
         this.username = '';
         this.firstname = '';
@@ -91490,10 +91995,20 @@ var RegisterController = exports.RegisterController = function () {
                     _this.auth.authenticate(res);
                 }).catch(function (res) {
                     if (res.status == 401) _this.message = "Username already in use, try a different username.";else _this.message = "Unable to register at this time, try again later";
+                    _this.showErrorDialog();
                 });
             } else {
                 this.message = " Passwords do not match!";
+                this.showErrorDialog();
             }
+        }
+    }, {
+        key: 'showErrorDialog',
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Error on Registration').textContent(this.message).ariaLabel('Registration Error').ok('OK'));
         }
     }]);
 
@@ -91590,7 +92105,6 @@ var RideDetailsController = exports.RideDetailsController = function () {
                 // create the delete request to leave the ride...
 
                 // create the url string
-                debugger;
                 var urlString = this.auth.getBaseSignupURL() + '/DeleteSignupById';
                 this.$http({
                     method: 'DELETE',
@@ -91627,7 +92141,6 @@ var RideDetailsController = exports.RideDetailsController = function () {
 
             // make the http get request
             this.$http.get(requestString).then(function (res) {
-                debugger;
                 _this3.attendees = res.data;
             }).catch(function (res) {
                 _this3.message = "Unable to Get Ride Attendee Data at this time.";
@@ -91722,7 +92235,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RidesController = exports.RidesController = function () {
-    function RidesController(AuthService, $http, RideService) {
+    function RidesController(AuthService, $http, RideService, $mdDialog) {
         var _this = this;
 
         _classCallCheck(this, RidesController);
@@ -91730,6 +92243,7 @@ var RidesController = exports.RidesController = function () {
         this.auth = AuthService;
         this.$http = $http;
         this.service = RideService;
+        this.Dialog = $mdDialog;
         this.rides = [];
         this.message = 'hello world from Rides Controller';
         this.myView = "/Rides";
@@ -91737,13 +92251,14 @@ var RidesController = exports.RidesController = function () {
         this.service.clearBackLink();
 
         // get all of the rides...
-        var requestRidesString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+        var requestRidesString = this.auth.getBaseRideURL() + '/GetUpcomingRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
 
         this.$http.get(requestRidesString).then(function (res) {
             _this.rides = res.data;
             _this.message = "Success - Got the rides";
         }).catch(function (res) {
             _this.message = "Error in getting rides.";
+            _this.showErrorDialog();
         });
     }
 
@@ -91779,6 +92294,14 @@ var RidesController = exports.RidesController = function () {
         key: 'isInAdminMode',
         value: function isInAdminMode() {
             if (this.RideService.isAdminBackLink()) return true;
+        }
+    }, {
+        key: 'showErrorDialog',
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error Detected').textContent(this.message).ariaLabel('Server Error Detected').ok('OK'));
         }
     }]);
 
@@ -91816,6 +92339,8 @@ var AuthService = exports.AuthService = function () {
         this.CURRENT_ID_KEY = 'currentId';
         this.ROLE_KEY = 'role';
         this.USERNAME_KEY = 'username';
+        this.TRACKING_KEY = 'tracking';
+        this.BACK_LINK_KEY = 'BackLink';
     }
 
     _createClass(AuthService, [{
@@ -91849,6 +92374,27 @@ var AuthService = exports.AuthService = function () {
             return localStorage.getItem(this.TOKEN_KEY);
         }
     }, {
+        key: 'getTracking',
+        value: function getTracking() {
+            return localStorage.getItem(this.TRACKING_KEY);
+        }
+    }, {
+        key: 'setTracking',
+        value: function setTracking() {
+            localStorage.setItem(this.TRACKING_KEY, 'TRACKING');
+        }
+    }, {
+        key: 'clearTracking',
+        value: function clearTracking() {
+            localStorage.removeItem(this.TRACKING_KEY);
+        }
+    }, {
+        key: 'isTrackingMode',
+        value: function isTrackingMode() {
+            var trackingString = this.getTracking();
+            if (trackingString == null) return false;else return true;
+        }
+    }, {
         key: 'getCurrentId',
         value: function getCurrentId() {
             return localStorage.getItem(this.CURRENT_ID_KEY);
@@ -91862,6 +92408,21 @@ var AuthService = exports.AuthService = function () {
         key: 'getUserName',
         value: function getUserName() {
             return localStorage.getItem(this.USERNAME_KEY);
+        }
+    }, {
+        key: 'setBackLink',
+        value: function setBackLink(backLink) {
+            localStorage.setItem(this.BACK_LINK_KEY, backLink);
+        }
+    }, {
+        key: 'getBackLink',
+        value: function getBackLink() {
+            return localStorage.getItem(this.BACK_LINK_KEY);
+        }
+    }, {
+        key: 'clearBackLink',
+        value: function clearBackLink() {
+            return localStorage.removeItem(this.BACK_LINK_KEY);
         }
     }, {
         key: 'isAuthenticated',
@@ -91888,6 +92449,8 @@ var AuthService = exports.AuthService = function () {
             localStorage.removeItem(this.CURRENT_ID_KEY);
             localStorage.removeItem(this.ROLE_KEY);
             localStorage.removeItem(this.USERNAME_KEY);
+            //redirect
+            this.$location.path(['/']);
         }
 
         // User Profile methods
@@ -91997,6 +92560,7 @@ var AuthService = exports.AuthService = function () {
             localStorage.setItem(this.CURRENT_ID_KEY, authResponse.userId);
             localStorage.setItem(this.ROLE_KEY, authResponse.role);
             localStorage.setItem(this.USERNAME_KEY, authResponse.userName);
+            localStorage.removeItem(this.TRACKING_KEY);
 
             //redirect
             this.$location.path(['/HomeLoggedIn']);
@@ -92076,6 +92640,37 @@ var FollowService = exports.FollowService = function () {
             return requestData;
         }
     }, {
+        key: 'getUpdateFollowStateUrlString',
+        value: function getUpdateFollowStateUrlString() {
+            var result = this.auth.getBaseFollowURL();
+            result += "/EditFollow";
+            return result;
+        }
+    }, {
+        key: 'createUpdateFollowerRequest',
+        value: function createUpdateFollowerRequest(riderId, status) {
+            var requestData = {
+                requestingId: this.auth.getCurrentId(),
+                authorization: this.auth.getToken(),
+                followingId: this.auth.getCurrentId(),
+                followerId: riderId,
+                State: status
+            };
+            return requestData;
+        }
+    }, {
+        key: 'createUpdateFollowingRequest',
+        value: function createUpdateFollowingRequest(riderId, status) {
+            var requestData = {
+                requestingId: this.auth.getCurrentId(),
+                authorization: this.auth.getToken(),
+                followerId: this.auth.getCurrentId(),
+                followingId: riderId,
+                State: status
+            };
+            return requestData;
+        }
+    }, {
         key: 'clearCurrentFollowerId',
         value: function clearCurrentFollowerId() {
             localStorage.removeItem(this.CURRENT_FOLLOWER_KEY);
@@ -92104,6 +92699,24 @@ var FollowService = exports.FollowService = function () {
         key: 'getCurrentFollowingId',
         value: function getCurrentFollowingId() {
             return localStorage.getItem(this.CURRENT_FOLLOWING_KEY);
+        }
+    }, {
+        key: 'routeToView',
+        value: function routeToView(newDest, backLink) {
+            this.auth.setBackLink(backLink);
+            this.$location.path([newDest]);
+        }
+    }, {
+        key: 'goBackToParentView',
+        value: function goBackToParentView() {
+            var previousView = this.auth.getBackLink();
+            this.auth.clearBackLink();
+            this.$location.path([previousView]);
+        }
+    }, {
+        key: 'clearBackLink',
+        value: function clearBackLink() {
+            this.auth.clearBackLink();
         }
     }]);
 
@@ -92134,81 +92747,70 @@ var RideService = exports.RideService = function () {
         this.auth = AuthService;
         this.$location = $location;
         this.CURRENT_RIDE_KEY = 'CurrentRide';
-        this.BACK_LINK_KEY = 'BackLink';
     }
 
     _createClass(RideService, [{
-        key: 'clearCurrentRideId',
+        key: "clearCurrentRideId",
         value: function clearCurrentRideId() {
             localStorage.removeItem(this.CURRENT_RIDE_KEY);
         }
     }, {
-        key: 'clearBackLink',
+        key: "clearBackLink",
         value: function clearBackLink() {
             localStorage.removeItem(this.BACK_LINK_KEY);
         }
     }, {
-        key: 'setCurrentRideId',
+        key: "setCurrentRideId",
         value: function setCurrentRideId(ride) {
             localStorage.setItem(this.CURRENT_RIDE_KEY, ride);
         }
     }, {
-        key: 'setBackLink',
-        value: function setBackLink(backLink) {
-            localStorage.setItem(this.BACK_LINK_KEY, backLink);
-        }
-    }, {
-        key: 'getCurrentRideId',
+        key: "getCurrentRideId",
         value: function getCurrentRideId() {
             return localStorage.getItem(this.CURRENT_RIDE_KEY);
         }
     }, {
-        key: 'getBackLink',
-        value: function getBackLink() {
-            return localStorage.getItem(this.BACK_LINK_KEY);
-        }
-    }, {
-        key: 'saveRideId',
+        key: "saveRideId",
         value: function saveRideId(ride) {
             this.setCurrentRideId(ride);
         }
     }, {
-        key: 'isAdminBackLink',
+        key: "isAdminBackLink",
         value: function isAdminBackLink() {
-            if (this.getBackLink() == "/AdminRides") return true;else return false;
+            if (this.auth.getBackLink() == "/AdminRides") return true;else return false;
         }
     }, {
-        key: 'isRideBackLink',
+        key: "isRideBackLink",
         value: function isRideBackLink() {
-            if (this.getBackLink() == "/Rides") return true;else return false;
+            if (this.auth.getBackLink() == "/Rides") return true;else return false;
         }
     }, {
-        key: 'isMyRideBackLink',
+        key: "isMyRideBackLink",
         value: function isMyRideBackLink() {
-            if (this.getBackLink() == "/MyRides") return true;else return false;
+            if (this.auth.getBackLink() == "/MyRides") return true;else return false;
         }
     }, {
-        key: 'routeToView',
+        key: "routeToView",
         value: function routeToView(newDest, backLink) {
-            this.setBackLink(backLink);
+            this.auth.setBackLink(backLink);
             this.$location.path([newDest]);
         }
     }, {
-        key: 'goBackToParentView',
+        key: "goBackToParentView",
         value: function goBackToParentView() {
-            var previousView = this.getBackLink();
-            this.clearBackLink();
+            var previousView = this.auth.getBackLink();
+            this.auth.clearBackLink();
             this.$location.path([previousView]);
         }
     }, {
-        key: 'getRideRequest',
+        key: "getRideRequest",
         value: function getRideRequest(rideId) {
             var requestString = this.auth.getBaseRideURL() + '/GetRide?RiderId=' + this.auth.getCurrentId() + '&RideId=' + rideId + '&Authorization=' + this.auth.getToken();
 
             return requestString;
         }
     }, {
-        key: 'getCreateRideRequest',
+        key: "getCreateRideRequest",
         value: function getCreateRideRequest(_rideName, _description, _startDate, _distance) {
             var requestData = {
                 riderId: this.auth.getCurrentId(),
@@ -92221,7 +92823,7 @@ var RideService = exports.RideService = function () {
             return requestData;
         }
     }, {
-        key: 'getEditRideRequest',
+        key: "getEditRideRequest",
         value: function getEditRideRequest(_rideId, _rideName, _description, _startDate, _distance) {
 
             var requestData = {
@@ -92236,7 +92838,7 @@ var RideService = exports.RideService = function () {
             return requestData;
         }
     }, {
-        key: 'canModifyRide',
+        key: "canModifyRide",
         value: function canModifyRide(riderId) {
             var currentRiderId = this.auth.getCurrentId();
             if (currentRiderId == riderId) return true;
@@ -92271,7 +92873,6 @@ var RiderService = exports.RiderService = function () {
         this.auth = AuthService;
         this.$location = $location;
         this.CURRENT_RIDER_KEY = 'CurrentRider';
-        this.BACK_LINK_KEY = 'BackLink';
     }
 
     _createClass(RiderService, [{
@@ -92290,19 +92891,9 @@ var RiderService = exports.RiderService = function () {
             localStorage.setItem(this.CURRENT_RIDER_KEY, riderId);
         }
     }, {
-        key: 'setBackLink',
-        value: function setBackLink(backLink) {
-            localStorage.setItem(this.BACK_LINK_KEY, backLink);
-        }
-    }, {
         key: 'getCurrentRiderId',
         value: function getCurrentRiderId() {
             return localStorage.getItem(this.CURRENT_RIDER_KEY);
-        }
-    }, {
-        key: 'getBackLink',
-        value: function getBackLink() {
-            return localStorage.getItem(this.BACK_LINK_KEY);
         }
     }, {
         key: 'saveRiderId',
@@ -92312,14 +92903,14 @@ var RiderService = exports.RiderService = function () {
     }, {
         key: 'routeToView',
         value: function routeToView(newDest, backLink) {
-            this.setBackLink(backLink);
+            this.auth.setBackLink(backLink);
             this.$location.path([newDest]);
         }
     }, {
         key: 'goBackToParentView',
         value: function goBackToParentView() {
-            var previousView = this.getBackLink();
-            this.clearBackLink();
+            var previousView = this.auth.getBackLink();
+            this.auth.clearBackLink();
             this.$location.path([previousView]);
         }
     }, {
@@ -92336,16 +92927,22 @@ var RiderService = exports.RiderService = function () {
             return requestString;
         }
     }, {
+        key: 'getRiderLocationUpdateUrl',
+        value: function getRiderLocationUpdateUrl() {
+            var requestString = this.auth.getBaseRiderURL() + '/UpdateRiderLocation';
+            return requestString;
+        }
+    }, {
         key: 'createRiderLocationUpdateRequest',
         value: function createRiderLocationUpdateRequest(_riderId, _rideId, _longitude, _latitude) {
             var targetRide = _rideId;
             if (_rideId == 0) targetRide = -1;
 
             var requestData = {
-                requestingId: this.getCurrentId(),
-                authorization: this.getToken(),
+                requestingId: this.auth.getCurrentId(),
+                authorization: this.auth.getToken(),
                 riderId: _riderId,
-                rideId: targetRide,
+                rideId: _rideId,
                 longitude: _longitude,
                 latitude: _latitude
             };
@@ -92422,7 +93019,6 @@ var SignupService = exports.SignupService = function () {
     }, {
         key: 'getCreateSignupRequest',
         value: function getCreateSignupRequest(_rideId) {
-            debugger;
             var requestData = {
                 requestingId: this.auth.getCurrentId(),
                 riderId: this.auth.getCurrentId(),

@@ -42,6 +42,31 @@ export class FollowService{
         }
         return requestData;
     }
+    getUpdateFollowStateUrlString() {
+        var result = this.auth.getBaseFollowURL();
+        result += "/EditFollow";
+        return result;
+    }
+    createUpdateFollowerRequest(riderId, status) {
+        var requestData = {
+            requestingId : this.auth.getCurrentId(),
+            authorization: this.auth.getToken(),
+            followingId: this.auth.getCurrentId(),
+            followerId: riderId,
+            State : status
+        }
+        return requestData;
+    }
+    createUpdateFollowingRequest(riderId, status) {
+        var requestData = {
+            requestingId : this.auth.getCurrentId(),
+            authorization: this.auth.getToken(),
+            followerId: this.auth.getCurrentId(),
+            followingId: riderId,
+            State : status
+        }
+        return requestData;
+    }
 
     clearCurrentFollowerId() {
         localStorage.removeItem(this.CURRENT_FOLLOWER_KEY);
@@ -60,6 +85,18 @@ export class FollowService{
     }
     getCurrentFollowingId(){
         return localStorage.getItem(this.CURRENT_FOLLOWING_KEY);
+    }
+    routeToView( newDest, backLink){
+        this.auth.setBackLink(backLink);
+        this.$location.path([newDest]);
+    }
+    goBackToParentView() {
+        var previousView = this.auth.getBackLink();
+        this.auth.clearBackLink();
+        this.$location.path([previousView]);
+    }
+    clearBackLink() {
+        this.auth.clearBackLink();
     }
 
 }

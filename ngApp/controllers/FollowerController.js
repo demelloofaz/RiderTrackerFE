@@ -1,11 +1,12 @@
 export class FollowerController {
-    constructor(FollowService, RiderService, $http, AuthService, $location) {
+    constructor(FollowService, RiderService, $http, AuthService, $location, $mdDialog) {
       this.message = 'Hello from Follower';
       this.FollowService = FollowService;
       this.RiderService = RiderService;
       this.$http = $http;
       this.$location= $location;
       this.auth = AuthService;
+      this.Dialog = $mdDialog;
       this.riderInfo=[];
       this.followerIds=[];
       this.followers=[];
@@ -13,9 +14,6 @@ export class FollowerController {
       this.FollowService.clearCurrentFollowingId();
 
       var ridersRequestString = this.RiderService.getAllRidersInfoRequestString();
-  
-      debugger;
-
       // Needto get all the riders.
       this.$http.get(ridersRequestString)
       .then(res => {  
@@ -31,10 +29,12 @@ export class FollowerController {
           })
           .catch(res => {
             this.message = "Error in getting my followers";
+            this.showErrorDialog();
           });
       })
       .catch(res => {
           this.message = "Error in getting rider info.";
+          this.showErrorDialog();
       });
 
     }
@@ -42,19 +42,34 @@ export class FollowerController {
       this.followers=[];
       for (var i = 0; i < this.riderInfo.length; i++) {
         var currentId = this.riderInfo[i].riderId;
-        if (this.isAFollower(currentId))
+        if (this.isAFollower(currentId)) {
+          this.riderInfo[i].statusString = this.getFollowerStatusString(currentId);
           this.followers.push(this.riderInfo[i]);
+        }
       }
     }
 
-    isAFollower(riderID)
+    isAFollower(riderId)
     {
       for (var i = 0; i < this.followerIds.length; i++){
-        if (this.followerIds[i].followerID == riderID){
-          return true;
+        if (this.followerIds[i].followerID == riderId) {
+          if (this.followerIds[i].followState < 2)  // hide declined or blocked...
+          {
+            return true;
+          } 
         }
       }
       return false;
+    }
+    getFollowerStatusString(riderId){
+      var result = "        ";
+      for (var i = 0; i < this.followerIds.length; i++) {
+        if (this.followerIds[i].followerID == riderId) {
+          if (this.followerIds[i].followState == 0)
+            result = "Requested";
+        }
+      }
+      return result;
     }
     removeFollower(riderId)
     {
@@ -90,7 +105,51 @@ export class FollowerController {
            })
         .catch( (res) => {
             this.message = "Unable to Delete Ride Data at this time.";
+            this.showErrorDialog();
         });
 
     }
+
+    isPending (riderId){
+      for (var i = 0; i < this.followerIds.length; i++) 
+      {
+        if (this.followerIds[i].followerID == riderId) {
+          if (this.followerIds[i].followState == 0) {
+            return true;
+          }
+          else
+            return false;
+        }
+      }
+      return false;
+    }
+
+    updateFollowRequest(riderId, status) {
+      var requestString = this.FollowService.getUpdateFollowStateUrlString();
+      var requestData = this.FollowService.createUpdateFollowerRequest(status);
+      // do the delete request...
+      this.$http.post(requestString , requestData)
+        .then( (res) => {
+            this.message = "Follow status updated";
+           })
+        .catch( (res) => {
+            this.message = "Unable to update follow status at this time.";
+            this.showErrorDialog();
+        });
+    }
+
+    showErrorDialog(){
+      // Appending dialog to document.body to cover sidenav in docs app
+      // Modal dialogs should fully cover application
+      // to prevent interaction outside of dialog
+      this.Dialog.show(
+      this.Dialog.alert()
+          .parent(angular.element(document.querySelector('#popupContainer')))
+          .clickOutsideToClose(true)
+          .title('Server Error')
+          .textContent(this.message)
+          .ariaLabel('Server Error')
+          .ok('OK')
+      );
+  }
 }

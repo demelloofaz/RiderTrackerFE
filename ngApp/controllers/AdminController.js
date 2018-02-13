@@ -1,8 +1,9 @@
 export class AdminController {
-    constructor(AuthService, $http, RiderService) {
+    constructor(AuthService, $http, RiderService, $mdDialog) {
       this.auth = AuthService;
       this.$http = $http;
       this.service = RiderService;
+      this.Dialog = $mdDialog;
       this.riders = [];
       this.message = 'hello world from Admin Rider Controller';
       this.myView = "/Admin";
@@ -19,8 +20,25 @@ export class AdminController {
         })
         .catch(res => {
             this.message = "Error in getting riders.";
+            this.showErrorDialog();
         });
     }
+
+    showErrorDialog(){
+        // Appending dialog to document.body to cover sidenav in docs app
+    // Modal dialogs should fully cover application
+    // to prevent interaction outside of dialog
+    this.Dialog.show(
+      this.Dialog.alert()
+        .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(true)
+        .title('Server Error')
+        .textContent(this.message)
+        .ariaLabel('Server Error')
+        .ok('OK')
+    );
+    }
+
     detailRider(currentRiderId) {
 
         this.service.saveRiderId(currentRiderId);

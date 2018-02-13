@@ -1,5 +1,5 @@
 export class NavController {
-    constructor(AuthService) {
+    constructor(AuthService, $location) {
       this.message = 'hello world';
       this.auth = AuthService;
     }
@@ -26,5 +26,17 @@ export class NavController {
 
      logout() {
          this.auth.logout();
+     }
+     isTrackingMode(){
+        return  this.auth.isTrackingMode();
+     }
+     showNormalMode()
+     {
+         if (!this.isTrackingMode()){
+            if (this.isAuthenticated())
+                return true;
+         }
+         return false;
+        
      }
   }

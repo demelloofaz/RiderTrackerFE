@@ -4,7 +4,6 @@ export class RideService{
         this.auth = AuthService;
         this.$location = $location;
         this.CURRENT_RIDE_KEY = 'CurrentRide';
-        this.BACK_LINK_KEY = 'BackLink';
     }
     clearCurrentRideId() {
         localStorage.removeItem(this.CURRENT_RIDE_KEY);
@@ -15,43 +14,37 @@ export class RideService{
     setCurrentRideId(ride){
         localStorage.setItem(this.CURRENT_RIDE_KEY, ride );
     }
-    setBackLink(backLink){
-        localStorage.setItem(this.BACK_LINK_KEY, backLink );
-    }
     getCurrentRideId(){
         return localStorage.getItem(this.CURRENT_RIDE_KEY);
-    }
-    getBackLink(){
-        return localStorage.getItem(this.BACK_LINK_KEY);
     }
     saveRideId( ride){
         this.setCurrentRideId(ride);
     }
     isAdminBackLink() {
-        if (this.getBackLink() == "/AdminRides")
+        if (this.auth.getBackLink() == "/AdminRides")
            return true;
         else
            return false;
     }
     isRideBackLink() {
-        if (this.getBackLink() == "/Rides")
+        if (this.auth.getBackLink() == "/Rides")
            return true;
         else
            return false;
     }
     isMyRideBackLink() {
-        if (this.getBackLink() == "/MyRides")
+        if (this.auth.getBackLink() == "/MyRides")
            return true;
         else
            return false;
     }
     routeToView( newDest, backLink){
-        this.setBackLink(backLink);
+        this.auth.setBackLink(backLink);
         this.$location.path([newDest]);
     }
     goBackToParentView() {
-        var previousView = this.getBackLink();
-        this.clearBackLink();
+        var previousView = this.auth.getBackLink();
+        this.auth.clearBackLink();
         this.$location.path([previousView]);
 
     }

@@ -1,11 +1,12 @@
 export class FollowRequestController {
-    constructor(FollowService, RiderService, $http, AuthService, $location) {
+    constructor(FollowService, RiderService, $http, AuthService, $location, $mdDialog) {
       this.message = 'Hello from Follow Request';
       this.RiderService = RiderService;
       this.FollowService = FollowService;
       this.$http = $http;
       this.$location= $location;
       this.auth = AuthService;
+      this.Dialog = $mdDialog;
       this.followingIds=[];
       this.unfollowed=[];
       this.riderInfo=[];
@@ -28,10 +29,12 @@ export class FollowRequestController {
           })
           .catch(res => {
             this.message = "Error in getting my followings";
+            this.showErrorDialog();
           });
       })
       .catch(res => {
           this.message = "Error in getting rider info.";
+          this.showErrorDialog();
       });
 
     }
@@ -45,26 +48,25 @@ export class FollowRequestController {
       }
     }
 
-    alreadyFollowing(riderID)
+    alreadyFollowing(riderId)
     {
       for (var i = 0; i < this.followingIds.length; i++){
-        if (this.followingIds[i].followingID == riderID){
+        if (this.followingIds[i].followingID == riderId){
           return true;
         }
       }
       return false;
     }
     requestToFollow(riderId) {
-      debugger;
       var request = this.FollowService.createFollowRequest(riderId);
       this.$http.post(this.auth.getBaseFollowURL()  + '/CreateFollow', request)
       .then(res => {
-         debugger;
          var newFollow = res.data;
          this.updateFollowingData(newFollow);
       })
       .catch(res => {
           this.message = "Unable to follow at this time, try again later";
+          this.showErrorDialog();
       });
 
     }
@@ -74,4 +76,18 @@ export class FollowRequestController {
       this.unfollowed=[];
       this.createUnfollowedList();
     }
+    showErrorDialog(){
+      // Appending dialog to document.body to cover sidenav in docs app
+      // Modal dialogs should fully cover application
+      // to prevent interaction outside of dialog
+      this.Dialog.show(
+      this.Dialog.alert()
+          .parent(angular.element(document.querySelector('#popupContainer')))
+          .clickOutsideToClose(true)
+          .title('Server Error')
+          .textContent(this.message)
+          .ariaLabel('Server Error')
+          .ok('OK')
+      );
+  }
 }

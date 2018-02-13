@@ -1,4 +1,51 @@
-<h2>Home Logged in</h2>
-<p>
-    {{controller.message}}
-</p>
+<div id="popupContainer" ng-cloak>
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Me">
+                <md-content>
+                    <div id="mapholder"></div>
+                    <p ng-hide="true" id="currLon"></p>
+                    <p ng-hide="true" id="currLat"></p>
+                    <p id="demo"></p>
+                    <md-button ng-show="!controller.trackingEnabled" ng-click="controller.showMyLocation()"class="md-primary md-raised">&nbspUpdate My Location&nbsp</md-button>
+                    <md-button ng-click="controller.toggleTrackingButton()"class="md-primary md-raised">&nbsp{{controller.ButtonText}}&nbsp</md-button>
+                </md-content>
+            </md-tab>
+            <md-tab label="Riders">
+                <md-content>
+                    <md-input-container>
+                        <md-icon style="color: blue">search</md-icon>
+                        <input class="search-bar" ng-model="search" ng-model-options="{debounce:1000}" ng-change="fetch()" placeholder="Search" width = "60"/>
+                    </md-input-container>
+                    <h4>Riders on my ride:</h4>
+                    <table ng-if="controller.MyRideCompanions.length > 0" class="following-table">
+                        <tr>
+                            <th class="following-th">Full Name</th>
+                            <th class="following-th">User Name</th>
+                        </tr>
+                        <tr ng-repeat="f in controller.MyRideCompanions | filter : search">
+                        <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.fullName}}</td>
+                        <td class="following-td" ng-if="$even">{{ f.fullName}}</td>
+                        <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.userName }}</td>
+                        <td class="following-td" ng-if="$even">{{ f.userName }}</td>
+                        <td class="following-td">
+                            <md-button ng-click="controller.locateRider(f.riderId)" class="rider-button md-icon-button" aria-label="Locate">
+                                <md-tooltip md-direction="top">Locate Rider</md-tooltip>
+                                <md-icon style="display: unset; color:dodgerblue"><i class="material-icons">my_location</i></md-icon>
+                            </md-button>
+                        </td>    
+                    </tr>
+                    </table>                   
+                </md-content>
+            </md-tab>
+            <md-tab label="Other">
+                <md-content>
+                    <h4>To Be done in future version</h4>
+                    <div id="mapholder3"></div>
+                    <p ng-hide="true" id="currLon3"></p>
+                    <p ng-hide="true" id="currLat3"></p>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
