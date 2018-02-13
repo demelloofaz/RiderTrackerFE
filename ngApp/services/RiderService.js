@@ -4,7 +4,6 @@ export class RiderService{
         this.auth = AuthService;
         this.$location = $location;
         this.CURRENT_RIDER_KEY = 'CurrentRider';
-        this.BACK_LINK_KEY = 'BackLink';
     }
     clearCurrentRiderId() {
         localStorage.removeItem(this.CURRENT_RIDER_KEY);
@@ -15,27 +14,20 @@ export class RiderService{
     setCurrentRiderId(riderId){
         localStorage.setItem(this.CURRENT_RIDER_KEY, riderId );
     }
-    setBackLink(backLink){
-        localStorage.setItem(this.BACK_LINK_KEY, backLink );
-    }
     getCurrentRiderId(){
         return localStorage.getItem(this.CURRENT_RIDER_KEY);
-    }
-    getBackLink(){
-        return localStorage.getItem(this.BACK_LINK_KEY);
     }
     saveRiderId( rider){
         this.setCurrentRiderId(rider);
     }
     routeToView( newDest, backLink){
-        this.setBackLink(backLink);
+        this.auth.setBackLink(backLink);
         this.$location.path([newDest]);
     }
     goBackToParentView() {
-        var previousView = this.getBackLink();
-        this.clearBackLink();
+        var previousView = this.auth.getBackLink();
+        this.auth.clearBackLink();
         this.$location.path([previousView]);
-
     }
     getRiderRequest(riderId) {
         var requestString = this.auth.getBaseRiderURL()  + 
@@ -58,6 +50,11 @@ export class RiderService{
         this.auth.getToken();
         return requestString;
     }
+    getRiderLocationUpdateUrl() {
+        var requestString = this.auth.getBaseRiderURL()  + 
+        '/UpdateRiderLocation';
+        return requestString;
+    }
     createRiderLocationUpdateRequest(_riderId, _rideId, _longitude, _latitude)
     {
         var targetRide = _rideId;
@@ -65,10 +62,10 @@ export class RiderService{
             targetRide = -1;
             
         var requestData = {
-            requestingId : this.getCurrentId(),
-            authorization : this.getToken(),
+            requestingId : this.auth.getCurrentId(),
+            authorization : this.auth.getToken(),
             riderId: _riderId,
-            rideId: targetRide,
+            rideId: _rideId,
             longitude: _longitude,
             latitude: _latitude
         }

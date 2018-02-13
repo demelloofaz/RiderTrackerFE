@@ -1,28 +1,42 @@
-<h4>Ride Administration Page</h4>
-<div>
-<md-button  ng-click="controller.createRide()" class="ride-button md-raised md-primary">&nbsp Add a Ride &nbsp</md-button>
-</div>
-<div>
-    <table>
-        <tr ng-repeat="ride in controller.rides">
-        <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
-        <td ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
-        <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
-        <td ng-if="$even">{{ ride.rideName }}</td>
-        <td><md-button ng-click="controller.editRide(ride.id)" class="rider-button  md-primary">&nbsp Edit &nbsp</md-button></td>
-        <td><md-button ng-click="controller.deleteRide(ride.id)" class="rider-button  md-primary">&nbsp Delete &nbsp</md-button></td>
-        <td><md-button ng-click="controller.detailRide(ride.id)" class="rider-button  md-primary">&nbsp Details &nbsp</md-button></td>
-        </tr>
-    </table>
-</div>
-<!--
-<div class = "ride-Admin" ng-repeat="ride in controller.rides" ng-cloak>
-    {{ride.startDate}} : {{ ride.rideName}}
-   <md-button  ng-click="controller.editRide(ride.id)" class="ride-button md-raised md-primary">&nbsp Edit &nbsp</md-button>
-   <md-button  ng-click="controller.deleteRide(ride.id)" class="ride-button md-raised md-primary">&nbsp Delete &nbsp</md-button>
-   <md-button  ng-click="controller.detailRide(ride.id)" class="ride-button md-raised md-primary">&nbsp Detail &nbsp</md-button>
-</div>
--->
+<div id="popupContainer" ng-cloak>
+    <h4>Ride Administration Page</h4>
+    <div>
 
-<a ui-sref="Admin" class="btn btn-link"><md-button class="md-primary md-raised">Admin Riders</md-button></a>
-<a ui-sref="Profile" class="btn btn-link"><md-button>Back to Profile</md-button></a>
+    <md-button  ng-click="controller.createRide()" class="ride-button md-raised md-primary">&nbsp New Ride &nbsp
+            <md-tooltip md-direction="top">Create a new Ride</md-tooltip>
+    </md-button></div>
+    <div>
+        <md-input-container>
+            <md-icon style="color: blue">search</md-icon>
+            <input class="search-bar" ng-model="search" ng-model-options="{debounce:1000}" ng-change="fetch()" placeholder="Search" width = "60"/>
+        </md-input-container>
+        <table>
+            <tr ng-repeat="ride in controller.rides | filter : search">
+            <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
+            <td ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
+            <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
+            <td ng-if="$even">{{ ride.rideName }}</td>
+            <td class="ride-td">
+                <md-button ng-click="controller.detailRide(ride.id)" class="rider-button md-icon-button" aria-label="Details">
+                        <md-tooltip md-direction="top">Ride Details</md-tooltip>
+                        <md-icon style="display: unset; color:deepskyblue"><i class="material-icons">details</i></md-icon>
+                </md-button>
+            </td>
+            <td class="ride-td">
+                <md-button ng-click="controller.editRide(ride.id)" class="ride-button  md-icon-button" aria-label="Edit">
+                    <md-tooltip md-direction="top">Edit Ride</md-tooltip>
+                    <md-icon style="display: unset; color:blueviolet"><i class="material-icons">edit</i></md-icon>
+                </md-button>
+            </td>
+            <td class="ride-td">
+                <md-button ng-click="controller.deleteRide(ride.id)" class="ride-button  md-icon-button"aria-label="Delete">
+                    <md-tooltip md-direction="top">Delete Ride</md-tooltip>
+                    <md-icon style="display: unset; color:red"><i class="material-icons">remove_circle</i></md-icon>
+                </md-button>
+            </td>
+            </tr>
+        </table>
+    </div>
+    <a ui-sref="Admin" class="btn btn-link"><md-button class="md-primary md-flat">&nbsp Go to Rider Admin &nbsp</md-button></a>
+    <a ui-sref="Profile" class="btn btn-link"><md-button class="md-primary md-flat" >&nbsp Back to Profile &nbsp</md-button></a>
+</div>

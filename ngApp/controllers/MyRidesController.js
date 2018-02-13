@@ -1,9 +1,10 @@
 export class MyRidesController {
-    constructor(AuthService, $http, RideService, SignupService) {
+    constructor(AuthService, $http, RideService, SignupService, $mdDialog) {
       this.auth = AuthService;
       this.$http = $http;
       this.service = RideService;
       this.SignupService = SignupService;
+      this.Dialog = $mdDialog;
       this.rides = [];
       this.signups = [];
       this.myRides = [];
@@ -12,10 +13,8 @@ export class MyRidesController {
       this.service.clearCurrentRideId();
       this.service.clearBackLink();
 
-      debugger;
-
       // get all of the rides...
-      var requestRidesString = this.auth.getBaseRideURL() + '/GetAllRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+      var requestRidesString = this.auth.getBaseRideURL() + '/GetUpcomingRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
       
       this.$http.get(requestRidesString)
         .then(res => {  
@@ -31,10 +30,12 @@ export class MyRidesController {
             })
             .catch(res => {
               this.message = "Error in getting rider signups.";
+              this.showErrorDialog();
             });
         })
         .catch(res => {
             this.message = "Error in getting rides.";
+            this.showErrorDialog();
         });
     }
     getAllRiderSignups(){
@@ -48,6 +49,7 @@ export class MyRidesController {
         })
         .catch(res => {
             this.message = "Error in getting rider signups.";
+            this.showErrorDialog();
         });
     }
     createMyRidesList(){
@@ -105,7 +107,6 @@ export class MyRidesController {
     }
 
     signOutRide(_rideId){
-      debugger;
       var urlString  = this.auth.getBaseSignupURL()  + '/DeleteSignup';
       this.$http({
         method: 'DELETE',
@@ -120,7 +121,6 @@ export class MyRidesController {
             'Content-type': 'application/json;charset=utf-8'
         }})
         .then( (res) => {
-            debugger;
             this.message = "Deleted signup";
             this.updateMyRidesList(_rideId);
           })
@@ -148,5 +148,19 @@ export class MyRidesController {
           }
       }
 
+    }
+    showErrorDialog(){
+        // Appending dialog to document.body to cover sidenav in docs app
+        // Modal dialogs should fully cover application
+        // to prevent interaction outside of dialog
+        this.Dialog.show(
+        this.Dialog.alert()
+            .parent(angular.element(document.querySelector('#popupContainer')))
+            .clickOutsideToClose(true)
+            .title('Server Error Detected')
+            .textContent(this.message)
+            .ariaLabel('Server Error Detected')
+            .ok('OK')
+        );
     }
   }

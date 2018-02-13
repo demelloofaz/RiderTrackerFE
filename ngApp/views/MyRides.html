@@ -1,25 +1,54 @@
-<h2>My Signed in Rides</h2>
-<md-button  ng-click="controller.createRide()" class="ride-button md-raised md-primary">&nbsp Add Ride &nbsp</md-button>
-<div>
-    <table class="ride-table">
-        <tr>
-            <th class="ride-th">Date/Time</th>
-            <th class="ride-th">Ride Name</th>
-        </tr>
-        <tr class="ride-td" ng-repeat="ride in controller.myRides">
-        <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
-        <td class="ride-td" ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
-        <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
-        <td class="ride-td" ng-if="$even">{{ ride.rideName }}</td>
-        <td class="ride-td"><md-button ng-click="controller.signOutRide(ride.id)" class="rider-button md-primary md-raised">&nbsp Leave the Ride &nbsp</md-button></td>
-        <td class="ride-td"><md-button ng-click="controller.detailRide(ride.id)" class="rider-button md-primary md-raised">&nbsp Details &nbsp</md-button></td>
-        <td class="ride-td"><md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.editRide(ride.id)" class="ride-button  md-primary md-raised">&nbsp Edit &nbsp</md-button></td>
-        <td class="ride-td"><md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.deleteRide(ride.id)" class="ride-button  md-primary md-raised">&nbsp Delete &nbsp</md-button></td>
-        </tr>
-    </table>
+<div id="popupContainer" ng-cloak>
+    <h2>My Signed in Rides</h2>
+    <md-button  ng-click="controller.createRide()" class="ride-button md-raised md-primary">&nbsp Add Ride &nbsp</md-button>
+    <div>
+        <md-input-container>
+            <md-icon style="color: blue">search</md-icon>
+            <input class="search-bar" ng-model="search" ng-model-options="{debounce:1000}" ng-change="fetch()" placeholder="Search" width = "60"/>
+        </md-input-container>
+
+        <table class="ride-table">
+            <tr>
+                <th class="ride-th">Date/Time</th>
+                <th class="ride-th">Ride Name</th>
+            </tr>
+            <tr class="ride-td" ng-repeat="ride in controller.myRides|filter: search"> 
+            <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
+            <td class="ride-td" ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
+            <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
+            <td class="ride-td" ng-if="$even">{{ ride.rideName }}</td>
+            <td class="ride-td">
+                <md-button ng-click="controller.signOutRide(ride.id)" class="rider-button md-icon-button" aria-label="Leave Ride">
+                    <md-tooltip md-direction="top">Leave Ride</md-tooltip>
+                    <md-icon style="display: unset; color:green"><i class="material-icons">highlight_off</i></md-icon>
+                </md-button>
+            </td>
+            <td class="ride-td">
+                <md-button ng-click="controller.detailRide(ride.id)" class="rider-button md-icon-button" aria-label="Details">
+                        <md-tooltip md-direction="top">Ride Details</md-tooltip>
+                        <md-icon style="display: unset; color:deepskyblue"><i class="material-icons">details</i></md-icon>
+                </md-button>
+            </td>
+            <td class="ride-td">
+                <md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.editRide(ride.id)" class="ride-button  md-icon-button" aria-label="Edit">
+                    <md-tooltip md-direction="top">Edit Ride</md-tooltip>
+                    <md-icon style="display: unset; color:blueviolet"><i class="material-icons">edit</i></md-icon>
+                </md-button>
+            </td>
+            <td class="ride-td">
+                <md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.deleteRide(ride.id)" class="ride-button  md-icon-button"aria-label="Delete">
+                    <md-tooltip md-direction="top">Delete Ride</md-tooltip>
+                    <md-icon style="display: unset; color:red"><i class="material-icons">remove_circle</i></md-icon>
+                </md-button>
+            </td>
+            </tr>
+        </table>
+    </div>
+    <!--
+    <a ng-if="!contoller.isInAdminMode()" ui-sref="MySignups" class="btn btn-link">My Signups</a>
+    -->
+    <a ui-sref="Rides" class="btn btn-link"><md-button class="md-primary md-flat">Go to All Rides</md-button></a>
+    <a ui-sref="HomeLoggedIn" class="btn btn-link">
+        <md-button class="md-primary md-flat">Home <i class="material-icons">home</i></md-button>
+    </a>
 </div>
-<!--
-<a ng-if="!contoller.isInAdminMode()" ui-sref="MySignups" class="btn btn-link">My Signups</a>
--->
-<a ui-sref="Rides" class="btn btn-link"><md-button class="md-primary md-raised">All Rides</md-button></a>
-<a ui-sref="HomeLoggedIn" class="btn btn-link">Back</a>

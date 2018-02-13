@@ -15,6 +15,8 @@ export class AuthService{
         this.CURRENT_ID_KEY = 'currentId';
         this.ROLE_KEY = 'role';
         this.USERNAME_KEY = 'username';
+        this.TRACKING_KEY = 'tracking';
+        this.BACK_LINK_KEY = 'BackLink';
     }
 
     getBaseRiderURL() {
@@ -35,6 +37,23 @@ export class AuthService{
     getToken() {
         return localStorage.getItem(this.TOKEN_KEY);
     }
+    getTracking() {
+        return localStorage.getItem(this.TRACKING_KEY);
+    }
+    setTracking() {
+        localStorage.setItem(this.TRACKING_KEY,'TRACKING');
+    }
+    clearTracking() {
+        localStorage.removeItem(this.TRACKING_KEY);
+    }
+
+    isTrackingMode(){
+        var trackingString = this.getTracking();
+        if (trackingString == null)
+            return false;
+        else
+            return true;
+    }
     getCurrentId() {
         return localStorage.getItem(this.CURRENT_ID_KEY);
     }
@@ -43,6 +62,16 @@ export class AuthService{
     }
     getUserName() {
         return localStorage.getItem(this.USERNAME_KEY);
+    }
+
+    setBackLink(backLink){
+        localStorage.setItem(this.BACK_LINK_KEY, backLink );
+    }
+    getBackLink(){
+        return localStorage.getItem(this.BACK_LINK_KEY);
+    }
+    clearBackLink(){
+        return localStorage.removeItem(this.BACK_LINK_KEY);
     }
 
     isAuthenticated(){
@@ -69,6 +98,9 @@ export class AuthService{
         localStorage.removeItem(this.CURRENT_ID_KEY);
         localStorage.removeItem(this.ROLE_KEY);
         localStorage.removeItem(this.USERNAME_KEY);
+        //redirect
+        this.$location.path(['/']);
+        
     }
 
     // User Profile methods
@@ -175,6 +207,7 @@ export class AuthService{
         localStorage.setItem(this.CURRENT_ID_KEY, authResponse.userId );
         localStorage.setItem(this.ROLE_KEY, authResponse.role);
         localStorage.setItem(this.USERNAME_KEY, authResponse.userName);
+        localStorage.removeItem(this.TRACKING_KEY);
         
         //redirect
         this.$location.path(['/HomeLoggedIn']);

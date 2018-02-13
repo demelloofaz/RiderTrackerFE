@@ -75,7 +75,6 @@ export class RideDetailsController {
         // create the delete request to leave the ride...
 
         // create the url string
-        debugger;
         var urlString  = this.auth.getBaseSignupURL()  + '/DeleteSignupById';
         this.$http({
           method: 'DELETE',
@@ -112,7 +111,6 @@ export class RideDetailsController {
       // make the http get request
       this.$http.get(requestString)
         .then( (res) => {
-            debugger;
             this.attendees = res.data;
         }).
         catch( (res) => {

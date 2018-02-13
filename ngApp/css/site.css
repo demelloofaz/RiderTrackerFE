@@ -97,5 +97,26 @@
 }
 #mapholder {
   height: 400px;
-  width: 600px;
+  width: 380px;
+}
+
+md-fab-trigger.align-with-text {
+  left: 7px; }
+
+body {
+    background-color:seashell ;
+}
+
+.nav-btn  {
+  font-size: 12px;
+  min-width: 45px;
+  margin:2px 2px;
+  padding:2;
+}
+
+.my-btn {
+  font-size: 12px;
+  min-width: 45px;
+  margin:2px 1px;
+  padding:0;
 }

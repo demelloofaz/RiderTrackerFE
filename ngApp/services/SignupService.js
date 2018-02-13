@@ -42,7 +42,6 @@ export class SignupService{
     }
 
     getCreateSignupRequest(_rideId) {
-        debugger;
         var requestData = {
             requestingId: this.auth.getCurrentId(),
             riderId : this.auth.getCurrentId(),

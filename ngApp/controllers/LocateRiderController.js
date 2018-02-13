@@ -1,9 +1,10 @@
 export class LocateRiderController {
-    constructor(AuthService, RiderService, FollowService,  $location, $http) {
+    constructor(AuthService, RiderService, FollowService,  $location, $http, $mdDialog) {
       this.auth = AuthService;
       this.RiderService = RiderService;
       this.FollowService = FollowService;
       this.$location = $location;
+      this.Dialog = $mdDialog;
       this.$http = $http;
       this.RiderIdToLocate =  this.FollowService.getCurrentFollowingId();
       this.RiderLocationData;
@@ -14,16 +15,37 @@ export class LocateRiderController {
       var request = this.RiderService.getRiderLocationString(this.RiderIdToLocate);
 
       // make the http get request
-      debugger;
       this.$http.get(request)
       .then( (res) => {
           this.RiderLocationData = res.data;
-          this.LatLon = this.RiderLocationData.latitude + "," + this.RiderLocationData.longitude;
-          this.mapPosition();
+          if (this.RiderLocationData.latitude != null) {
+               this.mapPosition();
+               this.LatLon = this.RiderLocationData.latitude + "," + this.RiderLocationData.longitude;
+          }
+          else {
+            this.showAlert();
+          }
         }).
           catch( (res) => {
               this.message = "Unable to Get Loction Data at this time.";
+              this.showErrorDialog();
           });
+    }
+
+    showAlert() 
+    {
+      // Appending dialog to document.body to cover sidenav in docs app
+      // Modal dialogs should fully cover application
+      // to prevent interaction outside of dialog
+      this.Dialog.show(
+        this.Dialog.alert()
+          .parent(angular.element(document.querySelector('#popupContainer')))
+          .clickOutsideToClose(true)
+          .title('Rider Location Not Fond')
+          .textContent('Location for rider is not known!')
+          .ariaLabel("Location Not found")
+          .ok('OK')
+      );
     }
     // google maps mapping interface...
     mapPosition() {
@@ -67,5 +89,23 @@ export class LocateRiderController {
                   alert('Geocoder failed due to: ' + status);
               }
           });
+    }
+    goBackToParentView()
+    {
+      this.FollowService.goBackToParentView();
+    }
+    showErrorDialog(){
+        // Appending dialog to document.body to cover sidenav in docs app
+        // Modal dialogs should fully cover application
+        // to prevent interaction outside of dialog
+        this.Dialog.show(
+        this.Dialog.alert()
+            .parent(angular.element(document.querySelector('#popupContainer')))
+            .clickOutsideToClose(true)
+            .title('Server Error')
+            .textContent(this.message)
+            .ariaLabel('Server Error')
+            .ok('OK')
+        );
     }
   }
