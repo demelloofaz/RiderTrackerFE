@@ -34,5 +34,18 @@
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0",
     "webpack": "^2.1.0-beta.21"
-  }
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/demelloofaz/RiderTrackerFE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/demelloofaz/RiderTrackerFE/issues"
+  },
+  "homepage": "https://github.com/demelloofaz/RiderTrackerFE#readme",
+  "description": ""
 }
