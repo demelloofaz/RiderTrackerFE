@@ -183,7 +183,7 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     controllerAs: 'controller'
   }).state('Login', {
     url: '/Login',
-    templateUrl: '/ngApp/views/login.html',
+    templateUrl: '/ngApp/views/Login.html',
     controller: _LoginController.LoginController,
     controllerAs: 'controller'
   }).state('Register', {
@@ -92329,7 +92329,8 @@ var AuthService = exports.AuthService = function () {
 
         this.$http = $http;
         this.$location = $location;
-        this.BASE_URL = "http://localhost:60944";
+        //this.BASE_URL = "http://localhost:60944";
+        this.BASE_URL = "http://13.56.174.144";
         this.BASE_RIDER_URL = this.BASE_URL + '/Riders';
         this.BASE_RIDES_URL = this.BASE_URL + '/Rides';
         this.BASE_SIGNUPS_URL = this.BASE_URL + '/Signups';
