@@ -5,7 +5,8 @@ export class AuthService{
     {
         this.$http = $http;
         this.$location = $location;
-        this.BASE_URL = "http://localhost:60944";
+        //this.BASE_URL = "http://localhost:60944";
+        this.BASE_URL = "http://13.56.174.144";
         this.BASE_RIDER_URL = this.BASE_URL + '/Riders';
         this.BASE_RIDES_URL = this.BASE_URL + '/Rides';
         this.BASE_SIGNUPS_URL = this.BASE_URL + '/Signups';
