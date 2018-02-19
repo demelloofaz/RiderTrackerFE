@@ -96,7 +96,7 @@ import {FollowService} from './services/FollowService';
           })
           .state('Rides', {
             url: '/Rides',
-            templateUrl: '/ngApp/views/rides.html',
+            templateUrl: '/ngApp/views/Rides.html',
             controller: RidesController,
             controllerAs: 'controller'
           })
