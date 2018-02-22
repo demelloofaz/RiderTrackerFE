@@ -108,19 +108,19 @@ import {FollowService} from './services/FollowService';
           })
           .state('CreateRide', {
             url: '/CreateRide',
-            templateUrl: '/ngApp/views/CreateRide.html',
+            templateUrl: '/ngApp/views/CreateRide.Html',
             controller: CreateRideController,
             controllerAs: 'controller'
           })
           .state('EditRide', {
             url: '/EditRide',
-            templateUrl: '/ngApp/views/EditRide.html',
+            templateUrl: '/ngApp/views/EditRide.Html',
             controller: EditRideController,
             controllerAs: 'controller'
           })
           .state('DeleteRide', {
             url: '/DeleteRide',
-            templateUrl: '/ngApp/views/DeleteRide.html',
+            templateUrl: '/ngApp/views/DeleteRide.Html',
             controller: DeleteRideController,
             controllerAs: 'controller'
           })
@@ -132,19 +132,19 @@ import {FollowService} from './services/FollowService';
           })
           .state('CreateRider', {
             url: '/CreateRider',
-            templateUrl: '/ngApp/views/CreateRider.html',
+            templateUrl: '/ngApp/views/CreateRider.Html',
             controller: CreateRiderController,
             controllerAs: 'controller'
           })
           .state('EditRider', {
             url: '/EditRider',
-            templateUrl: '/ngApp/views/EditRider.html',
+            templateUrl: '/ngApp/views/EditRider.Html',
             controller: EditRiderController,
             controllerAs: 'controller'
           })
           .state('DeleteRider', {
             url: '/DeleteRider',
-            templateUrl: '/ngApp/views/DeleteRider.html',
+            templateUrl: '/ngApp/views/DeleteRider.Html',
             controller: DeleteRiderController,
             controllerAs: 'controller'
           })

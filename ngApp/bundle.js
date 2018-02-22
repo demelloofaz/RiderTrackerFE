@@ -218,17 +218,17 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     controllerAs: 'controller'
   }).state('CreateRide', {
     url: '/CreateRide',
-    templateUrl: '/ngApp/views/CreateRide.html',
+    templateUrl: '/ngApp/views/CreateRide.Html',
     controller: _CreateRideController.CreateRideController,
     controllerAs: 'controller'
   }).state('EditRide', {
     url: '/EditRide',
-    templateUrl: '/ngApp/views/EditRide.html',
+    templateUrl: '/ngApp/views/EditRide.Html',
     controller: _EditRideController.EditRideController,
     controllerAs: 'controller'
   }).state('DeleteRide', {
     url: '/DeleteRide',
-    templateUrl: '/ngApp/views/DeleteRide.html',
+    templateUrl: '/ngApp/views/DeleteRide.Html',
     controller: _DeleteRideController.DeleteRideController,
     controllerAs: 'controller'
   }).state('RideDetails', {
@@ -238,17 +238,17 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     controllerAs: 'controller'
   }).state('CreateRider', {
     url: '/CreateRider',
-    templateUrl: '/ngApp/views/CreateRider.html',
+    templateUrl: '/ngApp/views/CreateRider.Html',
     controller: _CreateRiderController.CreateRiderController,
     controllerAs: 'controller'
   }).state('EditRider', {
     url: '/EditRider',
-    templateUrl: '/ngApp/views/EditRider.html',
+    templateUrl: '/ngApp/views/EditRider.Html',
     controller: _EditRiderController.EditRiderController,
     controllerAs: 'controller'
   }).state('DeleteRider', {
     url: '/DeleteRider',
-    templateUrl: '/ngApp/views/DeleteRider.html',
+    templateUrl: '/ngApp/views/DeleteRider.Html',
     controller: _DeleteRiderController.DeleteRiderController,
     controllerAs: 'controller'
   }).state('RiderDetails', {
