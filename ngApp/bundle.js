@@ -198,7 +198,7 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     controllerAs: 'controller'
   }).state('Admin', {
     url: '/Admin',
-    templateUrl: '/ngApp/views/admin.html',
+    templateUrl: '/ngApp/views/Admin.html',
     controller: _AdminController.AdminController,
     controllerAs: 'controller'
   }).state('AdminRides', {

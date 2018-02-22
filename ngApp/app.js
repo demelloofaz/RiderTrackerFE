@@ -84,7 +84,7 @@ import {FollowService} from './services/FollowService';
           })
           .state('Admin', {
             url: '/Admin',
-            templateUrl: '/ngApp/views/admin.html',
+            templateUrl: '/ngApp/views/Admin.html',
             controller: AdminController,
             controllerAs: 'controller'
           })
