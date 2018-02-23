@@ -11,8 +11,8 @@
             <h5>Description:</h5>
             <p>{{controller.ride.description}}</p>
             <br>
+            <div ng-if="controller.isInRideMode() || controller.isInMyRideMode()" ng-cloak=""> 
             <h5>Attendees</h5>
-            <div ng-cloak>
             <table class="Attendee-table">
                 <tr>
                     <th class="Attendee-th">Rider</th>
@@ -27,7 +27,7 @@
                 </tr>
             </table>
             </div>
-            <br>
+            <br>   
             <md-button ng-show="controller.isInRideMode()" ng-click="controller.toggleSignUp()"  style="color:black; background-color:green" class="ride-button md-raised md-primary">&nbsp {{controller.buttonText}} &nbsp</md-button> 
             <md-button ng-click="controller.goBackToParentView()" class="md-primary md-flat">&nbsp Back &nbsp</md-button>
         </md-card-content>
