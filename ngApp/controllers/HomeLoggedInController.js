@@ -34,7 +34,9 @@ export class HomeLoggedInController {
 
       this.showMyLocation();
       // get all of the rides for Today.
-      var requestRidesString = this.auth.getBaseRideURL() + '/GetTodaysRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+      var currDate = new Date();
+      var strDate = currDate.toString();
+      var requestRidesString = this.RideService.getTodaysRidesRequest();
       
       this.$http.get(requestRidesString)
         .then(res => {  

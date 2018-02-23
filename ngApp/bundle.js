@@ -91168,7 +91168,9 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
 
         this.showMyLocation();
         // get all of the rides for Today.
-        var requestRidesString = this.auth.getBaseRideURL() + '/GetTodaysRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+        var currDate = new Date();
+        var strDate = currDate.toString();
+        var requestRidesString = this.RideService.getTodaysRidesRequest();
 
         this.$http.get(requestRidesString).then(function (res) {
             _this.TodaysRides = res.data;
@@ -91634,7 +91636,9 @@ var MyRidesController = exports.MyRidesController = function () {
         this.service.clearBackLink();
 
         // get all of the rides...
-        var requestRidesString = this.auth.getBaseRideURL() + '/GetUpcomingRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+        var currDate = new Date();
+        var strDate = currDate.toString();
+        var requestRidesString = this.service.getUpcomingRidesRequest();
 
         this.$http.get(requestRidesString).then(function (res) {
             _this.rides = res.data;
@@ -91656,7 +91660,7 @@ var MyRidesController = exports.MyRidesController = function () {
     }
 
     _createClass(MyRidesController, [{
-        key: 'getAllRiderSignups',
+        key: "getAllRiderSignups",
         value: function getAllRiderSignups() {
             var _this2 = this;
 
@@ -91672,7 +91676,7 @@ var MyRidesController = exports.MyRidesController = function () {
             });
         }
     }, {
-        key: 'createMyRidesList',
+        key: "createMyRidesList",
         value: function createMyRidesList() {
             for (var i = 0; i < this.rides.length; i++) {
                 var currentId = this.rides[i].id;
@@ -91680,7 +91684,7 @@ var MyRidesController = exports.MyRidesController = function () {
             }
         }
     }, {
-        key: 'isSignedUp',
+        key: "isSignedUp",
         value: function isSignedUp(rideID) {
             for (var i = 0; i < this.signups.length; i++) {
                 if (this.signups[i].rideID == rideID) {
@@ -91690,50 +91694,50 @@ var MyRidesController = exports.MyRidesController = function () {
             return false;
         }
     }, {
-        key: 'detailRide',
+        key: "detailRide",
         value: function detailRide(rideId) {
             this.service.saveRideId(rideId);
             this.service.routeToView("/RideDetails", this.myView);
         }
     }, {
-        key: 'editRide',
+        key: "editRide",
         value: function editRide(rideId) {
             this.service.saveRideId(rideId);
             this.service.routeToView("/EditRide", this.myView);
         }
     }, {
-        key: 'deleteRide',
+        key: "deleteRide",
         value: function deleteRide(rideId) {
             this.service.saveRideId(rideId);
             this.service.routeToView("/DeleteRide", this.myView);
         }
     }, {
-        key: 'createRide',
+        key: "createRide",
         value: function createRide() {
             this.service.routeToView("/CreateRide", this.myView);
         }
     }, {
-        key: 'canModifyRide',
+        key: "canModifyRide",
         value: function canModifyRide(rideId) {
             return this.service.canModifyRide(rideId);
         }
     }, {
-        key: 'isInAdminMode',
+        key: "isInAdminMode",
         value: function isInAdminMode() {
             if (this.RideService.isAdminBackLink()) return true;
         }
     }, {
-        key: 'isInRideMode',
+        key: "isInRideMode",
         value: function isInRideMode() {
             if (this.RideService.isRideBackLink()) return true;
         }
     }, {
-        key: 'isInMyRideMode',
+        key: "isInMyRideMode",
         value: function isInMyRideMode() {
             if (this.RideService.isMyRideBackLink()) return true;
         }
     }, {
-        key: 'signOutRide',
+        key: "signOutRide",
         value: function signOutRide(_rideId) {
             var _this3 = this;
 
@@ -91757,7 +91761,7 @@ var MyRidesController = exports.MyRidesController = function () {
             });
         }
     }, {
-        key: 'updateMyRidesList',
+        key: "updateMyRidesList",
         value: function updateMyRidesList(rideId) {
             // remove signup from the list
 
@@ -91778,7 +91782,7 @@ var MyRidesController = exports.MyRidesController = function () {
             }
         }
     }, {
-        key: 'showErrorDialog',
+        key: "showErrorDialog",
         value: function showErrorDialog() {
             // Appending dialog to document.body to cover sidenav in docs app
             // Modal dialogs should fully cover application
@@ -92251,7 +92255,9 @@ var RidesController = exports.RidesController = function () {
         this.service.clearBackLink();
 
         // get all of the rides...
-        var requestRidesString = this.auth.getBaseRideURL() + '/GetUpcomingRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+        var currDate = new Date();
+        var strDate = currDate.toString();
+        var requestRidesString = this.service.getUpcomingRidesRequest();
 
         this.$http.get(requestRidesString).then(function (res) {
             _this.rides = res.data;
@@ -92263,40 +92269,40 @@ var RidesController = exports.RidesController = function () {
     }
 
     _createClass(RidesController, [{
-        key: 'detailRide',
+        key: "detailRide",
         value: function detailRide(rideId) {
             this.service.saveRideId(rideId);
             this.service.routeToView("/RideDetails", this.myView);
         }
     }, {
-        key: 'editRide',
+        key: "editRide",
         value: function editRide(rideId) {
             this.service.saveRideId(rideId);
             this.service.routeToView("/EditRide", this.myView);
         }
     }, {
-        key: 'deleteRide',
+        key: "deleteRide",
         value: function deleteRide(rideId) {
             this.service.saveRideId(rideId);
             this.service.routeToView("/DeleteRide", this.myView);
         }
     }, {
-        key: 'createRide',
+        key: "createRide",
         value: function createRide() {
             this.service.routeToView("/CreateRide", this.myView);
         }
     }, {
-        key: 'canModifyRide',
+        key: "canModifyRide",
         value: function canModifyRide(rideId) {
             return this.service.canModifyRide(rideId);
         }
     }, {
-        key: 'isInAdminMode',
+        key: "isInAdminMode",
         value: function isInAdminMode() {
             if (this.RideService.isAdminBackLink()) return true;
         }
     }, {
-        key: 'showErrorDialog',
+        key: "showErrorDialog",
         value: function showErrorDialog() {
             // Appending dialog to document.body to cover sidenav in docs app
             // Modal dialogs should fully cover application
@@ -92844,6 +92850,28 @@ var RideService = exports.RideService = function () {
             var currentRiderId = this.auth.getCurrentId();
             if (currentRiderId == riderId) return true;
             return false;
+        }
+    }, {
+        key: "getTodaysRidesRequest",
+        value: function getTodaysRidesRequest() {
+            var currDate = new Date();
+            var currMonth = currDate.getMonth() + 1;
+            var currDay = currDate.getDate();
+            var currYear = currDate.getFullYear();
+            var requestString = this.auth.getBaseRideURL() + '/GetTodaysRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken() + '&TargetYear=' + currYear + '&TargetDay=' + currDay + '&TargetMonth=' + currMonth;
+
+            return requestString;
+        }
+    }, {
+        key: "getUpcomingRidesRequest",
+        value: function getUpcomingRidesRequest() {
+            var currDate = new Date();
+            var currMonth = currDate.getMonth() + 1;
+            var currDay = currDate.getDate();
+            var currYear = currDate.getFullYear();
+            var requestString = this.auth.getBaseRideURL() + '/GetUpcomingRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken() + '&TargetYear=' + currYear + '&TargetDay=' + currDay + '&TargetMonth=' + currMonth;
+
+            return requestString;
         }
     }]);
 

@@ -14,7 +14,9 @@ export class MyRidesController {
       this.service.clearBackLink();
 
       // get all of the rides...
-      var requestRidesString = this.auth.getBaseRideURL() + '/GetUpcomingRides?RiderId=' + this.auth.getCurrentId() + '&Authorization=' + this.auth.getToken();
+      var currDate = new Date();
+      var strDate = currDate.toString();
+      var requestRidesString = this.service.getUpcomingRidesRequest();
       
       this.$http.get(requestRidesString)
         .then(res => {  

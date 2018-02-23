@@ -89,5 +89,45 @@ export class RideService{
             return true;
         return false;
     }
+
+    getTodaysRidesRequest() {
+        var currDate = new Date();
+        var currMonth = currDate.getMonth() + 1;
+        var currDay = currDate.getDate();
+        var currYear = currDate.getFullYear();
+        var requestString = this.auth.getBaseRideURL()  + 
+        '/GetTodaysRides?RiderId=' + 
+        this.auth.getCurrentId() + 
+        '&Authorization=' + 
+        this.auth.getToken() +
+        '&TargetYear=' +
+        currYear +
+        '&TargetDay=' +
+        currDay +
+        '&TargetMonth=' +
+        currMonth;
+
+        return requestString;
+    }
+
+    getUpcomingRidesRequest() {
+        var currDate = new Date();
+        var currMonth = currDate.getMonth() + 1;
+        var currDay = currDate.getDate();
+        var currYear = currDate.getFullYear();
+        var requestString = this.auth.getBaseRideURL()  + 
+        '/GetUpcomingRides?RiderId=' + 
+        this.auth.getCurrentId() + 
+        '&Authorization=' + 
+        this.auth.getToken() +
+        '&TargetYear=' +
+        currYear +
+        '&TargetDay=' +
+        currDay +
+        '&TargetMonth=' +
+        currMonth;
+
+        return requestString;
+    }
 }
 RideService.$inject = ['AuthService', '$location'];
