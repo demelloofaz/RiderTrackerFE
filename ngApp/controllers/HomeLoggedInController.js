@@ -13,11 +13,13 @@ export class HomeLoggedInController {
       this.myView ="HomeLoggedIn";
       this.auth.clearTracking();
       this.trackingEnabled = false;
-      this.ButtonText= "Start Tracking";
+      this.ButtonText= "Track";
       this.message = "Current time is: ";
       this.lastTimeStamp = 0;
       this.LastLon = "TBD";
       this.LastLat = "TBD";
+      this.auth.clearLongitude();
+      this.auth.clearLatitude();
       this.updateSkipCnt = 0;
       //this.getLocation();
       var that = this;
@@ -29,8 +31,7 @@ export class HomeLoggedInController {
       this.MyRides=[];
       this.AllRiders = [];
       this.MyRideCompanions = [];
-      this.ActiveRide = 0;
-      debugger;
+      this.ActiveRide = 0;      
 
       this.showMyLocation();
       // get all of the rides for Today.
@@ -144,7 +145,7 @@ export class HomeLoggedInController {
         this.trackingEnabled = false;
         this.auth.clearTracking();
         this.ActiveRide = -1;
-        this.ButtonText = "Start Tracking";
+        this.ButtonText = "Track";
         this.stopWatch()
       }
       else {
@@ -213,6 +214,7 @@ export class HomeLoggedInController {
     }
     
     savePosition() {
+        debugger;
         var currTS = Math.round(+new Date() / 1000);
         if (currTS - this.lastTimeStamp > 15) {
             var pLon = document.getElementById('currLon');
@@ -228,7 +230,6 @@ export class HomeLoggedInController {
                     this.ActiveRide,
                     pLonText,
                     pLatText);
-
                 this.$http.post(urlString, requestData).then( 
                     (res) => { 
                         this.lastTimeStamp = currTS;
@@ -308,7 +309,6 @@ export class HomeLoggedInController {
     }
 
     determineActiveRide(){
-      debugger;
       var numRidesFound = this.MyRides.length;
       var activeRide; 
       if (numRidesFound == 1)

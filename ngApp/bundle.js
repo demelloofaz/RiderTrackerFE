@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 45);
+/******/ 	return __webpack_require__(__webpack_require__.s = 47);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -111,9 +111,9 @@ var _HomeLoggedInController = __webpack_require__(29);
 
 var _LoginController = __webpack_require__(31);
 
-var _RegisterController = __webpack_require__(35);
+var _RegisterController = __webpack_require__(36);
 
-var _ProfileController = __webpack_require__(34);
+var _ProfileController = __webpack_require__(35);
 
 var _ChangePassword = __webpack_require__(18);
 
@@ -123,7 +123,7 @@ var _AdminController = __webpack_require__(16);
 
 var _AdminRidesController = __webpack_require__(17);
 
-var _RidesController = __webpack_require__(39);
+var _RidesController = __webpack_require__(40);
 
 var _MyRidesController = __webpack_require__(32);
 
@@ -133,7 +133,7 @@ var _EditRideController = __webpack_require__(23);
 
 var _DeleteRideController = __webpack_require__(21);
 
-var _RideDetailsController = __webpack_require__(36);
+var _RideDetailsController = __webpack_require__(37);
 
 var _CreateRiderController = __webpack_require__(20);
 
@@ -141,9 +141,9 @@ var _EditRiderController = __webpack_require__(24);
 
 var _DeleteRiderController = __webpack_require__(22);
 
-var _RiderDetailsController = __webpack_require__(38);
+var _RiderDetailsController = __webpack_require__(39);
 
-var _RideSignupController = __webpack_require__(37);
+var _RideSignupController = __webpack_require__(38);
 
 var _FollowingController = __webpack_require__(27);
 
@@ -153,17 +153,21 @@ var _FollowRequestController = __webpack_require__(25);
 
 var _LocateRiderController = __webpack_require__(30);
 
+var _WeatherController = __webpack_require__(41);
+
+var _POIController = __webpack_require__(34);
+
 var _NavController = __webpack_require__(33);
 
-var _AuthService = __webpack_require__(40);
+var _AuthService = __webpack_require__(42);
 
-var _RiderService = __webpack_require__(43);
+var _RiderService = __webpack_require__(45);
 
-var _RideService = __webpack_require__(42);
+var _RideService = __webpack_require__(44);
 
-var _SignupService = __webpack_require__(44);
+var _SignupService = __webpack_require__(46);
 
-var _FollowService = __webpack_require__(41);
+var _FollowService = __webpack_require__(43);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -299,7 +303,7 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 }
 
-_angular2.default.module('RiderTracker').controller('navController', _NavController.NavController);
+_angular2.default.module('RiderTracker').controller('navController', _NavController.NavController).controller('POIController', _POIController.POIController).controller('WeatherController', _WeatherController.WeatherController);
 
 /***/ }),
 /* 2 */
@@ -91147,11 +91151,13 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
         this.myView = "HomeLoggedIn";
         this.auth.clearTracking();
         this.trackingEnabled = false;
-        this.ButtonText = "Start Tracking";
+        this.ButtonText = "Track";
         this.message = "Current time is: ";
         this.lastTimeStamp = 0;
         this.LastLon = "TBD";
         this.LastLat = "TBD";
+        this.auth.clearLongitude();
+        this.auth.clearLatitude();
         this.updateSkipCnt = 0;
         //this.getLocation();
         var that = this;
@@ -91164,7 +91170,6 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
         this.AllRiders = [];
         this.MyRideCompanions = [];
         this.ActiveRide = 0;
-        debugger;
 
         this.showMyLocation();
         // get all of the rides for Today.
@@ -91260,7 +91265,7 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
                 this.trackingEnabled = false;
                 this.auth.clearTracking();
                 this.ActiveRide = -1;
-                this.ButtonText = "Start Tracking";
+                this.ButtonText = "Track";
                 this.stopWatch();
             } else {
                 this.determineActiveRide();
@@ -91326,6 +91331,7 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
         value: function savePosition() {
             var _this2 = this;
 
+            debugger;
             var currTS = Math.round(+new Date() / 1000);
             if (currTS - this.lastTimeStamp > 15) {
                 var pLon = document.getElementById('currLon');
@@ -91337,7 +91343,6 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
 
                     var urlString = this.RiderService.getRiderLocationUpdateUrl();
                     var requestData = this.RiderService.createRiderLocationUpdateRequest(riderId, this.ActiveRide, pLonText, pLatText);
-
                     this.$http.post(urlString, requestData).then(function (res) {
                         _this2.lastTimeStamp = currTS;
                     });
@@ -91413,7 +91418,6 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
     }, {
         key: "determineActiveRide",
         value: function determineActiveRide() {
-            debugger;
             var numRidesFound = this.MyRides.length;
             var activeRide;
             if (numRidesFound == 1) activeRide = this.MyRides[0].id;else if (numRidesFound == 0) activeRide = -1;else activeRide = 0;
@@ -91881,6 +91885,84 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var POIController = exports.POIController = function () {
+    function POIController($http, AuthService, RiderService) {
+        _classCallCheck(this, POIController);
+
+        this.$http = $http;
+        this.auth = AuthService;
+        this.RiderService = RiderService;
+        this.message = "Current Weather Conditions For: ";
+        this.lat = 33.24298;
+        this.lon = -111.80319;
+        debugger;
+        this.POI = [["Gateway Airport", "Restrooms and Water located inside", -111.670598, 33.310595], ["Compass Christian Church", "Water Fountain at west enterance", -111.859479, 33.279943], ["Seville Rec Center", "Water Fountain and restrooms located inside", -111.705632, 33.227755], ["Joe's Farm Grill", "Water Fountains And Restooms located at east end", -111.725260, 33.321901], ["Cosmo Dog Park", "Water Fountain and Restrooms", -111.734932, 33.321845], ["Performance Bike Chandler", "Sponsors Saturday Group Rides", -111.944225, 33.318513], ["Global Bikes Gilbert", "Sponsors Sunday Service Group Ride", -111.787766, 33.365570], ["SCC Home Ride Start", "Normal Starting point for SCC Satureday and Sunday rides", -111.792154, 33.279182], ["Pecos Park And Ride", "Start of SCC Tookeeville ride", -111.998127, 33.292761]];
+        this.getMyLocation();
+        this.drawMap();
+    }
+
+    _createClass(POIController, [{
+        key: "getMyLocation",
+        value: function getMyLocation() {
+            // tbd in future...
+        }
+    }, {
+        key: "drawMap",
+        value: function drawMap() {
+            var myLatLng = { lat: this.lat, lng: this.lon };
+            var map = new google.maps.Map(document.getElementById('mapholder2'), {
+                zoom: 11,
+                center: myLatLng
+            });
+
+            debugger;
+
+            // Display multiple markers on a map
+            var infoWindow = new google.maps.InfoWindow(),
+                marker,
+                i;
+            var infoWindowContent = [];
+            for (i = 0; i < this.POI.length; i++) {
+                var currLoc = { lat: this.POI[i][3], lng: this.POI[i][2] };
+                var currTitle = this.POI[i][0];
+                marker = new google.maps.Marker({
+                    position: currLoc,
+                    map: map,
+                    title: currTitle
+
+                });
+                // set up the info window content
+                var strInfo = '<div class="info_content"><h3>' + this.POI[i][0] + '</h3><p>' + this.POI[i][1] + '</p></div>';
+                infoWindowContent.push(strInfo);
+
+                google.maps.event.addListener(marker, 'click', function (marker, i) {
+                    return function () {
+                        infoWindow.setContent(infoWindowContent[i]);
+                        infoWindow.open(map, marker);
+                    };
+                }(marker, i));
+            }
+        }
+    }]);
+
+    return POIController;
+}();
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var ProfileController = exports.ProfileController = function () {
     function ProfileController(AuthService, $http, $mdDialog) {
         var _this = this;
@@ -91952,7 +92034,7 @@ var ProfileController = exports.ProfileController = function () {
 }();
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92020,7 +92102,7 @@ var RegisterController = exports.RegisterController = function () {
 }();
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92156,7 +92238,7 @@ var RideDetailsController = exports.RideDetailsController = function () {
 }();
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92175,7 +92257,7 @@ var RideSignupController = exports.RideSignupController = function RideSignupCon
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92224,7 +92306,7 @@ var RiderDetailsController = exports.RiderDetailsController = function () {
 }();
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92315,7 +92397,64 @@ var RidesController = exports.RidesController = function () {
 }();
 
 /***/ }),
-/* 40 */
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var WeatherController = exports.WeatherController = function WeatherController($http, AuthService, RiderService) {
+  var _this = this;
+
+  _classCallCheck(this, WeatherController);
+
+  this.$http = $http;
+  this.auth = AuthService;
+  this.RiderService = RiderService;
+  this.locationUrl = "http://ip-api.com/json";
+  this.weatherAPIKey = "9e26fddccd5439a15d48ea8a5af57d6e";
+  this.weatherURL = "http://api.openweathermap.org/data/2.5/weather";
+  this.iconURL = "http://openweathermap.org/img/w/";
+  this.message = "Current Weather Conditions For: ";
+  this.lat = 33.4488;
+  this.lon = -111.8014;
+
+  this.$http.get(this.locationUrl).then(function (res) {
+    _this.lat = res.data.lat;
+    _this.lon = res.data.lon;
+    var weatherRequest = _this.weatherURL + "?lat=" + _this.lat + "&lon=" + _this.lon + "&appId=" + _this.weatherAPIKey;
+    _this.$http.get(weatherRequest).then(function (res) {
+      _this.description = res.data.weather[0].description;
+      _this.speed = (2.237 * res.data.wind.speed).toFixed(1) + " mph";
+      _this.kspeed = (3.6 * res.data.wind.speed).toFixed(1) + " kph";
+      _this.name = res.data.name;
+      _this.temp = res.data.main.temp;
+      _this.fTemp = (_this.temp * (9 / 5) - 459.67).toFixed(1) + " F";
+      _this.cTemp = (_this.temp - 273).toFixed(1) + " C";
+      _this.icon = _this.iconURL + res.data.weather[0].icon + ".png";
+    });
+  }).catch(function (res) {
+    // use hard coded coordinates
+    var weatherRequest = _this.weatherURL + "?lat=" + _this.lat + "&lon=" + _this.lon + "&appId=" + _this.weatherAPIKey;
+    _this.$http.get(weatherRequest).then(function (res) {
+      _this.description = res.data.weather[0].description;
+      _this.speed = (2.237 * res.data.wind.speed).toFixed(1) + " mph";
+      _this.name = res.data.name;
+      _this.temp = res.data.main.temp;
+      _this.fTemp = (_this.temp * (9 / 5) - 459.67).toFixed(1) + " F";
+      _this.cTemp = (_this.temp - 273).toFixed(1) + " C";
+    });
+  });
+};
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92348,6 +92487,8 @@ var AuthService = exports.AuthService = function () {
         this.USERNAME_KEY = 'username';
         this.TRACKING_KEY = 'tracking';
         this.BACK_LINK_KEY = 'BackLink';
+        this.LON_KEY = "LonKey";
+        this.LAT_KEY = "LatKey";
     }
 
     _createClass(AuthService, [{
@@ -92394,6 +92535,36 @@ var AuthService = exports.AuthService = function () {
         key: 'clearTracking',
         value: function clearTracking() {
             localStorage.removeItem(this.TRACKING_KEY);
+        }
+    }, {
+        key: 'getLongitude',
+        value: function getLongitude() {
+            return localStorage.getItem(this.LON_KEY);
+        }
+    }, {
+        key: 'setLongitude',
+        value: function setLongitude(value) {
+            localStorage.setItem(this.LON_KEY, value);
+        }
+    }, {
+        key: 'clearLongitude',
+        value: function clearLongitude() {
+            localStorage.removeItem(this.LON_KEY);
+        }
+    }, {
+        key: 'getLatitude',
+        value: function getLatitude() {
+            return localStorage.getItem(this.LAT_KEY);
+        }
+    }, {
+        key: 'setLatitude',
+        value: function setLatitude(value) {
+            localStorage.setItem(this.LAT_KEY, value);
+        }
+    }, {
+        key: 'clearLatitude',
+        value: function clearLatitude() {
+            localStorage.removeItem(this.LAT_KEY);
         }
     }, {
         key: 'isTrackingMode',
@@ -92580,7 +92751,7 @@ var AuthService = exports.AuthService = function () {
 AuthService.$inject = ['$http', '$location'];
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92733,7 +92904,7 @@ var FollowService = exports.FollowService = function () {
 FollowService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92881,7 +93052,7 @@ var RideService = exports.RideService = function () {
 RideService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93002,7 +93173,7 @@ var RiderService = exports.RiderService = function () {
 RiderService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93069,7 +93240,7 @@ var SignupService = exports.SignupService = function () {
 SignupService.$inject = ['AuthService', '$location'];
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(1);

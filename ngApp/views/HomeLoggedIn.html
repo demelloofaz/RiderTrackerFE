@@ -11,7 +11,7 @@
                     <md-button ng-click="controller.toggleTrackingButton()"class="md-primary md-raised">&nbsp{{controller.ButtonText}}&nbsp</md-button>
                 </md-content>
             </md-tab>
-            <md-tab label="Riders">
+            <md-tab ng-if="controller.MyRideCompanions.length > 0" label="Riders">
                 <md-content>
                     <md-input-container>
                         <md-icon style="color: blue">search</md-icon>
@@ -38,12 +38,88 @@
                     </table>                   
                 </md-content>
             </md-tab>
-            <md-tab label="Other">
+            <md-tab label="Weather">
                 <md-content>
-                    <h4>To Be done in future version</h4>
-                    <div id="mapholder3"></div>
-                    <p ng-hide="true" id="currLon3"></p>
-                    <p ng-hide="true" id="currLat3"></p>
+                    <div ng-controller="WeatherController as weather" class="text-center weatherinfo">
+                        <h4>{{weather.message}}{{weather.name}}</h4>
+                        <a  class="btn-lg btn-primary">
+                            {{weather.description | uppercase}} <img ng-src= "{{weather.icon}}"/>
+                        </a>
+                        <br>
+                        <br>
+                        <a  class="btn-lg btn-primary" ng-init="useMPH=true" ng-show="useMPH" ng-click="useMPH=false">
+                            Winds:   {{weather.speed}}
+                        </a>
+                        <a  class="btn-lg btn-primary" ng-show="!useMPH" ng-click="useMPH=true">
+                                Winds:   {{weather.kspeed}}
+                        </a>
+                        <br>
+                        <br>
+                        <br>
+                        <a  class="btn-lg btn-primary" ng-init="useF=true" ng-show="useF" ng-click="useF=false">
+                            Temperature: {{weather.fTemp}}
+                        </a>
+                        <a  class="btn-lg btn-primary" ng-show="!useF" ng-click="useF=true">
+                            Temperature: {{weather.cTemp}}
+                        </a>
+                        <br>
+                        <br>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="Points of Interest">
+                <md-content>
+                    <div ng-controller="POIController as POI" class="text-center POIinfo">
+                        <div id="mapholder2" class="mapping"></div>
+                        <p ng-hide="true" id="currLon2"></p>
+                        <p ng-hide="true" id="currLat2"></p>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="How To Videos">
+                <md-content>
+                    <div class="row">
+                        <div class = "col-4" id="vid-item">
+                            <iframe width="1211" height="568" src="https://www.youtube.com/embed/Dfs7coTdfsg?list=PLUdAMlZtaV1333Cy1QnIZwqDXj1q0Ooyy&amp;ecver=1" frameborder="0"  allow="encrypted-media" allowfullscreen></iframe>
+                        <h4 class="vid-title">Fewer Flats! </h4>
+                        </div>
+                        <div class = "col-4" id="vid-item">
+                                <iframe width="1211" height="568" src="https://www.youtube.com/embed/z5-zkiKQto8?list=PLUdAMlZtaV1333Cy1QnIZwqDXj1q0Ooyy&amp;ecver=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                        <h4 class="vid-title">Maintenance Don'ts</h4>
+                        </div>
+                        <div class = "col-4" id="vid-item">
+                            <iframe width="1303" height="568" src="https://www.youtube.com/embed/8zLXiNwVwDI?list=PLUdAMlZtaV11U9AtszkMh0bpRqM4dtlDC&amp;ecver=1" frameborder="0"  allow="encrypted-media" allowfullscreen></iframe>
+                        <h4 class="vid-title">Replace Shift Cable</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class = "col-4" id="vid-item">
+                            <iframe width="1211" height="568" src="https://www.youtube.com/embed/Gbnq-w6TKuQ?list=PLUdAMlZtaV1333Cy1QnIZwqDXj1q0Ooyy&amp;ecver=1" frameborder="0"  allow="encrypted-media" allowfullscreen></iframe>
+                        <h4 class="vid-title">Clean your bike</h4>
+                        </div>
+                        <div class = "col-4" id="vid-item">
+                            <iframe width="1211" height="568" src="https://www.youtube.com/embed/4sDX54zNmxY?list=PLUdAMlZtaV1333Cy1QnIZwqDXj1q0Ooyy&amp;ecver=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                            <h4 class="vid-title">Tire Pressure</h4>
+                        </div>
+                        <div class = "col-4" id="vid-item">
+                            <iframe width="1211" height="568" src="https://www.youtube.com/embed/nwJhi7F671U?list=PLUdAMlZtaV1333Cy1QnIZwqDXj1q0Ooyy&amp;ecver=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                            <h4 class="vid-title">Shifter Servicing</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class = "col-4" id="vid-item">
+                            <iframe width="1211" height="568" src="https://www.youtube.com/embed/XVL2SbVhwr4?list=PLUdAMlZtaV1333Cy1QnIZwqDXj1q0Ooyy&amp;ecver=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                            <h4 class="vid-title">Saddle Sore?</h4>
+                        </div>
+                        <div class = "col-4" id="vid-item">
+                                <iframe width="1211" height="568" src="https://www.youtube.com/embed/XZ983nnOV6U?list=PLUdAMlZtaV1333Cy1QnIZwqDXj1q0Ooyy&amp;ecver=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                            <h4 class="vid-title">Bike Comfort</h4>
+                        </div>
+                            <div class = "col-4" id="vid-item">
+                                    <iframe width="1211" height="568" src="https://www.youtube.com/embed/sGdu4fkrQ9M?list=PLUdAMlZtaV1333Cy1QnIZwqDXj1q0Ooyy&amp;ecver=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                            <h4 class="vid-title">Change a tire</h4>
+                        </div>
+                    </div>
                 </md-content>
             </md-tab>
         </md-tabs>

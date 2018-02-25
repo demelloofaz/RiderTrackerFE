@@ -28,6 +28,8 @@ import {FollowingController} from './controllers/FollowingController';
 import {FollowerController} from './controllers/FollowerController';
 import {FollowRequestController} from './controllers/FollowRequestController';
 import {LocateRiderController} from './controllers/LocateRiderController';
+import {WeatherController} from './controllers/WeatherController';
+import {POIController} from './controllers/POIController';
 import {NavController} from './controllers/NavController';
 import {AuthService} from './services/AuthService';
 import {RiderService} from './services/RiderService';
@@ -204,4 +206,7 @@ import {FollowService} from './services/FollowService';
         $locationProvider.html5Mode(true);
     }
 
-    angular.module('RiderTracker').controller('navController', NavController);
+    angular.module('RiderTracker')
+        .controller('navController', NavController)
+        .controller('POIController', POIController)
+        .controller('WeatherController', WeatherController);

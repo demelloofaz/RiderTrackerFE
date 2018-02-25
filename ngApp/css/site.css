@@ -95,44 +95,117 @@
   text-align:left; 
   vertical-align:middle;
 }
+
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+[class*="col-"] {
+  float: left;
+}
+.col-1 {
+  width: 8.33%;
+}
+.col-2 {
+  width: 16.66%;
+}
+.col-3 {
+  width: 25%;
+}
+.col-4 {
+  width: 33.33%;
+}
+.col-5 {
+  width: 41.66%;
+}
+.col-6 {
+  width: 50%;
+}
+.col-7 {
+  width: 58.33%;
+}
+.col-8 {
+  width: 66.66%;
+}
+.col-9 {
+  width: 75%;
+}
+.col-10 {
+  width: 83.33%;
+}
+.col-11 {
+  width: 91.66%;
+}
+.col-12 {
+  width: 100%;
+}
+
+video, iframe {
+  border: 1px solid #ddd; /* Gray border */
+  border-radius: 4px;  /* Rounded border */
+  padding: 5px; /* Some padding */
+  width: 50%; /* Set a small width */
+  height:auto;
+}
+
 /* #### Mobile Phones Portrait #### */
 @media screen and (max-width: 480px) and (orientation: portrait){
   /* some CSS here */
-  #mapholder {
+  #mapholde, #mapholder2 {
     height: 400px;
+    width: 100%;
+  }
+
+  [class*="col-"] {
     width: 100%;
   }
 }
 
-
+.vid-title {
+  text-align: left;
+  margin-left: 15px;
+}
 /* #### Mobile Phones Landscape #### */
 @media screen and (max-width: 640px) and (orientation: landscape){
 
-  #mapholder {
+  #mapholder, #mapholder2 {
     height: 100px;
     width: 50%;
+  }
+
+  [class*="col-"] {
+    width: 100%;
   }
 }
 
 @media screen and (max-width: 640px){
 
-  #mapholder {
+  #mapholder, #mapholder2 {
     height: 300px;
+    width: 100%;
+  }
+
+  [class*="col-"] {
     width: 100%;
   }
 }
 /* #### Tablets Portrait or Landscape #### */
 @media screen and (min-width: 641px) and (max-width: 1024px){
-  #mapholder {
+   #mapholder, #mapholder2 {
     height: 400px;
     width: 100%;
+  }
+  [class*="col-"] {
+    width: 50%;
   }
 }
 
 /* #### Desktops #### */
 @media screen and (min-width: 1024px){
   /* some CSS here */
-  #mapholder {
+  #mapholder, #mapholder2 {
     height: 500px;
     width: 100%;
   }
@@ -157,4 +230,8 @@ body {
   min-width: 45px;
   margin:2px 1px;
   padding:0;
+}
+
+.btn-lg{
+  margin: 5px;
 }
