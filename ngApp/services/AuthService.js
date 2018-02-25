@@ -18,6 +18,8 @@ export class AuthService{
         this.USERNAME_KEY = 'username';
         this.TRACKING_KEY = 'tracking';
         this.BACK_LINK_KEY = 'BackLink';
+        this.LON_KEY = "LonKey";
+        this.LAT_KEY = "LatKey";
     }
 
     getBaseRiderURL() {
@@ -47,6 +49,25 @@ export class AuthService{
     clearTracking() {
         localStorage.removeItem(this.TRACKING_KEY);
     }
+    getLongitude() {
+        return localStorage.getItem(this.LON_KEY);
+    }
+    setLongitude(value) {
+        localStorage.setItem(this.LON_KEY, value);
+    }
+    clearLongitude() {
+        localStorage.removeItem(this.LON_KEY);
+    }
+    getLatitude() {
+        return localStorage.getItem(this.LAT_KEY);
+    }
+    setLatitude(value) {
+        localStorage.setItem(this.LAT_KEY, value);
+    }
+    clearLatitude() {
+        localStorage.removeItem(this.LAT_KEY);
+    }
+    
 
     isTrackingMode(){
         var trackingString = this.getTracking();
