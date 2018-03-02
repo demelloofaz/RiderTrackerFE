@@ -1,0 +1,108 @@
+<div id="popupContainer" ng-cloak>
+    <md-content>
+        <md-tabs  md-selected="controller.selectedTab" md-dynamic-height md-border-bottom>
+            <md-tab label="Followers">
+                <md-content>  
+                    <div>
+                        <table ng-if="controller.followers.length > 0"class="following-table">
+                            <md-input-container>
+                                <md-icon style="color: blue">search</md-icon>
+                                <input class="search-bar" ng-model="search" ng-model-options="{debounce:1000}" ng-change="fetch()" placeholder="Search" width = "60"/>
+                            </md-input-container>
+                            <tr>
+                                <th class="follower-th">Full Name</th>
+                                <th class="follower-th">User Name</th>
+                            </tr>
+                            <tr ng-repeat="f in controller.followers | filter : search">
+                            <td class="follower-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.fullName}}</td>
+                            <td class="follower-td" ng-if="$even">{{ f.fullName}}</td>
+                            <td class="follower-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.userName }}</td>
+                            <td class="follower-td" ng-if="$even">{{ f.userName }}</td>
+                            <td class="follower-td" ng-if="$odd" style="background-color:#f1f1f1; color:lightskyblue">{{ f.followerStatus }}</td>
+                            <td class="follower-td" ng-if="$even" style="color: lightskyblue"> {{ f.followerStatus }}</td>
+                            <td class="follower-td">
+                                <md-button ng-click="controller.removeFollower(f.riderId)" class="rider-button md-icon-button" aria-label="Remove">
+                                    <md-tooltip md-direction="top">Remove Follower</md-tooltip>
+                                    <md-icon style="display: unset; color:red"><i class="material-icons">cancel</i></md-icon>
+                                </md-button>
+                            </td>
+                            <td ng-if="controller.isPending(f.riderId)" class="follower-td">
+                                    <md-button ng-click="controller.updateFollowRequest(f.riderId, 1)" class="rider-button md-icon-button" aria-label="Allow">
+                                        <md-tooltip md-direction="top">Allow Follower</md-tooltip>
+                                        <md-icon style="display: unset; color:green"><i class="material-icons">check_circle</i></md-icon>
+                                    </md-button>
+                                </td>
+                            </tr>
+                        </table>
+                        <p ng-if="controller.followers.length == 0">None</p>
+                    </div>                
+                </md-content>
+            </md-tab>
+            <md-tab label="Following">
+                <md-content>
+                    <div>
+                        <br>
+                        <table ng-if="controller.followings.length > 0" class="following-table">
+                            <md-input-container>
+                                <md-icon style="color: blue">search</md-icon>
+                                <input class="search-bar" ng-model="search" ng-model-options="{debounce:1000}" ng-change="fetch()" placeholder="Search" width = "60"/>
+                            </md-input-container>
+                            <tr>
+                                <th class="following-th">Full Name</th>
+                                <th class="following-th">User Name</th>
+                            </tr>
+                            <tr ng-repeat="f in controller.followings | filter : search">
+                            <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.fullName}}</td>
+                            <td class="following-td" ng-if="$even">{{ f.fullName}}</td>
+                            <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.userName }}</td>
+                            <td class="following-td" ng-if="$even">{{ f.userName }}</td>
+                            <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1; color:lightskyblue">{{ f.followingStatus }}</td>
+                            <td class="following-td" ng-if="$even" style="color: lightskyblue">{{ f.followingStatus }}</td>
+                            <td class="follower-td">
+                                <md-button ng-click="controller.removeFollowing(f.riderId)" class="rider-button md-icon-button" aria-label="Remove">
+                                    <md-tooltip md-direction="top">Remove Following</md-tooltip>
+                                    <md-icon style="display: unset; color:red"><i class="material-icons">cancel</i></md-icon>
+                                </md-button>
+                            </td>
+                            <td ng-if="controller.isAllowed(f.riderId)" class="following-td">
+                                <md-button ng-click="controller.locate(f.riderId)" class="rider-button md-icon-button" aria-label="Locate">
+                                    <md-tooltip md-direction="top">Locate Rider</md-tooltip>
+                                    <md-icon style="display: unset; color:dodgerblue"><i class="material-icons">my_location</i></md-icon>
+                                </md-button>
+                            </td>    
+                        </tr>
+                        </table>
+                        <p ng-if="controller.followings.length == 0">None</p>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab ng-if="controller.unfollowed.length > 0" label="Follow Request">
+                <md-content>  
+                    <div id="popupContainer" ng-cloak>
+                    <h5>
+                        Select riders from the table to follow:
+                    </h5>
+                        <table class="following-table">
+                            <tr>
+                                <th class="following-th">Full Name</th>
+                                <th class="following-th">User Name</th>
+                            </tr>
+                            <tr ng-repeat="f in controller.unfollowed">
+                            <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.fullName }}</td>
+                            <td class="following-td" ng-if="$even">{{ f.fullName }}</td>
+                            <td class="following-td" ng-if="$odd" style="background-color:#f1f1f1">{{ f.userName }}</td>
+                            <td class="following-td" ng-if="$even">{{ f.userName }}</td>
+                            <td class="following-td">
+                                <md-button ng-click="controller.requestToFollow(f.riderId)" class="rider-button md-icon-button" aria-label="Follow Requested">
+                                    <md-tooltip md-direction="top">Submit Follow Request</md-tooltip>
+                                    <md-icon style="display:unset; color:blueviolet"><i class="material-icons">watch</i></md-icon>
+                                </md-button>
+                            </td>
+                            </tr>
+                        </table>
+                    </div>
+                </md-content>
+             </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

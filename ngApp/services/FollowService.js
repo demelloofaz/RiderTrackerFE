@@ -1,8 +1,7 @@
 export class FollowService{
-    constructor(AuthService, $location)
+    constructor(AuthService)
     {
         this.auth = AuthService;
-        this.$location = $location;
         this.CURRENT_FOLLOWER_KEY = 'CurrentFollower';
         this.CURRENT_FOLLOWING_KEY = 'CurrentFollower';
 
@@ -88,16 +87,16 @@ export class FollowService{
     }
     routeToView( newDest, backLink){
         this.auth.setBackLink(backLink);
-        this.$location.path([newDest]);
+        this.auth.goToPage(newDest);
     }
     goBackToParentView() {
         var previousView = this.auth.getBackLink();
         this.auth.clearBackLink();
-        this.$location.path([previousView]);
+        this.auth.goToPage(previousView);
     }
     clearBackLink() {
         this.auth.clearBackLink();
     }
 
 }
-FollowService.$inject = ['AuthService', '$location'];
+FollowService.$inject = ['AuthService'];

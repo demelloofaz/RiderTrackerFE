@@ -7,7 +7,6 @@ export class POIController {
       this.message = "Current Weather Conditions For: ";
       this.lat = 33.24298;
       this.lon = -111.80319;
-      debugger;
       this.POI = [
               [ "Gateway Airport", "Restrooms and Water located inside", -111.670598, 33.310595],
               [ "Compass Christian Church", "Water Fountain at west enterance", -111.859479, 33.279943],
@@ -34,7 +33,6 @@ export class POIController {
           center: myLatLng
         });
 
-        debugger;
 
         // Display multiple markers on a map
         var infoWindow = new google.maps.InfoWindow(), marker, i;

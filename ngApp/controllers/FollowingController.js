@@ -1,10 +1,9 @@
 export class FollowingController {
-    constructor(FollowService, RiderService,  $http, AuthService, $location, $mdDialog) {
+    constructor(FollowService, RiderService,  $http, AuthService, $mdDialog) {
       this.message = 'Hello from Following';
       this.FollowService = FollowService;
       this.RiderService = RiderService;
       this.$http = $http;
-      this.$location= $location;
       this.auth = AuthService;
       this.Dialog = $mdDialog;
       this.riderInfo=[];

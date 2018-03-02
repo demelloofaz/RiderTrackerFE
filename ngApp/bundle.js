@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 47);
+/******/ 	return __webpack_require__(__webpack_require__.s = 45);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -111,67 +111,74 @@ var _HomeLoggedInController = __webpack_require__(29);
 
 var _LoginController = __webpack_require__(31);
 
-var _RegisterController = __webpack_require__(36);
+var _RegisterController = __webpack_require__(35);
 
-var _ProfileController = __webpack_require__(35);
+var _ProfileController = __webpack_require__(34);
 
-var _ChangePassword = __webpack_require__(18);
+var _ChangePassword = __webpack_require__(20);
 
 var _AdminChangePassword = __webpack_require__(15);
+
+var _AllAdminController = __webpack_require__(18);
 
 var _AdminController = __webpack_require__(16);
 
 var _AdminRidesController = __webpack_require__(17);
 
-var _RidesController = __webpack_require__(40);
+var _AllRidesController = __webpack_require__(19);
 
-var _MyRidesController = __webpack_require__(32);
+var _CreateRideController = __webpack_require__(21);
 
-var _CreateRideController = __webpack_require__(19);
+var _EditRideController = __webpack_require__(25);
 
-var _EditRideController = __webpack_require__(23);
+var _DeleteRideController = __webpack_require__(23);
 
-var _DeleteRideController = __webpack_require__(21);
+var _RideDetailsController = __webpack_require__(36);
 
-var _RideDetailsController = __webpack_require__(37);
+var _CreateRiderController = __webpack_require__(22);
 
-var _CreateRiderController = __webpack_require__(20);
+var _EditRiderController = __webpack_require__(26);
 
-var _EditRiderController = __webpack_require__(24);
+var _DeleteRiderController = __webpack_require__(24);
 
-var _DeleteRiderController = __webpack_require__(22);
+var _RiderDetailsController = __webpack_require__(38);
 
-var _RiderDetailsController = __webpack_require__(39);
+var _RideSignupController = __webpack_require__(37);
 
-var _RideSignupController = __webpack_require__(38);
-
-var _FollowingController = __webpack_require__(27);
-
-var _FollowerController = __webpack_require__(26);
-
-var _FollowRequestController = __webpack_require__(25);
+var _FollowController = __webpack_require__(27);
 
 var _LocateRiderController = __webpack_require__(30);
 
-var _WeatherController = __webpack_require__(41);
+var _WeatherController = __webpack_require__(39);
 
-var _POIController = __webpack_require__(34);
+var _POIController = __webpack_require__(33);
 
-var _NavController = __webpack_require__(33);
+var _NavController = __webpack_require__(32);
 
-var _AuthService = __webpack_require__(42);
+var _AuthService = __webpack_require__(40);
 
-var _RiderService = __webpack_require__(45);
+var _RiderService = __webpack_require__(43);
 
-var _RideService = __webpack_require__(44);
+var _RideService = __webpack_require__(42);
 
-var _SignupService = __webpack_require__(46);
+var _SignupService = __webpack_require__(44);
 
-var _FollowService = __webpack_require__(43);
+var _FollowService = __webpack_require__(41);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _angular2.default.module('RiderTracker', [_angularUiRouter2.default, _angularResource2.default, _angularBootstrapNpm2.default, _angularMaterial2.default, _angularMessages2.default]).service('AuthService', _AuthService.AuthService).service('RiderService', _RiderService.RiderService).service('RideService', _RideService.RideService).service('SignupService', _SignupService.SignupService).service('FollowService', _FollowService.FollowService).config(routing);
+/*
+import {FollowingController} from './controllers/FollowingController';
+import {FollowerController} from './controllers/FollowerController';
+import {FollowRequestController} from './controllers/FollowRequestController';
+*/
+
+/*
+import {RidesController} from './controllers/RidesController';
+import {MyRidesController} from './controllers/MyRidesController';
+*/
+
 
 routing.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
 function routing($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -202,25 +209,45 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     controllerAs: 'controller'
   }).state('Admin', {
     url: '/Admin',
-    templateUrl: '/ngApp/views/Admin.html',
-    controller: _AdminController.AdminController,
+    templateUrl: '/ngApp/views/AllAdmin.html',
+    controller: _AllAdminController.AllAdminController,
     controllerAs: 'controller'
-  }).state('AdminRides', {
+  })
+  /*
+  .state('Admin', {
+    url: '/Admin',
+    templateUrl: '/ngApp/views/Admin.html',
+    controller: AdminController,
+    controllerAs: 'controller'
+  })
+  .state('AdminRides', {
     url: '/AdminRides',
     templateUrl: '/ngApp/views/AdminRides.html',
-    controller: _AdminRidesController.AdminRidesController,
+    controller: AdminRidesController,
     controllerAs: 'controller'
-  }).state('Rides', {
+  })
+  */
+  .state('Rides', {
+    url: '/Rides',
+    templateUrl: '/ngApp/views/AllRides.html',
+    controller: _AllRidesController.AllRidesController,
+    controllerAs: 'controller'
+  })
+  /*
+  .state('Rides', {
     url: '/Rides',
     templateUrl: '/ngApp/views/Rides.html',
-    controller: _RidesController.RidesController,
+    controller: RidesController,
     controllerAs: 'controller'
-  }).state('MyRides', {
+  })
+  .state('MyRides', {
     url: '/MyRides',
     templateUrl: '/ngApp/views/MyRides.html',
-    controller: _MyRidesController.MyRidesController,
+    controller: MyRidesController,
     controllerAs: 'controller'
-  }).state('CreateRide', {
+  })
+  */
+  .state('CreateRide', {
     url: '/CreateRide',
     templateUrl: '/ngApp/views/CreateRide.Html',
     controller: _CreateRideController.CreateRideController,
@@ -277,20 +304,31 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
     controllerAs: 'controller'
   }).state('Following', {
     url: '/Following',
-    templateUrl: '/ngApp/views/Following.html',
-    controller: _FollowingController.FollowingController,
+    templateUrl: '/ngApp/views/Follow.html',
+    controller: _FollowController.FollowController,
     controllerAs: 'controller'
-  }).state('Follower', {
+  })
+  /*
+  .state('Following', {
+    url: '/Following',
+    templateUrl: '/ngApp/views/Following.html',
+    controller: FollowingController,
+    controllerAs: 'controller'
+  })
+  .state('Follower', {
     url: '/Follower',
     templateUrl: '/ngApp/views/Follower.html',
-    controller: _FollowerController.FollowerController,
+    controller: FollowerController,
     controllerAs: 'controller'
-  }).state('FollowRequest', {
+  })
+  .state('FollowRequest', {
     url: '/FollowRequest',
     templateUrl: '/ngApp/views/FollowRequest.html',
-    controller: _FollowRequestController.FollowRequestController,
+    controller: FollowRequestController,
     controllerAs: 'controller'
-  }).state('LocateRider', {
+  })
+  */
+  .state('LocateRider', {
     url: '/LocateRider',
     templateUrl: '/ngApp/views/LocateRider.html',
     controller: _LocateRiderController.LocateRiderController,
@@ -303,7 +341,8 @@ function routing($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 }
 
-_angular2.default.module('RiderTracker').controller('navController', _NavController.NavController).controller('POIController', _POIController.POIController).controller('WeatherController', _WeatherController.WeatherController);
+// add additional free standing
+_angular2.default.module('RiderTracker').controller('navController', _NavController.NavController).controller('POIController', _POIController.POIController).controller('AdminController', _AdminController.AdminController).controller('AdminRidesController', _AdminRidesController.AdminRidesController).controller('WeatherController', _WeatherController.WeatherController);
 
 /***/ }),
 /* 2 */
@@ -89963,12 +90002,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var AdminChangePasswordController = exports.AdminChangePasswordController = function () {
-    function AdminChangePasswordController(AuthService, $http, $location, RiderService) {
+    function AdminChangePasswordController(AuthService, $http, RiderService) {
         _classCallCheck(this, AdminChangePasswordController);
 
         this.auth = AuthService;
         this.$http = $http;
-        this.$location = $location;
         this.service = RiderService;
         this.password = '';
         this.confirmingpassword = '';
@@ -89984,7 +90022,7 @@ var AdminChangePasswordController = exports.AdminChangePasswordController = func
             if (this.password == this.confirmingpassword) {
                 var request = this.auth.createPasswordChangeRequest(this.currentRiderId, this.password);
                 this.$http.post(this.auth.getBaseRiderURL() + '/ChangePassword', request).then(function (res) {
-                    _this.$location.path(['/EditRider']);
+                    _this.auth.goToPage('/EditRider');
                 }).catch(function (res) {
                     _this.message = "Unable to updated password at this time, try again later.";
                 });
@@ -90044,30 +90082,33 @@ var AdminController = exports.AdminController = function () {
             // Appending dialog to document.body to cover sidenav in docs app
             // Modal dialogs should fully cover application
             // to prevent interaction outside of dialog
-            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupRiderContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
         }
     }, {
         key: 'detailRider',
-        value: function detailRider(currentRiderId) {
-
+        value: function detailRider(currentRiderId, currTab) {
+            this.auth.setLastTab(currTab);
             this.service.saveRiderId(currentRiderId);
             this.service.routeToView("/RiderDetails", this.myView);
         }
     }, {
         key: 'editRider',
-        value: function editRider(currentRiderId) {
+        value: function editRider(currentRiderId, currTab) {
+            this.auth.setLastTab(currTab);
             this.service.saveRiderId(currentRiderId);
             this.service.routeToView("/EditRider", this.myView);
         }
     }, {
         key: 'deleteRider',
-        value: function deleteRider(currentRiderId) {
+        value: function deleteRider(currentRiderId, currTab) {
+            this.auth.setLastTab(currTab);
             this.service.saveRiderId(currentRiderId);
             this.service.routeToView("/DeleteRider", this.myView);
         }
     }, {
         key: 'createRider',
-        value: function createRider() {
+        value: function createRider(currTab) {
+            this.auth.setLastTab(currTab);
             this.service.routeToView("/CreateRider", this.myView);
         }
     }]);
@@ -90102,7 +90143,7 @@ var AdminRidesController = exports.AdminRidesController = function () {
         this.Dialog = $mdDialog;
         this.rides = [];
         this.message = 'hello world from Admin Rides Controller';
-        this.myView = "/AdminRides";
+        this.myView = "/Admin";
         this.service.clearCurrentRideId();
         this.service.clearBackLink();
 
@@ -90124,29 +90165,33 @@ var AdminRidesController = exports.AdminRidesController = function () {
             // Appending dialog to document.body to cover sidenav in docs app
             // Modal dialogs should fully cover application
             // to prevent interaction outside of dialog
-            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupRideContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
         }
     }, {
         key: 'detailRide',
-        value: function detailRide(rideId) {
+        value: function detailRide(rideId, currTab) {
+            this.auth.setLastTab(currTab);
             this.service.saveRideId(rideId);
             this.service.routeToView("/RideDetails", this.myView);
         }
     }, {
         key: 'editRide',
-        value: function editRide(rideId) {
+        value: function editRide(rideId, currTab) {
+            this.auth.setLastTab(currTab);
             this.service.saveRideId(rideId);
             this.service.routeToView("/EditRide", this.myView);
         }
     }, {
         key: 'deleteRide',
-        value: function deleteRide(rideId) {
+        value: function deleteRide(rideId, currTab) {
+            this.auth.setLastTab(currTab);
             this.service.saveRideId(rideId);
             this.service.routeToView("/DeleteRide", this.myView);
         }
     }, {
         key: 'createRide',
-        value: function createRide() {
+        value: function createRide(currTab) {
+            this.auth.setLastTab(currTab);
             this.service.routeToView("/CreateRide", this.myView);
         }
     }]);
@@ -90156,6 +90201,283 @@ var AdminRidesController = exports.AdminRidesController = function () {
 
 /***/ }),
 /* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AllAdminController = exports.AllAdminController = function () {
+    function AllAdminController(AuthService, RideService) {
+        _classCallCheck(this, AllAdminController);
+
+        this.auth = AuthService;
+        this.service = RideService;
+        this.message = '';
+        this.myView = "/AllAdmin";
+        this.service.clearCurrentRideId();
+        this.service.clearBackLink();
+        this.selectedTab = this.auth.getLastTab();
+        this.auth.clearLastTab();
+    }
+
+    _createClass(AllAdminController, [{
+        key: "goToPage",
+        value: function goToPage(page) {
+            this.auth.goToPage(page);
+        }
+    }]);
+
+    return AllAdminController;
+}();
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AllRidesController = exports.AllRidesController = function () {
+    function AllRidesController(AuthService, $http, RideService, SignupService, $mdDialog) {
+        var _this = this;
+
+        _classCallCheck(this, AllRidesController);
+
+        this.auth = AuthService;
+        this.$http = $http;
+        this.service = RideService;
+        this.SignupService = SignupService;
+        this.Dialog = $mdDialog;
+        this.rides = [];
+        this.signups = [];
+        this.myRides = [];
+        this.message = '';
+        this.myView = "/Rides";
+        this.service.clearCurrentRideId();
+        this.service.clearBackLink();
+        this.selectedTab = this.auth.getLastTab();
+        this.auth.clearLastTab();
+
+        // Create rides data
+        this.service.clearCurrentRideId();
+        this.rideName = "";
+        this.description = "";
+        this.startDate = new Date();
+        this.distance;
+        this.dateInput;
+        this.timeInput;
+
+        // create the minimum date for the date picker in creste
+        var currDate = new Date();
+        var strDate = currDate.toString();
+        var dd = currDate.getDate();
+        var mm = currDate.getMonth() + 1; //January is 0!
+        var yyyy = currDate.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+
+        this.today = mm + '/' + dd + '/' + yyyy;
+
+        // get all of the rides...
+        var requestRidesString = this.service.getUpcomingRidesRequest();
+
+        this.$http.get(requestRidesString).then(function (res) {
+            _this.rides = res.data;
+
+            var requestString = _this.SignupService.getRidersSignupString();
+
+            _this.$http.get(requestString).then(function (res) {
+                _this.signups = res.data;
+                _this.createMyRidesList();
+            }).catch(function (res) {
+                _this.message = "Error in getting rider signups.";
+                _this.showErrorDialog();
+            });
+        }).catch(function (res) {
+            _this.message = "Error in getting rides.";
+            _this.showErrorDialog();
+        });
+    }
+
+    _createClass(AllRidesController, [{
+        key: "createMyRidesList",
+        value: function createMyRidesList() {
+            for (var i = 0; i < this.rides.length; i++) {
+                var currentId = this.rides[i].id;
+                if (this.isSignedUp(currentId)) this.myRides.push(this.rides[i]);
+            }
+        }
+    }, {
+        key: "isSignedUp",
+        value: function isSignedUp(rideID) {
+            for (var i = 0; i < this.signups.length; i++) {
+                if (this.signups[i].rideID == rideID) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }, {
+        key: "detailRide",
+        value: function detailRide(rideId, currTab) {
+            this.auth.setLastTab(currTab);
+            this.service.saveRideId(rideId);
+            this.service.routeToView("/RideDetails", this.myView);
+        }
+    }, {
+        key: "editRide",
+        value: function editRide(rideId, currTab) {
+            this.auth.setLastTab(currTab);
+            this.service.saveRideId(rideId);
+            this.service.routeToView("/EditRide", this.myView);
+        }
+    }, {
+        key: "deleteRide",
+        value: function deleteRide(rideId, currTab) {
+            this.auth.setLastTab(currTab);
+            this.service.saveRideId(rideId);
+            this.service.routeToView("/DeleteRide", this.myView);
+        }
+    }, {
+        key: "createRide",
+        value: function createRide() {
+            this.service.routeToView("/CreateRide", this.myView);
+        }
+    }, {
+        key: "canModifyRide",
+        value: function canModifyRide(rideId) {
+            return this.service.canModifyRide(rideId);
+        }
+    }, {
+        key: "isInAdminMode",
+        value: function isInAdminMode() {
+            if (this.RideService.isAdminBackLink()) return true;
+        }
+
+        // Create Ride
+
+    }, {
+        key: "addRide",
+        value: function addRide() {
+            var _this2 = this;
+
+            // verify the date is OK if so the call the add ride endpoint   
+            this.startDate.setMinutes(this.timeInput.getMinutes());
+            this.startDate.setHours(this.timeInput.getHours());
+            this.startDate.setSeconds(0);
+            this.startDate.getTimezoneOffset();
+
+            this.startDate.setDate(this.dateInput.getDate());
+            this.startDate.setMonth(this.dateInput.getMonth());
+            this.startDate.setFullYear(this.dateInput.getFullYear());
+
+            var request = this.service.getCreateRideRequest(this.rideName, this.description, this.startDate, this.distance);
+            this.$http.post(this.auth.getBaseRideURL() + '/CreateRide', request).then(function (res) {
+                //this.clearInputData();
+                _this2.showSuccessDialog();
+            }).catch(function (res) {
+                _this2.message = "Unable to create a ride at this time, try again later";
+            });
+        }
+    }, {
+        key: "clearInputData",
+        value: function clearInputData() {
+            this.rideName = "";
+            this.description = "";
+            this.distance = null;
+            this.dateInput = null;
+            this.timeInput = null;
+        }
+    }, {
+        key: "signOutRide",
+        value: function signOutRide(_rideId) {
+            var _this3 = this;
+
+            var urlString = this.auth.getBaseSignupURL() + '/DeleteSignup';
+            this.$http({
+                method: 'DELETE',
+                url: urlString,
+                data: {
+                    requestingId: this.auth.getCurrentId(),
+                    authorization: this.auth.getToken(),
+                    riderId: this.auth.getCurrentId(),
+                    rideId: _rideId
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                } }).then(function (res) {
+                _this3.message = "Deleted signup";
+                _this3.updateMyRidesList(_rideId);
+            }).catch(function (res) {
+                _this3.message = "Unable to Delete Signup Data at this time.";
+            });
+        }
+    }, {
+        key: "updateMyRidesList",
+        value: function updateMyRidesList(rideId) {
+            // remove signup from the list
+
+            // update the signup list.
+            for (var i = 0; i < this.signups.length; i++) {
+                if (this.signups[i].rideID == rideId) {
+                    this.signups.splice(i, 1);
+                    break;
+                }
+            }
+
+            // update the myrides list
+            for (var j = 0; j < this.myRides.length; j++) {
+                if (this.myRides[j].id == rideId) {
+                    this.myRides.splice(j, 1);
+                    break;
+                }
+            }
+        }
+        // Dialogs...
+
+    }, {
+        key: "showErrorDialog",
+        value: function showErrorDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error Detected').textContent(this.message).ariaLabel('Server Error Detected').ok('OK'));
+        }
+    }, {
+        key: "showSuccessDialog",
+        value: function showSuccessDialog() {
+            // Appending dialog to document.body to cover sidenav in docs app
+            // Modal dialogs should fully cover application
+            // to prevent interaction outside of dialog
+            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Create New Ride').textContent("Ride has been added!").ariaLabel('Ride Added').ok('OK'));
+        }
+    }]);
+
+    return AllRidesController;
+}();
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90210,7 +90532,7 @@ var ChangePasswordController = exports.ChangePasswordController = function () {
 }();
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90287,7 +90609,7 @@ var CreateRideController = exports.CreateRideController = function () {
 }();
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90349,7 +90671,7 @@ var CreateRiderController = exports.CreateRiderController = function () {
 }();
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90421,7 +90743,7 @@ var DeleteRideController = exports.DeleteRideController = function () {
 }();
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90493,7 +90815,7 @@ var DeleteRiderController = exports.DeleteRiderController = function () {
 }();
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90579,7 +90901,7 @@ var EditRideController = exports.EditRideController = function () {
 }();
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90594,7 +90916,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var EditRiderController = exports.EditRiderController = function () {
-    function EditRiderController(RiderService, $http, AuthService, $location) {
+    function EditRiderController(RiderService, $http, AuthService) {
         var _this = this;
 
         _classCallCheck(this, EditRiderController);
@@ -90602,7 +90924,7 @@ var EditRiderController = exports.EditRiderController = function () {
         this.message = '';
         this.service = RiderService;
         this.$http = $http;
-        this.$location = $location;
+
         this.auth = AuthService;
         this.riderId = this.service.getCurrentRiderId();
         this.rider = [];
@@ -90645,7 +90967,7 @@ var EditRiderController = exports.EditRiderController = function () {
 }();
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90659,134 +90981,29 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FollowRequestController = exports.FollowRequestController = function () {
-  function FollowRequestController(FollowService, RiderService, $http, AuthService, $location, $mdDialog) {
+var FollowController = exports.FollowController = function () {
+  function FollowController(FollowService, RiderService, $http, AuthService, $mdDialog) {
     var _this = this;
 
-    _classCallCheck(this, FollowRequestController);
+    _classCallCheck(this, FollowController);
 
-    this.message = 'Hello from Follow Request';
-    this.RiderService = RiderService;
-    this.FollowService = FollowService;
-    this.$http = $http;
-    this.$location = $location;
-    this.auth = AuthService;
-    this.Dialog = $mdDialog;
-    this.followingIds = [];
-    this.unfollowed = [];
-    this.riderInfo = [];
-    this.FollowService.clearCurrentFollowerId();
-    this.FollowService.clearCurrentFollowingId();
-
-    var ridersRequestString = this.RiderService.getAllRidersInfoRequestString();
-    // Needto get all the riders.
-    this.$http.get(ridersRequestString).then(function (res) {
-      _this.riderInfo = res.data;
-      _this.message = "Success - Got the rider info";
-      var followRequestString = _this.FollowService.getMyFollowingsRequestString();
-
-      _this.$http.get(followRequestString).then(function (res) {
-        _this.followingIds = res.data;
-        _this.message = "Success - Got my followings";
-        _this.createUnfollowedList();
-      }).catch(function (res) {
-        _this.message = "Error in getting my followings";
-        _this.showErrorDialog();
-      });
-    }).catch(function (res) {
-      _this.message = "Error in getting rider info.";
-      _this.showErrorDialog();
-    });
-  }
-
-  _createClass(FollowRequestController, [{
-    key: "createUnfollowedList",
-    value: function createUnfollowedList() {
-      for (var i = 0; i < this.riderInfo.length; i++) {
-        var currentId = this.riderInfo[i].riderId;
-        if (currentId != this.auth.getCurrentId() && currentId != 1) {
-          if (!this.alreadyFollowing(currentId)) this.unfollowed.push(this.riderInfo[i]);
-        }
-      }
-    }
-  }, {
-    key: "alreadyFollowing",
-    value: function alreadyFollowing(riderId) {
-      for (var i = 0; i < this.followingIds.length; i++) {
-        if (this.followingIds[i].followingID == riderId) {
-          return true;
-        }
-      }
-      return false;
-    }
-  }, {
-    key: "requestToFollow",
-    value: function requestToFollow(riderId) {
-      var _this2 = this;
-
-      var request = this.FollowService.createFollowRequest(riderId);
-      this.$http.post(this.auth.getBaseFollowURL() + '/CreateFollow', request).then(function (res) {
-        var newFollow = res.data;
-        _this2.updateFollowingData(newFollow);
-      }).catch(function (res) {
-        _this2.message = "Unable to follow at this time, try again later";
-        _this2.showErrorDialog();
-      });
-    }
-  }, {
-    key: "updateFollowingData",
-    value: function updateFollowingData(newFollow) {
-      // need to add the rider id to the following list
-      this.followingIds.push(newFollow);
-      this.unfollowed = [];
-      this.createUnfollowedList();
-    }
-  }, {
-    key: "showErrorDialog",
-    value: function showErrorDialog() {
-      // Appending dialog to document.body to cover sidenav in docs app
-      // Modal dialogs should fully cover application
-      // to prevent interaction outside of dialog
-      this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
-    }
-  }]);
-
-  return FollowRequestController;
-}();
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var FollowerController = exports.FollowerController = function () {
-  function FollowerController(FollowService, RiderService, $http, AuthService, $location, $mdDialog) {
-    var _this = this;
-
-    _classCallCheck(this, FollowerController);
-
-    this.message = 'Hello from Follower';
+    this.message = 'Hello from Follow';
     this.FollowService = FollowService;
     this.RiderService = RiderService;
     this.$http = $http;
-    this.$location = $location;
     this.auth = AuthService;
     this.Dialog = $mdDialog;
+    this.selectedTab = this.auth.getLastTab();
+    this.auth.clearLastTab();
     this.riderInfo = [];
     this.followerIds = [];
     this.followers = [];
     this.FollowService.clearCurrentFollowerId();
     this.FollowService.clearCurrentFollowingId();
+    this.followings = [];
+    this.unfollowed = [];
+    this.FollowService.clearBackLink();
+    this.myView = "/Following";
 
     var ridersRequestString = this.RiderService.getAllRidersInfoRequestString();
     // Needto get all the riders.
@@ -90795,10 +91012,24 @@ var FollowerController = exports.FollowerController = function () {
       _this.message = "Success - Got the rider info";
       var followRequestString = _this.FollowService.getMyFollowersRequestString();
 
+      // Followers...
       _this.$http.get(followRequestString).then(function (res) {
         _this.followerIds = res.data;
         _this.message = "Success - Got my followers";
         _this.createMyFollowerList();
+
+        // Following 
+        var followRequestString = _this.FollowService.getMyFollowingsRequestString();
+
+        _this.$http.get(followRequestString).then(function (res) {
+          _this.followingIds = res.data;
+          _this.message = "Success - Got my followings";
+          _this.createMyFollowingLists();
+          console.log(_this.unfollowed);
+        }).catch(function (res) {
+          _this.message = "Error in getting my followings";
+          _this.showErrorDialog();
+        });
       }).catch(function (res) {
         _this.message = "Error in getting my followers";
         _this.showErrorDialog();
@@ -90809,40 +91040,34 @@ var FollowerController = exports.FollowerController = function () {
     });
   }
 
-  _createClass(FollowerController, [{
+  _createClass(FollowController, [{
     key: "createMyFollowerList",
     value: function createMyFollowerList() {
       this.followers = [];
       for (var i = 0; i < this.riderInfo.length; i++) {
         var currentId = this.riderInfo[i].riderId;
-        if (this.isAFollower(currentId)) {
-          this.riderInfo[i].statusString = this.getFollowerStatusString(currentId);
+        var state = this.getFollowerState(currentId);
+        if (state > -1 && state < 2) {
+          this.riderInfo[i].followerStatus = this.getFollowerStatusString(state);
           this.followers.push(this.riderInfo[i]);
         }
       }
     }
   }, {
-    key: "isAFollower",
-    value: function isAFollower(riderId) {
+    key: "getFollowerState",
+    value: function getFollowerState(riderId) {
       for (var i = 0; i < this.followerIds.length; i++) {
         if (this.followerIds[i].followerID == riderId) {
-          if (this.followerIds[i].followState < 2) // hide declined or blocked...
-            {
-              return true;
-            }
+          return this.followerIds[i].followState;
         }
       }
-      return false;
+      return -1;
     }
   }, {
     key: "getFollowerStatusString",
-    value: function getFollowerStatusString(riderId) {
+    value: function getFollowerStatusString(state) {
       var result = "        ";
-      for (var i = 0; i < this.followerIds.length; i++) {
-        if (this.followerIds[i].followerID == riderId) {
-          if (this.followerIds[i].followState == 0) result = "Requested";
-        }
-      }
+      if (state == 0) result = "Requested";
       return result;
     }
   }, {
@@ -90910,122 +91135,54 @@ var FollowerController = exports.FollowerController = function () {
       });
     }
   }, {
-    key: "showErrorDialog",
-    value: function showErrorDialog() {
-      // Appending dialog to document.body to cover sidenav in docs app
-      // Modal dialogs should fully cover application
-      // to prevent interaction outside of dialog
-      this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error').textContent(this.message).ariaLabel('Server Error').ok('OK'));
-    }
-  }]);
-
-  return FollowerController;
-}();
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var FollowingController = exports.FollowingController = function () {
-  function FollowingController(FollowService, RiderService, $http, AuthService, $location, $mdDialog) {
-    var _this = this;
-
-    _classCallCheck(this, FollowingController);
-
-    this.message = 'Hello from Following';
-    this.FollowService = FollowService;
-    this.RiderService = RiderService;
-    this.$http = $http;
-    this.$location = $location;
-    this.auth = AuthService;
-    this.Dialog = $mdDialog;
-    this.riderInfo = [];
-    this.followingIds = [];
-    this.followings = [];
-    this.FollowService.clearCurrentFollowerId();
-    this.FollowService.clearCurrentFollowingId();
-    this.FollowService.clearBackLink();
-    this.myView = "/Following";
-    var ridersRequestString = this.RiderService.getAllRidersInfoRequestString();
-    // Needto get all the riders.
-    this.$http.get(ridersRequestString).then(function (res) {
-      _this.riderInfo = res.data;
-      _this.message = "Success - Got the rider info";
-      var followRequestString = _this.FollowService.getMyFollowingsRequestString();
-
-      _this.$http.get(followRequestString).then(function (res) {
-        _this.followingIds = res.data;
-        _this.message = "Success - Got my followings";
-        _this.createMyFollowingList();
-      }).catch(function (res) {
-        _this.message = "Error in getting my followings";
-        _this.showErrorDialog();
-      });
-    }).catch(function (res) {
-      _this.message = "Error in getting rider info.";
-      _this.showErrorDialog();
-    });
-  }
-
-  _createClass(FollowingController, [{
-    key: "createMyFollowingList",
-    value: function createMyFollowingList() {
+    key: "createMyFollowingLists",
+    value: function createMyFollowingLists() {
       this.followings = [];
+      this.unfollowed = [];
       for (var i = 0; i < this.riderInfo.length; i++) {
         var currentId = this.riderInfo[i].riderId;
-        if (this.alreadyFollowing(currentId)) {
-          this.riderInfo[i].statusString = this.getFollowingStatusString(currentId);
-          this.followings.push(this.riderInfo[i]);
-        }
-      }
-    }
-  }, {
-    key: "alreadyFollowing",
-    value: function alreadyFollowing(riderId) {
-      for (var i = 0; i < this.followingIds.length; i++) {
-        if (this.followingIds[i].followingID == riderId) {
-          if (this.followingIds[i].followState < 3) {
-            return true;
+        if (currentId != 1 && currentId != this.auth.getCurrentId()) {
+          // skip the admin and yourself 
+          var state = this.getFollowingState(currentId);
+          if (state == -1) // not found.. So add to unfollowed list.
+            this.unfollowed.push(this.riderInfo[i]);else if (state < 3) {
+            // found and not blocked add to following list
+            this.riderInfo[i].followingStatus = this.getFollowingStatusString(state);
+            this.followings.push(this.riderInfo[i]);
           }
         }
       }
-      return false;
+    }
+  }, {
+    key: "getFollowingState",
+    value: function getFollowingState(riderId) {
+      for (var i = 0; i < this.followingIds.length; i++) {
+        if (this.followingIds[i].followingID == riderId) {
+          return this.followingIds[i].followState;
+        }
+      }
+      return -1; // not found...
     }
   }, {
     key: "getFollowingStatusString",
-    value: function getFollowingStatusString(riderId) {
+    value: function getFollowingStatusString(followState) {
       var result = "        ";
-      for (var i = 0; i < this.followingIds.length; i++) {
-        if (this.followingIds[i].followingID == riderId) {
-          if (this.followingIds[i].followState == 0) result = "Pending";else if (this.followingIds[i].followState == 2) result = "Declined";
-        }
-      }
+      if (followState == 0) result = "Pending";else if (followState == 2) result = "Declined";
       return result;
     }
   }, {
     key: "updateFollowingRequest",
     value: function updateFollowingRequest(riderId, status) {
-      var _this2 = this;
+      var _this4 = this;
 
       var requestString = this.FollowService.getUpdateFollowStateUrlString();
       var requestData = this.FollowService.createUpdateFollowingRequest(status);
       // do the delete request...
       this.$http.post(requestString, requestData).then(function (res) {
-        _this2.message = "Follow status updated";
+        _this4.message = "Follow status updated";
       }).catch(function (res) {
-        _this2.message = "Unable to update follow status at this time.";
-        _this2.showErrorDialog();
+        _this4.message = "Unable to update follow status at this time.";
+        _this4.showErrorDialog();
       });
     }
   }, {
@@ -91041,7 +91198,7 @@ var FollowingController = exports.FollowingController = function () {
   }, {
     key: "removeFollowing",
     value: function removeFollowing(riderId) {
-      var _this3 = this;
+      var _this5 = this;
 
       var targetId = 0;
       var targetLoc = -1;
@@ -91068,18 +91225,38 @@ var FollowingController = exports.FollowingController = function () {
         headers: {
           'Content-type': 'application/json;charset=utf-8'
         } }).then(function (res) {
-        _this3.followingIds.splice(targetLoc, 1);
-        _this3.createMyFollowingList();
+        _this5.followingIds.splice(targetLoc, 1);
+        _this5.createMyFollowingLists();
       }).catch(function (res) {
-        _this3.message = "Unable to Delete Ride Data at this time.";
-        _this3.showErrorDialog();
+        _this5.message = "Unable to Delete Ride Data at this time.";
+        _this5.showErrorDialog();
       });
     }
   }, {
     key: "locate",
     value: function locate(riderId) {
+      this.selectedTab = 1;
+      this.auth.setLastTab(this.selectedTab);
       this.FollowService.setCurrentFollowingId(riderId);
       this.FollowService.routeToView("/LocateRider", this.myView);
+    }
+
+    //Follow Request
+
+  }, {
+    key: "requestToFollow",
+    value: function requestToFollow(riderId) {
+      var _this6 = this;
+
+      var request = this.FollowService.createFollowRequest(riderId);
+      this.$http.post(this.auth.getBaseFollowURL() + '/CreateFollow', request).then(function (res) {
+        var newFollow = res.data;
+        _this6.followingIds.push(newFollow);
+        _this6.createMyFollowingLists();
+      }).catch(function (res) {
+        _this6.message = "Unable to follow at this time, try again later";
+        _this6.showErrorDialog();
+      });
     }
   }, {
     key: "showErrorDialog",
@@ -91091,7 +91268,7 @@ var FollowingController = exports.FollowingController = function () {
     }
   }]);
 
-  return FollowingController;
+  return FollowController;
 }();
 
 /***/ }),
@@ -91107,12 +91284,11 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var HomeController = exports.HomeController = function HomeController(AuthService, $location) {
+var HomeController = exports.HomeController = function HomeController(AuthService) {
   _classCallCheck(this, HomeController);
 
   this.auth = AuthService;
-  this.$location = $location;
-  if (this.auth.isAuthenticated()) this.$location.path(['/HomeLoggedIn']);
+  if (this.auth.isAuthenticated()) this.auth.goToPage('/HomeLoggedIn');
 
   this.message = 'Daves hello world';
 };
@@ -91150,6 +91326,8 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
         this.Dialog = $mdDialog;
         this.myView = "HomeLoggedIn";
         this.auth.clearTracking();
+        this.selectedTab = this.auth.getLastTab();
+        this.auth.clearLastTab();
         this.trackingEnabled = false;
         this.ButtonText = "Track";
         this.message = "Current time is: ";
@@ -91331,7 +91509,6 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
         value: function savePosition() {
             var _this2 = this;
 
-            debugger;
             var currTS = Math.round(+new Date() / 1000);
             if (currTS - this.lastTimeStamp > 15) {
                 var pLon = document.getElementById('currLon');
@@ -91427,6 +91604,9 @@ var HomeLoggedInController = exports.HomeLoggedInController = function () {
         key: "locateRider",
         value: function locateRider(riderId) {
             this.FollowService.setCurrentFollowingId(riderId);
+            // set up navigation back to the correct page and tab.
+            this.selectedTab = 1;
+            this.auth.setLastTab(this.selectedTab);
             this.FollowService.routeToView("/LocateRider", this.myView);
         }
     }]);
@@ -91450,7 +91630,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var LocateRiderController = exports.LocateRiderController = function () {
-    function LocateRiderController(AuthService, RiderService, FollowService, $location, $http, $mdDialog) {
+    function LocateRiderController(AuthService, RiderService, FollowService, $http, $mdDialog) {
         var _this = this;
 
         _classCallCheck(this, LocateRiderController);
@@ -91458,7 +91638,6 @@ var LocateRiderController = exports.LocateRiderController = function () {
         this.auth = AuthService;
         this.RiderService = RiderService;
         this.FollowService = FollowService;
-        this.$location = $location;
         this.Dialog = $mdDialog;
         this.$http = $http;
         this.RiderIdToLocate = this.FollowService.getCurrentFollowingId();
@@ -91620,201 +91799,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var MyRidesController = exports.MyRidesController = function () {
-    function MyRidesController(AuthService, $http, RideService, SignupService, $mdDialog) {
-        var _this = this;
-
-        _classCallCheck(this, MyRidesController);
-
-        this.auth = AuthService;
-        this.$http = $http;
-        this.service = RideService;
-        this.SignupService = SignupService;
-        this.Dialog = $mdDialog;
-        this.rides = [];
-        this.signups = [];
-        this.myRides = [];
-        this.message = 'hello world from MyRides Controller';
-        this.myView = "/MyRides";
-        this.service.clearCurrentRideId();
-        this.service.clearBackLink();
-
-        // get all of the rides...
-        var currDate = new Date();
-        var strDate = currDate.toString();
-        var requestRidesString = this.service.getUpcomingRidesRequest();
-
-        this.$http.get(requestRidesString).then(function (res) {
-            _this.rides = res.data;
-            _this.message = "Success - Got the rides";
-            var requestString = _this.SignupService.getRidersSignupString();
-
-            _this.$http.get(requestString).then(function (res) {
-                _this.signups = res.data;
-                _this.message = "Success - Got the rider signups";
-                _this.createMyRidesList();
-            }).catch(function (res) {
-                _this.message = "Error in getting rider signups.";
-                _this.showErrorDialog();
-            });
-        }).catch(function (res) {
-            _this.message = "Error in getting rides.";
-            _this.showErrorDialog();
-        });
-    }
-
-    _createClass(MyRidesController, [{
-        key: "getAllRiderSignups",
-        value: function getAllRiderSignups() {
-            var _this2 = this;
-
-            var requestString = this.SignupService.getRidersSignupString();
-
-            this.$http.get(requestString).then(function (res) {
-                _this2.signups = res.data;
-                _this2.message = "Success - Got the rider signups";
-                _this2.createMyRidesList();
-            }).catch(function (res) {
-                _this2.message = "Error in getting rider signups.";
-                _this2.showErrorDialog();
-            });
-        }
-    }, {
-        key: "createMyRidesList",
-        value: function createMyRidesList() {
-            for (var i = 0; i < this.rides.length; i++) {
-                var currentId = this.rides[i].id;
-                if (this.isSignedUp(currentId)) this.myRides.push(this.rides[i]);
-            }
-        }
-    }, {
-        key: "isSignedUp",
-        value: function isSignedUp(rideID) {
-            for (var i = 0; i < this.signups.length; i++) {
-                if (this.signups[i].rideID == rideID) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }, {
-        key: "detailRide",
-        value: function detailRide(rideId) {
-            this.service.saveRideId(rideId);
-            this.service.routeToView("/RideDetails", this.myView);
-        }
-    }, {
-        key: "editRide",
-        value: function editRide(rideId) {
-            this.service.saveRideId(rideId);
-            this.service.routeToView("/EditRide", this.myView);
-        }
-    }, {
-        key: "deleteRide",
-        value: function deleteRide(rideId) {
-            this.service.saveRideId(rideId);
-            this.service.routeToView("/DeleteRide", this.myView);
-        }
-    }, {
-        key: "createRide",
-        value: function createRide() {
-            this.service.routeToView("/CreateRide", this.myView);
-        }
-    }, {
-        key: "canModifyRide",
-        value: function canModifyRide(rideId) {
-            return this.service.canModifyRide(rideId);
-        }
-    }, {
-        key: "isInAdminMode",
-        value: function isInAdminMode() {
-            if (this.RideService.isAdminBackLink()) return true;
-        }
-    }, {
-        key: "isInRideMode",
-        value: function isInRideMode() {
-            if (this.RideService.isRideBackLink()) return true;
-        }
-    }, {
-        key: "isInMyRideMode",
-        value: function isInMyRideMode() {
-            if (this.RideService.isMyRideBackLink()) return true;
-        }
-    }, {
-        key: "signOutRide",
-        value: function signOutRide(_rideId) {
-            var _this3 = this;
-
-            var urlString = this.auth.getBaseSignupURL() + '/DeleteSignup';
-            this.$http({
-                method: 'DELETE',
-                url: urlString,
-                data: {
-                    requestingId: this.auth.getCurrentId(),
-                    authorization: this.auth.getToken(),
-                    riderId: this.auth.getCurrentId(),
-                    rideId: _rideId
-                },
-                headers: {
-                    'Content-type': 'application/json;charset=utf-8'
-                } }).then(function (res) {
-                _this3.message = "Deleted signup";
-                _this3.updateMyRidesList(_rideId);
-            }).catch(function (res) {
-                _this3.message = "Unable to Delete Signup Data at this time.";
-            });
-        }
-    }, {
-        key: "updateMyRidesList",
-        value: function updateMyRidesList(rideId) {
-            // remove signup from the list
-
-            // update the signup list.
-            for (var i = 0; i < this.signups.length; i++) {
-                if (this.signups[i].rideID == rideId) {
-                    this.signups.splice(i, 1);
-                    break;
-                }
-            }
-
-            // update the myrides list
-            for (var j = 0; j < this.myRides.length; j++) {
-                if (this.myRides[j].id == rideId) {
-                    this.myRides.splice(j, 1);
-                    break;
-                }
-            }
-        }
-    }, {
-        key: "showErrorDialog",
-        value: function showErrorDialog() {
-            // Appending dialog to document.body to cover sidenav in docs app
-            // Modal dialogs should fully cover application
-            // to prevent interaction outside of dialog
-            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error Detected').textContent(this.message).ariaLabel('Server Error Detected').ok('OK'));
-        }
-    }]);
-
-    return MyRidesController;
-}();
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 var NavController = exports.NavController = function () {
-    function NavController(AuthService, $location) {
+    function NavController(AuthService) {
         _classCallCheck(this, NavController);
 
         this.message = 'hello world';
@@ -91865,13 +91851,19 @@ var NavController = exports.NavController = function () {
             }
             return false;
         }
+    }, {
+        key: 'goToPage',
+        value: function goToPage(page) {
+            this.auth.clearLastTab();
+            this.auth.goToPage(page);
+        }
     }]);
 
     return NavController;
 }();
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91895,7 +91887,6 @@ var POIController = exports.POIController = function () {
         this.message = "Current Weather Conditions For: ";
         this.lat = 33.24298;
         this.lon = -111.80319;
-        debugger;
         this.POI = [["Gateway Airport", "Restrooms and Water located inside", -111.670598, 33.310595], ["Compass Christian Church", "Water Fountain at west enterance", -111.859479, 33.279943], ["Seville Rec Center", "Water Fountain and restrooms located inside", -111.705632, 33.227755], ["Joe's Farm Grill", "Water Fountains And Restooms located at east end", -111.725260, 33.321901], ["Cosmo Dog Park", "Water Fountain and Restrooms", -111.734932, 33.321845], ["Performance Bike Chandler", "Sponsors Saturday Group Rides", -111.944225, 33.318513], ["Global Bikes Gilbert", "Sponsors Sunday Service Group Ride", -111.787766, 33.365570], ["SCC Home Ride Start", "Normal Starting point for SCC Satureday and Sunday rides", -111.792154, 33.279182], ["Pecos Park And Ride", "Start of SCC Tookeeville ride", -111.998127, 33.292761]];
         this.getMyLocation();
         this.drawMap();
@@ -91914,8 +91905,6 @@ var POIController = exports.POIController = function () {
                 zoom: 11,
                 center: myLatLng
             });
-
-            debugger;
 
             // Display multiple markers on a map
             var infoWindow = new google.maps.InfoWindow(),
@@ -91949,7 +91938,7 @@ var POIController = exports.POIController = function () {
 }();
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92034,7 +92023,7 @@ var ProfileController = exports.ProfileController = function () {
 }();
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92102,7 +92091,7 @@ var RegisterController = exports.RegisterController = function () {
 }();
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92141,7 +92130,6 @@ var RideDetailsController = exports.RideDetailsController = function () {
         // make the http get request
         this.$http.get(requestString).then(function (res) {
             _this.ride = res.data;
-
             // if we are running under the Ride mode we see if there is a signup for this ride.
             if (_this.isInRideMode() || _this.isInMyRideMode()) {
                 var requestSignupString = _this.SignupService.getSignupString(_this.rideId);
@@ -92149,7 +92137,15 @@ var RideDetailsController = exports.RideDetailsController = function () {
                     _this.signup = res.data;
                     _this.signupId = _this.signup.signupID;
                     _this.buttonText = "Leave the Ride";
-                    _this.getAttendeeList(_this.rideId);
+                    //this.getAttendeeList(this.rideId);
+
+                    var requestString = _this.SignupService.getRideAttendeeString(_this.rideId);
+                    // make the http get request
+                    _this.$http.get(requestString).then(function (res) {
+                        _this.attendees = res.data;
+                    }).catch(function (res) {
+                        _this.message = "Unable to Get Ride Attendee Data at this time.";
+                    });
                 }).catch(function (res) {
                     if (res.status != 404) _this.message = "Unable to Get Ride Data at this time.";
                 });
@@ -92238,7 +92234,7 @@ var RideDetailsController = exports.RideDetailsController = function () {
 }();
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92257,7 +92253,7 @@ var RideSignupController = exports.RideSignupController = function RideSignupCon
 };
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92306,98 +92302,7 @@ var RiderDetailsController = exports.RiderDetailsController = function () {
 }();
 
 /***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var RidesController = exports.RidesController = function () {
-    function RidesController(AuthService, $http, RideService, $mdDialog) {
-        var _this = this;
-
-        _classCallCheck(this, RidesController);
-
-        this.auth = AuthService;
-        this.$http = $http;
-        this.service = RideService;
-        this.Dialog = $mdDialog;
-        this.rides = [];
-        this.message = 'hello world from Rides Controller';
-        this.myView = "/Rides";
-        this.service.clearCurrentRideId();
-        this.service.clearBackLink();
-
-        // get all of the rides...
-        var currDate = new Date();
-        var strDate = currDate.toString();
-        var requestRidesString = this.service.getUpcomingRidesRequest();
-
-        this.$http.get(requestRidesString).then(function (res) {
-            _this.rides = res.data;
-            _this.message = "Success - Got the rides";
-        }).catch(function (res) {
-            _this.message = "Error in getting rides.";
-            _this.showErrorDialog();
-        });
-    }
-
-    _createClass(RidesController, [{
-        key: "detailRide",
-        value: function detailRide(rideId) {
-            this.service.saveRideId(rideId);
-            this.service.routeToView("/RideDetails", this.myView);
-        }
-    }, {
-        key: "editRide",
-        value: function editRide(rideId) {
-            this.service.saveRideId(rideId);
-            this.service.routeToView("/EditRide", this.myView);
-        }
-    }, {
-        key: "deleteRide",
-        value: function deleteRide(rideId) {
-            this.service.saveRideId(rideId);
-            this.service.routeToView("/DeleteRide", this.myView);
-        }
-    }, {
-        key: "createRide",
-        value: function createRide() {
-            this.service.routeToView("/CreateRide", this.myView);
-        }
-    }, {
-        key: "canModifyRide",
-        value: function canModifyRide(rideId) {
-            return this.service.canModifyRide(rideId);
-        }
-    }, {
-        key: "isInAdminMode",
-        value: function isInAdminMode() {
-            if (this.RideService.isAdminBackLink()) return true;
-        }
-    }, {
-        key: "showErrorDialog",
-        value: function showErrorDialog() {
-            // Appending dialog to document.body to cover sidenav in docs app
-            // Modal dialogs should fully cover application
-            // to prevent interaction outside of dialog
-            this.Dialog.show(this.Dialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('Server Error Detected').textContent(this.message).ariaLabel('Server Error Detected').ok('OK'));
-        }
-    }]);
-
-    return RidesController;
-}();
-
-/***/ }),
-/* 41 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92454,7 +92359,7 @@ var WeatherController = exports.WeatherController = function WeatherController($
 };
 
 /***/ }),
-/* 42 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92489,6 +92394,7 @@ var AuthService = exports.AuthService = function () {
         this.BACK_LINK_KEY = 'BackLink';
         this.LON_KEY = "LonKey";
         this.LAT_KEY = "LatKey";
+        this.LAST_TAB_KEY = 'lasttab';
     }
 
     _createClass(AuthService, [{
@@ -92602,6 +92508,26 @@ var AuthService = exports.AuthService = function () {
         value: function clearBackLink() {
             return localStorage.removeItem(this.BACK_LINK_KEY);
         }
+
+        // tabs data
+
+    }, {
+        key: 'getLastTab',
+        value: function getLastTab() {
+            var result = localStorage.getItem(this.LAST_TAB_KEY);
+            if (result == null) return 0;
+            return result;
+        }
+    }, {
+        key: 'setLastTab',
+        value: function setLastTab(tab) {
+            localStorage.setItem(this.LAST_TAB_KEY, tab);
+        }
+    }, {
+        key: 'clearLastTab',
+        value: function clearLastTab() {
+            localStorage.removeItem(this.LAST_TAB_KEY);
+        }
     }, {
         key: 'isAuthenticated',
         value: function isAuthenticated() {
@@ -92628,7 +92554,7 @@ var AuthService = exports.AuthService = function () {
             localStorage.removeItem(this.ROLE_KEY);
             localStorage.removeItem(this.USERNAME_KEY);
             //redirect
-            this.$location.path(['/']);
+            this.goToPage('/');
         }
 
         // User Profile methods
@@ -92741,7 +92667,12 @@ var AuthService = exports.AuthService = function () {
             localStorage.removeItem(this.TRACKING_KEY);
 
             //redirect
-            this.$location.path(['/HomeLoggedIn']);
+            this.goToPage('/HomeLoggedIn');
+        }
+    }, {
+        key: 'goToPage',
+        value: function goToPage(location) {
+            this.$location.path([location]);
         }
     }]);
 
@@ -92751,7 +92682,7 @@ var AuthService = exports.AuthService = function () {
 AuthService.$inject = ['$http', '$location'];
 
 /***/ }),
-/* 43 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92766,11 +92697,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FollowService = exports.FollowService = function () {
-    function FollowService(AuthService, $location) {
+    function FollowService(AuthService) {
         _classCallCheck(this, FollowService);
 
         this.auth = AuthService;
-        this.$location = $location;
         this.CURRENT_FOLLOWER_KEY = 'CurrentFollower';
         this.CURRENT_FOLLOWING_KEY = 'CurrentFollower';
     }
@@ -92882,14 +92812,14 @@ var FollowService = exports.FollowService = function () {
         key: 'routeToView',
         value: function routeToView(newDest, backLink) {
             this.auth.setBackLink(backLink);
-            this.$location.path([newDest]);
+            this.auth.goToPage(newDest);
         }
     }, {
         key: 'goBackToParentView',
         value: function goBackToParentView() {
             var previousView = this.auth.getBackLink();
             this.auth.clearBackLink();
-            this.$location.path([previousView]);
+            this.auth.goToPage(previousView);
         }
     }, {
         key: 'clearBackLink',
@@ -92901,10 +92831,10 @@ var FollowService = exports.FollowService = function () {
     return FollowService;
 }();
 
-FollowService.$inject = ['AuthService', '$location'];
+FollowService.$inject = ['AuthService'];
 
 /***/ }),
-/* 44 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92919,11 +92849,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RideService = exports.RideService = function () {
-    function RideService(AuthService, $location) {
+    function RideService(AuthService) {
         _classCallCheck(this, RideService);
 
         this.auth = AuthService;
-        this.$location = $location;
         this.CURRENT_RIDE_KEY = 'CurrentRide';
     }
 
@@ -92971,14 +92900,14 @@ var RideService = exports.RideService = function () {
         key: "routeToView",
         value: function routeToView(newDest, backLink) {
             this.auth.setBackLink(backLink);
-            this.$location.path([newDest]);
+            this.auth.goToPage(newDest);
         }
     }, {
         key: "goBackToParentView",
         value: function goBackToParentView() {
             var previousView = this.auth.getBackLink();
             this.auth.clearBackLink();
-            this.$location.path([previousView]);
+            this.auth.goToPage(previousView);
         }
     }, {
         key: "getRideRequest",
@@ -93049,10 +92978,10 @@ var RideService = exports.RideService = function () {
     return RideService;
 }();
 
-RideService.$inject = ['AuthService', '$location'];
+RideService.$inject = ['AuthService'];
 
 /***/ }),
-/* 45 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93067,11 +92996,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RiderService = exports.RiderService = function () {
-    function RiderService(AuthService, $location) {
+    function RiderService(AuthService) {
         _classCallCheck(this, RiderService);
 
         this.auth = AuthService;
-        this.$location = $location;
         this.CURRENT_RIDER_KEY = 'CurrentRider';
     }
 
@@ -93104,14 +93032,14 @@ var RiderService = exports.RiderService = function () {
         key: 'routeToView',
         value: function routeToView(newDest, backLink) {
             this.auth.setBackLink(backLink);
-            this.$location.path([newDest]);
+            this.auth.goToPage(newDest);
         }
     }, {
         key: 'goBackToParentView',
         value: function goBackToParentView() {
             var previousView = this.auth.getBackLink();
             this.auth.clearBackLink();
-            this.$location.path([previousView]);
+            this.auth.goToPage(previousView);
         }
     }, {
         key: 'getRiderRequest',
@@ -93170,10 +93098,10 @@ var RiderService = exports.RiderService = function () {
     return RiderService;
 }();
 
-RiderService.$inject = ['AuthService', '$location'];
+RiderService.$inject = ['AuthService'];
 
 /***/ }),
-/* 46 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93188,17 +93116,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var SignupService = exports.SignupService = function () {
-    function SignupService(AuthService, $location) {
+    function SignupService(AuthService) {
         _classCallCheck(this, SignupService);
 
         this.auth = AuthService;
-        this.$location = $location;
     }
 
     _createClass(SignupService, [{
         key: 'getSignupString',
         value: function getSignupString(rideId) {
             var requestString = this.auth.getBaseSignupURL() + '/GetSignup?RequestingId=' + this.auth.getCurrentId() + '&RiderId=' + this.auth.getCurrentId() + '&RideId=' + rideId + '&Authorization=' + this.auth.getToken();
+
+            return requestString;
+        }
+    }, {
+        key: 'getRideSignupString',
+        value: function getRideSignupString(rideId) {
+            var requestString = this.auth.getBaseSignupURL() + '/GetRideSignups?RequestingId=' + this.auth.getCurrentId() + '&RiderId=' + this.auth.getCurrentId() + '&RideId=' + rideId + '&Authorization=' + this.auth.getToken();
 
             return requestString;
         }
@@ -93230,17 +93164,17 @@ var SignupService = exports.SignupService = function () {
     }, {
         key: 'goToView',
         value: function goToView(newDest) {
-            this.$location.path([newDest]);
+            this.auth.goToPage(newDest);
         }
     }]);
 
     return SignupService;
 }();
 
-SignupService.$inject = ['AuthService', '$location'];
+SignupService.$inject = ['AuthService'];
 
 /***/ }),
-/* 47 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(1);

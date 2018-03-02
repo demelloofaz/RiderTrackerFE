@@ -1,13 +1,25 @@
 export class SignupService{
-    constructor(AuthService, $location)
+    constructor(AuthService)
     {
         this.auth = AuthService;
-        this.$location = $location;
     }
 
     getSignupString(rideId) {
         var requestString = this.auth.getBaseSignupURL()  + 
         '/GetSignup?RequestingId=' + 
+            this.auth.getCurrentId() + 
+        '&RiderId=' + 
+            this.auth.getCurrentId() + 
+        '&RideId=' + 
+            rideId +
+        '&Authorization=' + 
+        this.auth.getToken();
+        
+        return requestString;
+    }
+    getRideSignupString(rideId) {
+        var requestString = this.auth.getBaseSignupURL()  + 
+        '/GetRideSignups?RequestingId=' + 
             this.auth.getCurrentId() + 
         '&RiderId=' + 
             this.auth.getCurrentId() + 
@@ -52,7 +64,7 @@ export class SignupService{
     }
 
     goToView(newDest){
-        this.$location.path([newDest]);
+        this.auth.goToPage(newDest);
     }
 }
-SignupService.$inject = ['AuthService', '$location'];
+SignupService.$inject = ['AuthService'];

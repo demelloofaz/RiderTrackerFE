@@ -1,9 +1,9 @@
 export class EditRiderController {
-    constructor(RiderService, $http, AuthService, $location) {
+    constructor(RiderService, $http, AuthService) {
       this.message = '';
       this.service = RiderService;
       this.$http = $http;
-      this.$location= $location;
+
       this.auth = AuthService;
       this.riderId = this.service.getCurrentRiderId();
       this.rider = [];

@@ -1,0 +1,87 @@
+<div id="popupContainer" ng-cloak>
+        <md-content>
+            <md-tabs md-selected="controller.selectedTab" md-dynamic-height md-border-bottom>
+                <md-tab label="Rider Admininstration">
+                    <md-content>
+                        <div ng-controller="AdminController as controller" id="popupRiderContainer">
+                            <div>
+                                <md-button ng-click="controller.createRider(0)" class="rider-button md-raised md-primary">&nbsp Add a Rider &nbsp</md-button>
+                            </div>
+                            <md-input-container>
+                                <md-icon style="color: blue">search</md-icon>
+                                <input class="search-bar" ng-model="search" ng-model-options="{debounce:1000}" ng-change="fetch()" placeholder="Search" width = "60"/>
+                            </md-input-container>
+                            <table>
+                                <tr ng-repeat="rider in controller.riders | filter : search">
+                                <td ng-if="$odd" style="background-color:#f1f1f1">{{ rider.userName }}</td>
+                                <td ng-if="$even">{{ rider.userName }}</td>
+                                <td ng-if="$odd" style="background-color:#f1f1f1">{{ rider.lastName }}</td>
+                                <td ng-if="$even">{{ rider.lastName }}</td>
+                                <td ng-if="$odd" style="background-color:#f1f1f1">{{ rider.firstName }}</td>
+                                <td ng-if="$even">{{ rider.firstName }}</td>
+                                <td class="rider-td">
+                                    <md-button ng-click="controller.detailRider(rider.id, 0)" class="rider-button md-icon-button" aria-label="Details">
+                                        <md-tooltip md-direction="top">Rider Details</md-tooltip>
+                                        <md-icon style="display: unset; color:deepskyblue"><i class="material-icons">details</i></md-icon>
+                                    </md-button>
+                                </td>
+                                <td class="ride-td">
+                                    <md-button ng-click="controller.editRider(rider.id, 0)" class="rider-button  md-icon-button" aria-label="Edit">
+                                        <md-tooltip md-direction="top">Edit Rider</md-tooltip>
+                                        <md-icon style="display: unset; color:blueviolet"><i class="material-icons">edit</i></md-icon>
+                                    </md-button>
+                                </td>
+                                <td class="rider-td">
+                                    <md-button ng-click="controller.deleteRider(rider.id, 0)" class="rider-button  md-icon-button"aria-label="Delete">
+                                        <md-tooltip md-direction="top">Delete Rider</md-tooltip>
+                                        <md-icon style="display: unset; color:red"><i class="material-icons">remove_circle</i></md-icon>
+                                    </md-button>
+                                </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab  label="Ride Admininstration">
+                    <md-content>
+                        <div ng-controller="AdminRidesController as controller" id="popupRideContainer">
+                            <div><md-button  ng-click="controller.createRide(1)" class="ride-button md-raised md-primary">&nbsp New Ride &nbsp
+                                <md-tooltip md-direction="top">Create a new Ride</md-tooltip>
+                            </md-button></div>
+                            <md-input-container>
+                                <md-icon style="color: blue">search</md-icon>
+                                <input class="search-bar" ng-model="search" ng-model-options="{debounce:1000}" ng-change="fetch()" placeholder="Search" width = "60"/>
+                            </md-input-container>
+                            <table>
+                                <tr ng-repeat="ride in controller.rides | filter : search">
+                                <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
+                                <td ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
+                                <td ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
+                                <td ng-if="$even">{{ ride.rideName }}</td>
+                                <td class="ride-td">
+                                    <md-button ng-click="controller.detailRide(ride.id,1)" class="rider-button md-icon-button" aria-label="Details">
+                                            <md-tooltip md-direction="top">Ride Details</md-tooltip>
+                                            <md-icon style="display: unset; color:deepskyblue"><i class="material-icons">details</i></md-icon>
+                                    </md-button>
+                                </td>
+                                <td class="ride-td">
+                                    <md-button ng-click="controller.editRide(ride.id,1)" class="ride-button  md-icon-button" aria-label="Edit">
+                                        <md-tooltip md-direction="top">Edit Ride</md-tooltip>
+                                        <md-icon style="display: unset; color:blueviolet"><i class="material-icons">edit</i></md-icon>
+                                    </md-button>
+                                </td>
+                                <td class="ride-td">
+                                    <md-button ng-click="controller.deleteRide(ride.id,1)" class="ride-button  md-icon-button"aria-label="Delete">
+                                        <md-tooltip md-direction="top">Delete Ride</md-tooltip>
+                                        <md-icon style="display: unset; color:red"><i class="material-icons">remove_circle</i></md-icon>
+                                    </md-button>
+                                </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        <md-button ng-click="controller.goToPage('/Profile')" class="btn btn-link" class="md-primary md-flat">&nbsp Back to Profile &nbsp</md-button>
+    </md-content>
+</div>

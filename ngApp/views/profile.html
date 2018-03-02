@@ -49,18 +49,19 @@
 
                     <div>
                         <md-button ng-disabled="Form.$invalid && Form.$pristine" ng-click="controller.updateProfile()" class="my-btn md-raised md-primary">&nbsp Update &nbsp</md-button>
-                        <a ng-if="controller.isAdmin()" ui-sref="Admin" class="btn btn-link" style="padding:2px">
-                            <md-tooltip md-direction="top">Perform Admin Functions</md-tooltip>
-                            <md-button class="my-btn md-primary md-raised" style="background-color:fuchsia">Admin</md-button>
-                        </a>
                         <a ui-sref="ChangePassword" class="btn btn-link" style="padding:2px">
                             <md-tooltip md-direction="top">Change your Password</md-tooltip>
                             <md-button class="my-btn md-primary md-raised" style="background-color:red">Password</md-button>
                         </a>
-                        
+                        <a ng-if="controller.isAdmin()" ui-sref="Admin" class="btn btn-link" style="padding:2px">
+                                <md-tooltip md-direction="top">Perform Admin Functions</md-tooltip>
+                                <md-button class="my-btn md-primary md-raised" style="background-color:deepskyblue">Admin</md-button>
+                        </a>
+                        <!--
                         <a ui-sref="HomeLoggedIn" class="btn btn-link" style="padding:2px">
                             <md-button class="my-btn md-primary md-flat"><i class="material-icons">home</i></md-button>
                         </a>
+                        -->
                     </div>
                 </form>
                 <p class="form-error-msg">{{controller.message}}</p>

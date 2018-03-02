@@ -30,7 +30,7 @@ export class AdminController {
     // to prevent interaction outside of dialog
     this.Dialog.show(
       this.Dialog.alert()
-        .parent(angular.element(document.querySelector('#popupContainer')))
+        .parent(angular.element(document.querySelector('#popupRiderContainer')))
         .clickOutsideToClose(true)
         .title('Server Error')
         .textContent(this.message)
@@ -39,20 +39,23 @@ export class AdminController {
     );
     }
 
-    detailRider(currentRiderId) {
-
+    detailRider(currentRiderId, currTab) {
+        this.auth.setLastTab(currTab);
         this.service.saveRiderId(currentRiderId);
         this.service.routeToView("/RiderDetails", this.myView);
     }
-    editRider(currentRiderId) {
+    editRider(currentRiderId, currTab) {
+        this.auth.setLastTab(currTab);
         this.service.saveRiderId(currentRiderId)
         this.service.routeToView("/EditRider", this.myView)
     }
-    deleteRider(currentRiderId) {
+    deleteRider(currentRiderId, currTab) {
+        this.auth.setLastTab(currTab);
         this.service.saveRiderId(currentRiderId);
         this.service.routeToView("/DeleteRider", this.myView);
     }
-    createRider() {
+    createRider(currTab) {
+        this.auth.setLastTab(currTab);
         this.service.routeToView("/CreateRider", this.myView);
     }
   }

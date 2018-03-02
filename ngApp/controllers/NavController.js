@@ -1,5 +1,5 @@
 export class NavController {
-    constructor(AuthService, $location) {
+    constructor(AuthService) {
       this.message = 'hello world';
       this.auth = AuthService;
     }
@@ -25,7 +25,7 @@ export class NavController {
      }
 
      logout() {
-         this.auth.logout();
+        this.auth.logout();
      }
      isTrackingMode(){
         return  this.auth.isTrackingMode();
@@ -38,5 +38,9 @@ export class NavController {
          }
          return false;
         
+     }
+     goToPage(page){
+         this.auth.clearLastTab();
+         this.auth.goToPage(page);
      }
   }
