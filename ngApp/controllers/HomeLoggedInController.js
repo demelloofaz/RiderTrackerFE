@@ -12,6 +12,8 @@ export class HomeLoggedInController {
       this.Dialog = $mdDialog;
       this.myView ="HomeLoggedIn";
       this.auth.clearTracking();
+      this.selectedTab = this.auth.getLastTab();
+      this.auth.clearLastTab();
       this.trackingEnabled = false;
       this.ButtonText= "Track";
       this.message = "Current time is: ";
@@ -214,7 +216,6 @@ export class HomeLoggedInController {
     }
     
     savePosition() {
-        debugger;
         var currTS = Math.round(+new Date() / 1000);
         if (currTS - this.lastTimeStamp > 15) {
             var pLon = document.getElementById('currLon');
@@ -322,6 +323,9 @@ export class HomeLoggedInController {
 
     locateRider(riderId){
       this.FollowService.setCurrentFollowingId(riderId);
+      // set up navigation back to the correct page and tab.
+      this.selectedTab = 1;
+      this.auth.setLastTab(this.selectedTab); 
       this.FollowService.routeToView("/LocateRider", this.myView);
     }
   }

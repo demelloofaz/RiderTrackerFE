@@ -1,9 +1,8 @@
 export class LocateRiderController {
-    constructor(AuthService, RiderService, FollowService,  $location, $http, $mdDialog) {
+    constructor(AuthService, RiderService, FollowService,   $http, $mdDialog) {
       this.auth = AuthService;
       this.RiderService = RiderService;
       this.FollowService = FollowService;
-      this.$location = $location;
       this.Dialog = $mdDialog;
       this.$http = $http;
       this.RiderIdToLocate =  this.FollowService.getCurrentFollowingId();

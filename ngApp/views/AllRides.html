@@ -1,0 +1,156 @@
+<div id="popupContainer" ng-cloak>
+    <md-content>
+        <md-tabs md-selected="controller.selectedTab" md-dynamic-height md-border-bottom>
+            <md-tab label="Upcoming Rides">
+                <md-content>
+                    <div ng-cloak>   
+                        <md-input-container>
+                            <md-icon style="color: blue">search</md-icon>
+                            <input class="search-bar" ng-model="search" ng-model-options="{debounce:1000}" ng-change="fetch()" placeholder="Search" width = "60"/>
+                        </md-input-container>
+                        <table class="ride-table">
+                            <tr>
+                                <th class="ride-th">Date/Time</th>
+                                <th class="ride-th">Ride Name</th>
+                            </tr>
+                            <tr ng-repeat="ride in controller.rides | filter : search">
+                            <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
+                            <td class="ride-td" ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
+                            <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
+                            <td class="ride-td" ng-if="$even">{{ ride.rideName }}</td>
+                            <td class="ride-td">
+                                <md-button ng-click="controller.detailRide(ride.id, 0)" class="rider-button md-icon-button" aria-label="Details">
+                                        <md-tooltip md-direction="top">Ride Details</md-tooltip>
+                                        <md-icon style="display: unset; color:deepskyblue"><i class="material-icons">details</i></md-icon>
+                                </md-button>
+                            </td>
+                            <td class="ride-td">
+                                <md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.editRide(ride.id, 0)" class="ride-button  md-icon-button" aria-label="Edit">
+                                    <md-tooltip md-direction="top">Edit Ride</md-tooltip>
+                                    <md-icon style="display: unset; color:blueviolet"><i class="material-icons">edit</i></md-icon>
+                                </md-button>
+                            </td>
+                            <td class="ride-td">
+                                <md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.deleteRide(ride.id, 0)" class="ride-button  md-icon-button"aria-label="Delete">
+                                    <md-tooltip md-direction="top">Delete Ride</md-tooltip>
+                                    <md-icon style="display: unset; color:red"><i class="material-icons">remove_circle</i></md-icon>
+                                </md-button>
+                            </td>
+                            </tr>
+                        </table>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="My Rides">
+                <md-content>
+                    <div>
+                        <md-input-container>
+                            <md-icon style="color: blue">search</md-icon>
+                            <input class="search-bar" ng-model="search" ng-model-options="{debounce:1000}" ng-change="fetch()" placeholder="Search" width = "60"/>
+                        </md-input-container>
+                
+                        <table class="ride-table">
+                            <tr>
+                                <th class="ride-th">Date/Time</th>
+                                <th class="ride-th">Ride Name</th>
+                            </tr>
+                            <tr class="ride-td" ng-repeat="ride in controller.myRides|filter: search"> 
+                            <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma'}}</td>
+                            <td class="ride-td" ng-if="$even">{{ ride.startDate | date : 'MM/dd/yyyy @ h:mma' }}</td>
+                            <td class="ride-td" ng-if="$odd" style="background-color:#f1f1f1">{{ ride.rideName }}</td>
+                            <td class="ride-td" ng-if="$even">{{ ride.rideName }}</td>
+                            <td class="ride-td">
+                                <md-button ng-click="controller.signOutRide(ride.id)" class="rider-button md-icon-button" aria-label="Leave Ride">
+                                    <md-tooltip md-direction="top">Leave Ride</md-tooltip>
+                                    <md-icon style="display: unset; color:green"><i class="material-icons">highlight_off</i></md-icon>
+                                </md-button>
+                            </td>
+                            <td class="ride-td">
+                                <md-button ng-click="controller.detailRide(ride.id, 1)" class="rider-button md-icon-button" aria-label="Details">
+                                        <md-tooltip md-direction="top">Ride Details</md-tooltip>
+                                        <md-icon style="display: unset; color:deepskyblue"><i class="material-icons">details</i></md-icon>
+                                </md-button>
+                            </td>
+                            <td class="ride-td">
+                                <md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.editRide(ride.id, 1)" class="ride-button  md-icon-button" aria-label="Edit">
+                                    <md-tooltip md-direction="top">Edit Ride</md-tooltip>
+                                    <md-icon style="display: unset; color:blueviolet"><i class="material-icons">edit</i></md-icon>
+                                </md-button>
+                            </td>
+                            <td class="ride-td">
+                                <md-button ng-if="controller.canModifyRide(ride.creatorId)" ng-click="controller.deleteRide(ride.id, 1)" class="ride-button  md-icon-button"aria-label="Delete">
+                                    <md-tooltip md-direction="top">Delete Ride</md-tooltip>
+                                    <md-icon style="display: unset; color:red"><i class="material-icons">remove_circle</i></md-icon>
+                                </md-button>
+                            </td>
+                            </tr>
+                        </table>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="Add Ride">
+                <md-content ng-app="RiderTracker" layout="row" layout-align="space-around" layout-padding="layout-padding" ng-cloak="ng-cloak" class="register-form">
+                    <md-card flex="flex" flex-gt-sm="50" flex-gt-md="33">
+                        <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h2><span>Enter the Following Ride Information</span></h2>
+                        </div>
+                        </md-toolbar>
+                        <md-card-content>
+                        <form name="Form">
+                            <md-input-container class="md-block">
+                            <label>Ride Name</label>
+                            <md-tooltip>Enter a ride name up to 30 characters</md-tooltip>
+                            <input type="text" name="ridename" ng-model="controller.rideName"  placeholder="Ride Name" required="" md-maxlength="30"/>
+                            <div ng-messages="Form.ridename.$error" role="alert" multiple="">
+                                <div ng-message="required" class="my-message">Please enter a ride name.</div>
+                                <div ng-message="md-maxlength" class="my-message">Ride name is too long.</div>
+                            </div>
+                            </md-input-container>
+            
+                            <md-input-container class="md-block">
+                            <label>Description</label>
+                            <md-tooltip>Enter ride description up to 80 characters</md-tooltip>
+                            <input type="text" name="description" ng-model="controller.description" placeholder="Ride Description - include location, terrain, ride type" required="" md-maxlength="80"/>
+                            <div ng-messages="Form.description.$error" role="alert" multiple="">
+                                <div ng-message="required" class="my-message">Please enter a short description.</div>
+                                <div ng-message="md-maxlength" class="my-message">Description is too long.</div>
+                            </div>
+                            </md-input-container>
+            
+                            <md-input-container class="md-block">
+                            <label>Distance</label>
+                            <md-tooltip>Enter a ride distance in miles</md-tooltip>
+                            <input type="number" name="distance" ng-model="controller.distance"  required="" />
+                            <div ng-messages="Form.emailaddress.$error" role="alert" multiple="">
+                                <div ng-message="required" class="my-message">Please enter the ride distance in miles</div>
+                            </div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Ride Date</label>
+                                <md-datepicker name="startdate" ng-model="controller.dateInput" md-placeholder="Enter a ride date" required=""
+                                md-min-date="controller.today" ></md-datepicker>
+                                <div ng-messages="Form.startdate.$error" role="alert" multiple="">
+                                    <div ng-message="required" class="my-message">Please select a date this ride.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Start Time hh:mm AM/PM</label>
+                                <input type="time" name="starttime" ng-model="controller.timeInput" required="" />
+                                <div ng-messages="Form.starttime.$error" role="alert" multiple="">
+                                    <div ng-message="required" class="my-message">Please select a start time this ride.</div>
+                                    <div ng-message="time" class="my-message">Enter a valid time</div>
+                                </div>
+                            </md-input-container>
+                            <div>
+                                <md-button ng-disabled="Form.$invalid && Form.$pristine" ng-click="controller.addRide()" class="md-raised md-primary">&nbsp Add Ride &nbsp</md-button>
+                            </div>
+                        </form>
+                        <p class="form-error-msg">{{controller.message}}</p>
+                    </md-card-content>
+                </md-card>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
+

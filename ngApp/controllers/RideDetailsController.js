@@ -20,7 +20,6 @@ export class RideDetailsController {
       this.$http.get(requestString)
         .then( (res) => {
             this.ride = res.data;
-
             // if we are running under the Ride mode we see if there is a signup for this ride.
             if (this.isInRideMode() || this.isInMyRideMode()) {
               var requestSignupString = this.SignupService.getSignupString(this.rideId);
@@ -29,7 +28,17 @@ export class RideDetailsController {
                   this.signup = res.data;
                   this.signupId = this.signup.signupID;
                   this.buttonText = "Leave the Ride";
-                  this.getAttendeeList(this.rideId);
+                  //this.getAttendeeList(this.rideId);
+
+                  var requestString = this.SignupService.getRideAttendeeString(this.rideId);
+                  // make the http get request
+                  this.$http.get(requestString)
+                    .then( (res) => {
+                        this.attendees = res.data;
+                    }).
+                    catch( (res) => {
+                        this.message = "Unable to Get Ride Attendee Data at this time.";
+                    });
                 })
                 .catch( res => {
                   if (res.status != 404)

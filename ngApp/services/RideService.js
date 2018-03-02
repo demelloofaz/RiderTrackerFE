@@ -1,8 +1,7 @@
 export class RideService{
-    constructor(AuthService, $location)
+    constructor(AuthService)
     {
         this.auth = AuthService;
-        this.$location = $location;
         this.CURRENT_RIDE_KEY = 'CurrentRide';
     }
     clearCurrentRideId() {
@@ -40,12 +39,12 @@ export class RideService{
     }
     routeToView( newDest, backLink){
         this.auth.setBackLink(backLink);
-        this.$location.path([newDest]);
+        this.auth.goToPage(newDest);
     }
     goBackToParentView() {
         var previousView = this.auth.getBackLink();
         this.auth.clearBackLink();
-        this.$location.path([previousView]);
+        this.auth.goToPage(previousView);
 
     }
     getRideRequest(rideId) {
@@ -130,4 +129,4 @@ export class RideService{
         return requestString;
     }
 }
-RideService.$inject = ['AuthService', '$location'];
+RideService.$inject = ['AuthService'];

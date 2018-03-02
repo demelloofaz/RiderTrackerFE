@@ -1,8 +1,7 @@
 export class AdminChangePasswordController {
-    constructor(AuthService, $http, $location, RiderService) {
+    constructor(AuthService, $http, RiderService) {
         this.auth = AuthService;
         this.$http = $http;
-        this.$location = $location;
         this.service = RiderService;
         this.password = '';
         this.confirmingpassword='';
@@ -15,7 +14,7 @@ export class AdminChangePasswordController {
             var request = this.auth.createPasswordChangeRequest( this.currentRiderId, this.password);
             this.$http.post(this.auth.getBaseRiderURL() + '/ChangePassword', request)
             .then(res => {
-                this.$location.path(['/EditRider']);
+                this.auth.goToPage('/EditRider');
             })
             .catch( res => {
                 this.message = "Unable to updated password at this time, try again later."; 

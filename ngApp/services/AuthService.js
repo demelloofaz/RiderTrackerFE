@@ -20,6 +20,7 @@ export class AuthService{
         this.BACK_LINK_KEY = 'BackLink';
         this.LON_KEY = "LonKey";
         this.LAT_KEY = "LatKey";
+        this.LAST_TAB_KEY = 'lasttab';
     }
 
     getBaseRiderURL() {
@@ -96,6 +97,22 @@ export class AuthService{
         return localStorage.removeItem(this.BACK_LINK_KEY);
     }
 
+    // tabs data
+    getLastTab() {
+        var result = localStorage.getItem(this.LAST_TAB_KEY);
+        if (result == null)
+            return  0;
+        return result;
+    }
+    setLastTab(tab) {
+        localStorage.setItem(this.LAST_TAB_KEY,tab);
+    }
+    clearLastTab() {
+        localStorage.removeItem(this.LAST_TAB_KEY);
+    }
+
+
+    
     isAuthenticated(){
         var authString = this.getToken();
         if (authString == null)
@@ -121,7 +138,7 @@ export class AuthService{
         localStorage.removeItem(this.ROLE_KEY);
         localStorage.removeItem(this.USERNAME_KEY);
         //redirect
-        this.$location.path(['/']);
+        this.goToPage('/');
         
     }
 
@@ -232,7 +249,10 @@ export class AuthService{
         localStorage.removeItem(this.TRACKING_KEY);
         
         //redirect
-        this.$location.path(['/HomeLoggedIn']);
+        this.goToPage('/HomeLoggedIn');
+    }
+    goToPage(location){
+        this.$location.path([location]);
     }
 
 }

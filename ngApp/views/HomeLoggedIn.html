@@ -1,6 +1,6 @@
 <div id="popupContainer" ng-cloak>
     <md-content>
-        <md-tabs md-dynamic-height md-border-bottom>
+        <md-tabs md-selected="controller.selectedTab" md-dynamic-height md-border-bottom>
             <md-tab label="Me">
                 <md-content>
                     <div id="mapholder"></div>
@@ -11,7 +11,10 @@
                     <md-button ng-click="controller.toggleTrackingButton()"class="md-primary md-raised">&nbsp{{controller.ButtonText}}&nbsp</md-button>
                 </md-content>
             </md-tab>
-            <md-tab ng-if="controller.MyRideCompanions.length > 0" label="Riders">
+            <!--
+            <md-tab ng-disabled="controller.MyRideCompanions.length == 0" label="Riders">
+            -->
+            <md-tab label="Riders">
                 <md-content>
                     <md-input-container>
                         <md-icon style="color: blue">search</md-icon>
@@ -76,6 +79,7 @@
                     </div>
                 </md-content>
             </md-tab>
+            <!--
             <md-tab label="How To Videos">
                 <md-content>
                     <div class="row">
@@ -122,6 +126,7 @@
                     </div>
                 </md-content>
             </md-tab>
+        -->
         </md-tabs>
     </md-content>
 </div>

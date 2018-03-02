@@ -6,7 +6,7 @@ export class AdminRidesController {
       this.Dialog = $mdDialog;
       this.rides = [];
       this.message = 'hello world from Admin Rides Controller';
-      this.myView = "/AdminRides";
+      this.myView = "/Admin";
       this.service.clearCurrentRideId();
       this.service.clearBackLink();
 
@@ -31,7 +31,7 @@ export class AdminRidesController {
     // to prevent interaction outside of dialog
     this.Dialog.show(
       this.Dialog.alert()
-        .parent(angular.element(document.querySelector('#popupContainer')))
+        .parent(angular.element(document.querySelector('#popupRideContainer')))
         .clickOutsideToClose(true)
         .title('Server Error')
         .textContent(this.message)
@@ -39,19 +39,23 @@ export class AdminRidesController {
         .ok('OK')
     );
     }
-    detailRide(rideId) {
+    detailRide(rideId, currTab) {
+        this.auth.setLastTab(currTab);
         this.service.saveRideId(rideId);
         this.service.routeToView("/RideDetails", this.myView);
     }
-    editRide(rideId) {
+    editRide(rideId, currTab) {
+        this.auth.setLastTab(currTab);
         this.service.saveRideId(rideId);
         this.service.routeToView("/EditRide", this.myView);
     }
-    deleteRide(rideId) {
+    deleteRide(rideId, currTab) {
+        this.auth.setLastTab(currTab);
         this.service.saveRideId(rideId);
         this.service.routeToView("/DeleteRide", this.myView);
     }
-    createRide() {
+    createRide(currTab) {
+        this.auth.setLastTab(currTab);
         this.service.routeToView("/CreateRide", this.myView);
     }
   }

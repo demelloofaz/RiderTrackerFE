@@ -23,13 +23,13 @@
     </md-fab-trigger>
       <md-toolbar color="primary"> 
         <md-fab-actions class="md-toolbar-tools">
-          <a ng-if="!nav.isAuthenticated()" ui-sref="Home" class="nav-btn md-button">RiderTracker</a>
-          <a ng-if="nav.isAuthenticated()" ui-sref="HomeLoggedIn" class="nav-btn md-button">Track</a>
-          <a ng-if="nav.showNormalMode()" ui-sref="Rides" class="nav-btn md-button">Rides</a>
-          <a ng-if="nav.showNormalMode()" ui-sref="Following" class="nav-btn md-button">Follow</a>
-          <a ng-if="!nav.isAuthenticated()" ui-sref="Login" class="nav-btn md-button">Login</a>
-          <a ng-if="nav.showNormalMode()" ui-sref="Profile" class="nav-btn md-button">Welcome {{nav.getName()}}</a>
-          <a ng-if="nav.showNormalMode()" ng-click="nav.logout()" class="nav-btn md-button">Logout</a>
+          <md-button ng-if="!nav.isAuthenticated()" ng-click="nav.goToPage('/')" class="nav-btn ">RiderTracker</md-button>
+          <md-button ng-if="nav.isAuthenticated()"  ng-click="nav.goToPage('/HomeLoggedIn')" class="nav-btn ">Track</md-button>
+          <md-button ng-if="nav.showNormalMode()"   ng-click="nav.goToPage('/Rides')" class="nav-btn  ">Rides</md-button>
+          <md-button ng-if="nav.showNormalMode()"   ng-click="nav.goToPage('/Following')" class="nav-btn ">Follow</md-button>
+          <md-button ng-if="!nav.isAuthenticated()" ng-click="nav.goToPage('/Login')" class="nav-btn  ">Login</md-button>
+          <md-button ng-if="nav.showNormalMode()"   ng-click="nav.goToPage('/Profile')" class="nav-btn t ">Welcome {{nav.getName()}}</md-button>
+          <md-button ng-if="nav.showNormalMode()"   ng-click="nav.logout()" class="nav-btn ">Logout</md-button>
         </md-fab-actions>
       </md-toolbar>
     </md-fab-toolbar> 

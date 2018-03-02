@@ -1,9 +1,8 @@
 export class HomeController {
-    constructor(AuthService, $location) {
+    constructor(AuthService) {
       this.auth = AuthService;
-      this.$location = $location;
       if (this.auth.isAuthenticated())
-        this.$location.path(['/HomeLoggedIn']);
+        this.auth.goToPage('/HomeLoggedIn');
         
       this.message = 'Daves hello world';
     }

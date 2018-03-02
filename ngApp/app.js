@@ -11,10 +11,14 @@ import {RegisterController} from './controllers/RegisterController';
 import {ProfileController} from './controllers/ProfileController';
 import {ChangePasswordController} from './controllers/ChangePassword';
 import {AdminChangePasswordController} from './controllers/AdminChangePassword';
+import {AllAdminController} from './controllers/AllAdminController';
 import {AdminController} from './controllers/AdminController';
 import {AdminRidesController} from './controllers/AdminRidesController';
+import {AllRidesController} from './controllers/AllRidesController';
+/*
 import {RidesController} from './controllers/RidesController';
 import {MyRidesController} from './controllers/MyRidesController';
+*/
 import {CreateRideController} from './controllers/CreateRideController';
 import {EditRideController} from './controllers/EditRideController';
 import {DeleteRideController} from './controllers/DeleteRideController';
@@ -24,9 +28,12 @@ import {EditRiderController} from './controllers/EditRiderController';
 import {DeleteRiderController} from './controllers/DeleteRiderController';
 import {RiderDetailsController} from './controllers/RiderDetailsController';
 import {RideSignupController} from './controllers/RideSignupController';
+import {FollowController} from './controllers/FollowController';
+/*
 import {FollowingController} from './controllers/FollowingController';
 import {FollowerController} from './controllers/FollowerController';
 import {FollowRequestController} from './controllers/FollowRequestController';
+*/
 import {LocateRiderController} from './controllers/LocateRiderController';
 import {WeatherController} from './controllers/WeatherController';
 import {POIController} from './controllers/POIController';
@@ -86,6 +93,13 @@ import {FollowService} from './services/FollowService';
           })
           .state('Admin', {
             url: '/Admin',
+            templateUrl: '/ngApp/views/AllAdmin.html',
+            controller: AllAdminController,
+            controllerAs: 'controller'
+          })
+          /*
+          .state('Admin', {
+            url: '/Admin',
             templateUrl: '/ngApp/views/Admin.html',
             controller: AdminController,
             controllerAs: 'controller'
@@ -96,6 +110,14 @@ import {FollowService} from './services/FollowService';
             controller: AdminRidesController,
             controllerAs: 'controller'
           })
+          */
+          .state('Rides', {
+            url: '/Rides',
+            templateUrl: '/ngApp/views/AllRides.html',
+            controller: AllRidesController,
+            controllerAs: 'controller'
+          })
+          /*
           .state('Rides', {
             url: '/Rides',
             templateUrl: '/ngApp/views/Rides.html',
@@ -108,6 +130,7 @@ import {FollowService} from './services/FollowService';
             controller: MyRidesController,
             controllerAs: 'controller'
           })
+          */
           .state('CreateRide', {
             url: '/CreateRide',
             templateUrl: '/ngApp/views/CreateRide.Html',
@@ -176,6 +199,13 @@ import {FollowService} from './services/FollowService';
           })
           .state('Following', {
             url: '/Following',
+            templateUrl: '/ngApp/views/Follow.html',
+            controller: FollowController,
+            controllerAs: 'controller'
+          })
+          /*
+          .state('Following', {
+            url: '/Following',
             templateUrl: '/ngApp/views/Following.html',
             controller: FollowingController,
             controllerAs: 'controller'
@@ -192,6 +222,7 @@ import {FollowService} from './services/FollowService';
             controller: FollowRequestController,
             controllerAs: 'controller'
           })
+          */
           .state('LocateRider', {
             url: '/LocateRider',
             templateUrl: '/ngApp/views/LocateRider.html',
@@ -206,7 +237,10 @@ import {FollowService} from './services/FollowService';
         $locationProvider.html5Mode(true);
     }
 
+    // add additional free standing
     angular.module('RiderTracker')
         .controller('navController', NavController)
         .controller('POIController', POIController)
+        .controller('AdminController', AdminController)
+        .controller('AdminRidesController', AdminRidesController)
         .controller('WeatherController', WeatherController);
